@@ -36,7 +36,7 @@ NEEDS TO BE EDITED TO CONFORM TO PROJECT
     <img src="images/logo.png" alt="Logo" width="80" height="80">
   </a>
 
-<h3 align="center">project_title</h3>
+<h3 align="center">Event Horizon</h3>
 
   <p align="center">
     project_description
@@ -197,9 +197,21 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 <!-- CONTACT -->
 ## Contact
 
-Your Name - [@twitter_handle](https://twitter.com/twitter_handle) - email@email_client.com
+Tristen Chen - tristian.chen@mail.utoronto.ca
 
-Project Link: [https://github.com/github_username/repo_name](https://github.com/github_username/repo_name)
+Rebecca Lashley - rebeccalashleybb@gmail.com
+
+Lily Li - linyi.li@mail.utoronto.ca
+
+Kartikey Sachdeva - kartikeysnotes@gmail.com
+
+Ruoyi Xie - ruoyi.xie@mail.utoronto.ca
+
+Danial Ahmad - danial.ahmad@mail.utoronto.ca
+
+Christian Mcintoch Clarke - christian.mcintoshclarke@mail.utoronto.ca
+
+Project Link: [Event Horizon](https://github.com/ECE444-2023Fall/project-1-web-application-design-group27-rubberducks)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -208,9 +220,9 @@ Project Link: [https://github.com/github_username/repo_name](https://github.com/
 <!-- ACKNOWLEDGMENTS -->
 ## Acknowledgments
 
-* []()
-* []()
-* []()
+* contribution.md - sourced from https://gist.github.com/briandk/3d2e8b3ec8daf5a27a62#file-contributing-md
+  
+* readme.md - sourced from https://github.com/othneildrew/Best-README-Template
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
