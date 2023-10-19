@@ -1,4 +1,4 @@
-NEEDS TO BE EDITED TO CONFORM TO PROJECT
+
 
 <!-- Improved compatibility of back to top link: See: https://github.com/othneildrew/Best-README-Template/pull/73 -->
 <a name="readme-top"></a>
@@ -20,9 +20,6 @@ NEEDS TO BE EDITED TO CONFORM TO PROJECT
 *** for contributors-url, forks-url, etc. This is an optional, concise syntax you may use.
 *** https://www.markdownguide.org/basic-syntax/#reference-style-links
 -->
-[![Contributors][contributors-shield]][contributors-url]
-[![Issues][issues-shield]][issues-url]
-[![MIT License][license-shield]][license-url]
 
 
 
@@ -82,8 +79,6 @@ NEEDS TO BE EDITED TO CONFORM TO PROJECT
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-[![Product Name Screen Shot][product-screenshot]](https://example.com)
-
 The objective of this project is to create a user-friendly webapp as a centralized information center for events around the school. The webapp will serve as a platform for students and faculty to discover and register for events, and for event hosts to manage events, registrants, and obtain analytics relating to the performance of their events. 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
@@ -94,8 +89,8 @@ The objective of this project is to create a user-friendly webapp as a centraliz
 * Python
 * Flask
 * PostgreSQL
-* [![React][React.js]][React-url]
-
+* React.js
+  
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ### Tools Used
