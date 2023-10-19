@@ -99,7 +99,7 @@ Here's a blank template to get started: To avoid retyping too much info. Do a se
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ### Tools Used
-* Issue Tracking: [Jira][https://www.atlassian.com/software/jira?&aceid=&adposition=&adgroup=144583515317&campaign=19313277967&creative=660800619493&device=c&keyword=atlassian%20jira&matchtype=e&network=g&placement=&ds_kids=p74602868216&ds_e=GOOGLE&ds_eid=700000001558501&ds_e1=GOOGLE&gclid=Cj0KCQjwhL6pBhDjARIsAGx8D5_eRQpNhggdjEPS138Dn2HqCeNBHTrGL627ZXcQTbnSUMxtXp2pI48aAkE5EALw_wcB&gclsrc=aw.ds]
+* Issue Tracking: [Jira](https://www.atlassian.com/software/jira?&aceid=&adposition=&adgroup=144583515317&campaign=19313277967&creative=660800619493&device=c&keyword=atlassian%20jira&matchtype=e&network=g&placement=&ds_kids=p74602868216&ds_e=GOOGLE&ds_eid=700000001558501&ds_e1=GOOGLE&gclid=Cj0KCQjwhL6pBhDjARIsAGx8D5_eRQpNhggdjEPS138Dn2HqCeNBHTrGL627ZXcQTbnSUMxtXp2pI48aAkE5EALw_wcB&gclsrc=aw.ds)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
