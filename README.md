@@ -36,16 +36,16 @@ NEEDS TO BE EDITED TO CONFORM TO PROJECT
 <h3 align="center">Event Horizon</h3>
 
   <p align="center">
-    project_description
+    University of Toronto Events Finder
     <br />
-    <a href="https://github.com/github_username/repo_name"><strong>Explore the docs »</strong></a>
+    <a href="https://github.com/ECE444-2023Fall/project-1-web-application-design-group27-rubberducks"><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    <a href="https://github.com/github_username/repo_name">View Demo</a>
+    <a href="https://github.com/ECE444-2023Fall/project-1-web-application-design-group27-rubberducks">View Demo</a>
     ·
-    <a href="https://github.com/github_username/repo_name/issues">Report Bug</a>
+    <a href="https://github.com/ECE444-2023Fall/project-1-web-application-design-group27-rubberducks/issues">Report Bug</a>
     ·
-    <a href="https://github.com/github_username/repo_name/issues">Request Feature</a>
+    <a href="https://github.com/ECE444-2023Fall/project-1-web-application-design-group27-rubberducks/issues">Request Feature</a>
   </p>
 </div>
 
@@ -91,15 +91,15 @@ Here's a blank template to get started: To avoid retyping too much info. Do a se
 
 
 ### Built With
-
-* [![Next][Next.js]][Next-url]
+* Python
+* Flask
+* PostgreSQL
 * [![React][React.js]][React-url]
-* [![Vue][Vue.js]][Vue-url]
-* [![Angular][Angular.io]][Angular-url]
-* [![Svelte][Svelte.dev]][Svelte-url]
-* [![Laravel][Laravel.com]][Laravel-url]
-* [![Bootstrap][Bootstrap.com]][Bootstrap-url]
-* [![JQuery][JQuery.com]][JQuery-url]
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+### Tools Used
+* Issue Tracking: [Jira][https://www.atlassian.com/software/jira?&aceid=&adposition=&adgroup=144583515317&campaign=19313277967&creative=660800619493&device=c&keyword=atlassian%20jira&matchtype=e&network=g&placement=&ds_kids=p74602868216&ds_e=GOOGLE&ds_eid=700000001558501&ds_e1=GOOGLE&gclid=Cj0KCQjwhL6pBhDjARIsAGx8D5_eRQpNhggdjEPS138Dn2HqCeNBHTrGL627ZXcQTbnSUMxtXp2pI48aAkE5EALw_wcB&gclsrc=aw.ds]
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -158,7 +158,7 @@ _For more examples, please refer to the [Documentation](https://example.com)_
 - [ ] Feature 3
     - [ ] Nested Feature
 
-See the [open issues](https://github.com/github_username/repo_name/issues) for a full list of proposed features (and known issues).
+See the [open issues](https://github.com/ECE444-2023Fall/project-1-web-application-design-group27-rubberducks/issues) for a full list of proposed features (and known issues).
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -194,7 +194,7 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 <!-- CONTACT -->
 ## Contact
 
-Tristen Chen - tristian.chen@mail.utoronto.ca
+Tristian (YiFeng) Chen - tristian.chen@mail.utoronto.ca
 
 Rebecca Lashley - rebeccalashleybb@gmail.com
 
