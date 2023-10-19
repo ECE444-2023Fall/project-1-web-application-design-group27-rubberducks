@@ -84,7 +84,7 @@ NEEDS TO BE EDITED TO CONFORM TO PROJECT
 
 [![Product Name Screen Shot][product-screenshot]](https://example.com)
 
-Here's a blank template to get started: To avoid retyping too much info. Do a search and replace with your text editor for the following: `github_username`, `repo_name`, `twitter_handle`, `linkedin_username`, `email_client`, `email`, `project_title`, `project_description`
+The objective of this project is to create a user-friendly webapp as a centralized information center for events around the school. The webapp will serve as a platform for students and faculty to discover and register for events, and for event hosts to manage events, registrants, and obtain analytics relating to the performance of their events. 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
