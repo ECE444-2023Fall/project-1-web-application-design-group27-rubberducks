@@ -67,6 +67,7 @@
 
 <!-- ABOUT THE PROJECT -->
 ## About The Project
+This project is built on top of https://github.com/Midas0615/React-Flask-E-commerce/tree/master 
 
 The objective of this project is to create a user-friendly webapp as a centralized information center for events around the school. The webapp will serve as a platform for students and faculty to discover and register for events, and for event hosts to manage events, registrants, and obtain analytics relating to the performance of their events. 
 

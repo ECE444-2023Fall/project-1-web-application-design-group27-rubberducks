@@ -1,0 +1,70 @@
+{
+  "mappings": {
+    "item": {
+      "properties": {
+        "author": {
+          "type": "multi_field",
+          "fields": {
+            "author": {
+              "type": "string",
+              "index":"analyzed"
+            },
+            "original": {
+              "type": "string",
+              "index": "not_analyzed"
+            }
+          }
+        },
+        "item_id": {
+          "type": "long"
+        },
+        "item_name": {
+          "type": "multi_field",
+          "fields": {
+            "item_name": {
+              "type": "string",
+              "index": "analyzed"
+            },
+            "original": {
+              "type": "string",
+              "index": "not_analyzed"
+            }
+          }
+        },
+        "item_name_pretty":{
+            "type": "string",
+            "include_in_all": false
+        },
+        "categories": {
+            "type": "string",
+            "index": "not_analyzed"
+        },
+        "num_ratings": {
+          "type": "string"
+        },
+        "num_ratings_int": {
+            "type":"integer",
+            "null_value": 0
+        },
+        "num_reviews":{
+            "type": "string"
+        },
+        "num_reviews_int": {
+            "type":"integer",
+            "null_value": 0
+        },
+        "price": {
+          "type": "float",
+          "include_in_all": false
+        },
+        "ratings": {
+          "type": "float",
+          "null_value": 0
+        },
+        "in_stock": {
+            "type": "integer"
+        }
+      }
+    }
+  }
+}
