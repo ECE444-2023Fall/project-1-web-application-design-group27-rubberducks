@@ -6,7 +6,6 @@ import Home from "./components/pages/Home";
 import Events from "./components/pages/Events";
 import Clubs from "./components/pages/Clubs";
 import Login from "./components/pages/Login";
-import Account from "./components/pages/Account";
 import Create_Host_Profile from "./components/pages/Create_Host_Profile";
 
 
@@ -20,7 +19,6 @@ function App() {
           <Route path="/events" exact Component={Events} />
           <Route path="/clubs" exact Component={Clubs} />
           <Route path="/login" exact Component={Login} />
-          <Route path="/account" exact Component={Account} />
           <Route path="/create_host_profile" exact Component={Create_Host_Profile} />
         </Routes>
       </Router>
