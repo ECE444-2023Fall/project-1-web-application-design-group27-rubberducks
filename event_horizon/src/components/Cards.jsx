@@ -5,7 +5,6 @@ import "./Cards.css";
 function Cards() {
   return (
     <div className="cards">
-      <h1>Events</h1>
       <div className="cards--container">
         <div className="cards--wrapper">
           <ul className="cards--items">
@@ -13,24 +12,32 @@ function Cards() {
               src="images/placeholder.png"
               text="placeholder title"
               label="placeholder"
+              date="placeholder date"
+              location="placeholder location"
               path="/events"
             />
             <CardItem
               src="images/placeholder.png"
               text="placeholder title"
               label="placeholder"
+              date="placeholder date"
+              location="placeholder location"
               path="/events"
             />
             <CardItem
               src="images/placeholder.png"
               text="placeholder title"
               label="placeholder"
+              date="placeholder date"
+              location="placeholder location"
               path="/events"
             />
             <CardItem
               src="images/placeholder.png"
               text="placeholder title"
               label="placeholder"
+              date="placeholder date"
+              location="placeholder location"
               path="/events"
             />
           </ul>
