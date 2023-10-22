@@ -1,32 +1,36 @@
 import React, { useState } from "react";
 import "../../App.css";
-import "./Create_Host_Profile.css"
+import "./Create_Host_Profile.css";
 
-function Create_Host_Profile() {
-  // Define state to store form input values
+function CreateHostProfile() {
   const [name, setName] = useState("");
   const [club_name, setClubName] = useState("");
   const [email, setEmail] = useState("");
   const [bio, setBio] = useState("");
+  const [profilePhoto, setProfilePhoto] = useState(null);
 
-  // Handle form submission
+  const handleProfilePhotoChange = (e) => {
+    const file = e.target.files[0];
+    setProfilePhoto(file);
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Create a profile object with form input values
     const profile = {
       name,
       club_name,
       email,
       bio,
+      profilePhoto, // Include the profile photo in the form data
     };
 
-    // Will need to store this info 
+    // Handle form submission, including the profile photo data
     console.log("Profile Data:", profile);
   };
 
   return (
-    <div>
+    <div className="container">
       <h2>Create Host Profile</h2>
       <form onSubmit={handleSubmit}>
         <label htmlFor="name">Name:</label>
@@ -64,10 +68,27 @@ function Create_Host_Profile() {
           rows="4"
           cols="50"
         />
+
+        <label htmlFor="profilePhoto">Club Photo</label>
+        <input
+          type="file"
+          id="profilePhoto"
+          accept="image/*"
+          onChange={handleProfilePhotoChange}
+        />
+
+        {profilePhoto && (
+          <img
+            src={URL.createObjectURL(profilePhoto)}
+            alt="Selected Profile Photo"
+            style={{ maxWidth: "100px", maxHeight: "100px" }}
+          />
+        )}
+
         <button type="submit">Create Profile</button>
       </form>
     </div>
   );
 }
 
-export default Create_Host_Profile;
+export default CreateHostProfile;
