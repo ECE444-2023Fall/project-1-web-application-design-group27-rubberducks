@@ -7,13 +7,13 @@ import Home from "./components/pages/Home";
 import Events from "./components/pages/Events";
 import Clubs from "./components/pages/Clubs";
 import Login from "./components/pages/Login";
-import Profile from "./components/pages/Profile";
-import Profile_favourites from "./components/pages/Profile_favourites";
-import Profile_previous from "./components/pages/Profile_previous";
-import Profile_upcoming from "./components/pages/Profile_upcoming";
-import Host_profile from "./components/pages/Host_Profile";
-import Host_previous from "./components/pages/Host_previous";
-import Host_upcoming from "./components/pages/Host_upcoming";
+import Profile from "./components/pages/profile/Profile";
+import Profile_favourites from "./components/pages/profile/Profile_favourites";
+import Profile_previous from "./components/pages/profile/Profile_previous";
+import Profile_upcoming from "./components/pages/profile/Profile_upcoming";
+import Host_profile from "./components/pages/host_profile/Host_Profile";
+import Host_previous from "./components/pages/host_profile/Host_previous";
+import Host_upcoming from "./components/pages/host_profile/Host_upcoming";
 
 function App() {
   return (

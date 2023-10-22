@@ -1,8 +1,8 @@
 import React from "react";
-import "./Host_previous.css";
-import Cards from "../Cards";
+import "./Host_upcoming.css";
+import Cards from "../../Cards";
 
-export default function Host_favourites() {
+export default function Host_upcoming() {
   return (
     <>
       <div className="sidebar">
@@ -15,11 +15,14 @@ export default function Host_favourites() {
             This is my bio. I am a host and I love to organize events.
           </p>
         </div>
+        <div className="host--tags">
+          <h2 className="sidebar--heading">Tags</h2>
+        </div>
       </div>
       <div className="user--events">
         <div className="profile--category">
           <div className="card--header">
-            <h2 className="card--heading">Previous Events</h2>
+            <h2 className="card--heading">Upcoming Events</h2>
             <span className="card--see-all small">
               <a href="/host_profile">Return to Profile</a>
             </span>

@@ -1,6 +1,6 @@
 import React from "react";
 import "./Profile_upcoming.css";
-import Cards from "../Cards";
+import Cards from "../../Cards";
 
 export default function Profile_upcoming() {
   return (

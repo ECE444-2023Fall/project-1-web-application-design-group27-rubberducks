@@ -1,10 +1,16 @@
 import React from "react";
 import "./Profile.css";
-import Cards from "../Cards";
+import Cards from "../../Cards";
+import { MdEdit } from "react-icons/md";
 
 export default function Profile() {
   return (
     <>
+      <div className="edit--button">
+        <button className="edit--button-icon">
+          <MdEdit />
+        </button>
+      </div>
       <div className="sidebar">
         <img src="../../../images/placeholder.png" alt="Profile Picture" />
         <div className="user--name">John Doe</div>

@@ -33,6 +33,25 @@
   background: #fff;
 }
 
+.edit--button {
+  position: absolute;
+  top: 80px;
+  right: 5px;
+}
+
+.edit--button-icon {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  outline: none;
+  font-size: 20px;
+  padding: 5px;
+}
+
+.edit--button-icon:hover {
+  color: #0077ff;
+}
+
 .card--heading {
   margin-left: 25px;
   margin-top: 25px;
