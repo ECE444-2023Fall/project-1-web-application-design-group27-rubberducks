@@ -37,6 +37,7 @@ function CreateHostProfile() {
         <input
           type="text"
           id="name"
+          placeholder="Host Username"
           value={name}
           onChange={(e) => setName(e.target.value)}
           required
@@ -46,6 +47,7 @@ function CreateHostProfile() {
         <input
           type="text"
           id="club_name"
+          placeholder="Club Name"
           value={club_name}
           onChange={(e) => setClubName(e.target.value)}
           required
@@ -55,6 +57,7 @@ function CreateHostProfile() {
         <input
           type="email"
           id="email"
+          placeholder="Email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required

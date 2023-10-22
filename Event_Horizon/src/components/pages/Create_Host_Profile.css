@@ -30,12 +30,12 @@
   input[type="text"],
   input[type="email"],
   textarea {
-    width: 95%;
-    padding: 10px;
-    margin-bottom: 15px;
-    margin-left: 10px;
-    border: 1px solid #ccc;
-    border-radius: 3px;
+    width: 100%;
+    padding: 15px 45px;
+    border: 1px solid #e6e6e6;
+    border-radius: 25px;
+    font-size: 16px;
+    transition: border-color 0.3s, box-shadow 0.3s;
   }
   
   /* Style for the textarea field */
@@ -50,17 +50,16 @@
   
   /* Style for the custom file input button */
   label[for="profilePhoto"] {
-    background: #616c77;
-    color: white;
-    padding: 10px 15px;
+    padding: 15px 0;
+    width: 15%;
+    background-color: #585a5c;
     border: none;
-    border-radius: 3px;
+    border-radius: 25px;
+    color: white;
+    font-size: 16px;
     cursor: pointer;
-    transition: background 0.3s;
-    display: inline-block;
-    margin-top: 10px;
-    margin-left: 10px;
-    margin-bottom: 20px;
+    text-align: center;
+    transition: background-color 0.3s, transform 0.3s;
   }
   
   /* Style for the selected profile photo */
@@ -74,19 +73,19 @@
   
   /* Style for the submit button */
   button[type="submit"] {
-    background: #0074D9;
-    color: white;
-    padding: 15px 30px;
-    font-size: 18px;
+    padding: 15px 0;
+    width: 100%;
+    background-color: #74b9ff;
     border: none;
-    border-radius: 3px;
+    border-radius: 25px;
+    color: white;
+    font-size: 16px;
     cursor: pointer;
-    transition: background 0.3s;
-    display: block;
-    margin: 0 auto;
+    transition: background-color 0.3s, transform 0.3s;
   }
   
   button[type="submit"]:hover {
-    background: #0056b3;
+    background-color: #569cd6;
+    transform: translateY(-2px);
   }
   
