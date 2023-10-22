@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { FaMapMarkerAlt, FaClock } from "react-icons/fa";
 
 function CardItem(props) {
   return (
@@ -15,6 +16,14 @@ function CardItem(props) {
           </figure>
           <div className="cards--item--info">
             <h5 className="cards--item--text">{props.text}</h5>
+            <div className="cards--item--subtitle">
+              <FaMapMarkerAlt className="cards--item--icon" />
+              <span className="cards--item--location">{props.location}</span>
+            </div>
+            <div className="cards--item--subtitle">
+              <FaClock className="cards--item--icon" />
+              <span className="cards--item--date">{props.date}</span>
+            </div>
           </div>
         </Link>
       </li>
