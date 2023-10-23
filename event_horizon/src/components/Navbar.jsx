@@ -58,12 +58,12 @@ function Navbar() {
             </div>
             <ul className={`dropdown-menu ${dropdownOpen ? "active" : ""}`}>
               <li>
-                <Link to="/user-profile" className="nav-links" onClick={closeMobileMenu}>
+                <Link to="/user-profile" className="dropdown-nav-links" onClick={closeMobileMenu}>
                   My Profile
                 </Link>
               </li>
               <li>
-                <Link to="/create_host_profile" className="nav-links" onClick={closeMobileMenu}>
+                <Link to="/create_host_profile" className="dropdown-nav-links" onClick={closeMobileMenu}>
                   Create Host Profile
                 </Link>
               </li>
