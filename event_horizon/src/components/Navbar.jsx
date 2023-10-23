@@ -58,13 +58,21 @@ function Navbar() {
             </div>
             <ul className={`dropdown-menu ${dropdownOpen ? "active" : ""}`}>
               <li>
-                <Link to="/user-profile" className="dropdown-nav-links" onClick={closeMobileMenu}>
+                <Link
+                  to="/user-profile"
+                  className="dropdown-nav-links"
+                  onClick={closeMobileMenu}
+                >
                   My Profile
                 </Link>
               </li>
               <li>
-                <Link to="/create_host_profile" className="dropdown-nav-links" onClick={closeMobileMenu}>
-                  Create Host Profile
+                <Link
+                  to="/create_host_profile"
+                  className="dropdown-nav-links"
+                  onClick={closeMobileMenu}
+                >
+                  + Create Profile
                 </Link>
               </li>
             </ul>
@@ -79,7 +87,11 @@ function Navbar() {
             </Link>
           </li>
         </ul>
-        {button && <Button to="/login" buttonStyle="btn--outline">LOGIN</Button>}
+        {button && (
+          <Button to="/login" buttonStyle="btn--outline">
+            LOGIN
+          </Button>
+        )}
       </nav>
     </>
   );
