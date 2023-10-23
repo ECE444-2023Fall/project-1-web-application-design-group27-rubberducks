@@ -54,7 +54,7 @@ function Navbar() {
           </li>
           <li className={`nav-item ${dropdownOpen ? "active" : ""}`}>
             <div className="nav-links" onClick={toggleDropdown}>
-              Account <i className="fas fa-caret-down" />
+              Account
             </div>
             <ul className={`dropdown-menu ${dropdownOpen ? "active" : ""}`}>
               <li>
