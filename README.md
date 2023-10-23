@@ -37,14 +37,14 @@
     <a href="https://github.com/ECE444-2023Fall/project-1-web-application-design-group27-rubberducks"><strong>Explore the docs »</strong></a>
     <br />
     <br />
-<!--     <a href="https://github.com/ECE444-2023Fall/project-1-web-application-design-group27-rubberducks">View Demo</a>
+<!--     <a href="https://github.com/ECE444-2023Fall/project-1-web-application-design-group27-rubberducks">View Demo</a> -->
     ·
     <a href="https://github.com/ECE444-2023Fall/project-1-web-application-design-group27-rubberducks/issues">Report Bug</a>
     ·
     <a href="https://github.com/ECE444-2023Fall/project-1-web-application-design-group27-rubberducks/issues">Request Feature</a>
   </p>
 </div>
- -->
+
 
 
 <!-- TABLE OF CONTENTS -->
