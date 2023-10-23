@@ -7,6 +7,7 @@ import Home from "./components/pages/Home";
 import Events from "./components/pages/Events";
 import Clubs from "./components/pages/Clubs";
 import Login from "./components/pages/Login";
+import SignUp from "./components/pages/SignUp";
 import Profile from "./components/pages/profile/Profile";
 import Profile_favourites from "./components/pages/profile/Profile_favourites";
 import Profile_previous from "./components/pages/profile/Profile_previous";
@@ -25,6 +26,7 @@ function App() {
           <Route path="/events" exact Component={Events} />
           <Route path="/clubs" exact Component={Clubs} />
           <Route path="/login" exact Component={Login} />
+          <Route path="/signup" exact Component={SignUp} />
           <Route path="/profile" exact Component={Profile} />
           <Route
             path="/profile/favourite"

@@ -1,0 +1,154 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: "PT Sans", sans-serif;
+  }
+  
+  .home,
+  .events,
+  .clubs,
+  .login,
+  .profile-host {
+    display: flex;
+    height: 90vh;
+    align-items: center;
+    justify-content: center;
+  }
+  
+    .login-container {
+      width: 100vw;           
+      height: 100vh;          
+      display: flex;
+      justify-content: center; 
+      align-items: center;   
+    }
+
+  
+  .login-card {
+    width: 400px;
+    padding: 40px;
+    background: #ffffff;
+    box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.1);
+    border-radius: 25px;
+  }
+  
+  h2 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 30px;
+    font-weight: 600;
+  }
+  
+  .input-group {
+    position: relative;
+    margin-bottom: 25px;
+  }
+  
+  .input-group i {
+    position: absolute;
+    top: 50%;
+    left: 15px;
+    transform: translateY(-50%);
+    color: #74b9ff; 
+  }
+  
+  .input-group .toggle-password {
+    position: absolute;
+    top: 50%;
+    right: 15px;
+    /* transform: translateY(-50%); */
+    color: #74b9ff;
+    cursor: pointer;
+    transition: color 0.3s;
+  }
+  
+  
+  .input-group input {
+    width: 100%;
+    padding: 15px 45px;
+    border: 1px solid #e6e6e6;
+    border-radius: 25px;
+    font-size: 16px;
+    transition: border-color 0.3s, box-shadow 0.3s;
+  }
+  
+  .input-group input:focus {
+    border-color: #74b9ff;
+    box-shadow: 0px 0px 10px rgba(116, 185, 255, 0.5);
+    outline: none;
+  }
+  
+  .additional-options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .additional-options label {
+    display: flex;
+    align-items: center;
+    color: #333;
+  }
+  
+  .additional-options input[type="checkbox"] {
+    margin-right: 5px;
+  }
+  
+  .forgot-password {
+    text-decoration: none;
+    color: #74b9ff;
+    transition: color 0.3s;
+  }
+  
+  .forgot-password:hover {
+    color: #569cd6;
+  }
+  
+  
+  .error-message {
+    color: red;
+    margin-bottom: 20px;
+  }
+  
+  button {
+    padding: 15px 0;
+    width: 100%;
+    background-color: #74b9ff;
+    border: none;
+    border-radius: 25px;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+  }
+  
+  button:hover {
+    background-color: #569cd6;
+    transform: translateY(-2px);
+  }
+  
+  .signup-option {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 20px;
+    font-size: 16px;
+  }
+  
+  .signup-option span {
+    margin-right: 10px;
+    color: #333;
+  }
+  
+  .signup-option a {
+    text-decoration: none;
+    color: #74b9ff;
+    transition: color 0.3s;
+  }
+  
+  .signup-option a:hover {
+    color: #569cd6;
+  }
+  

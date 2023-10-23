@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import "../../Login.css";
 
-function Login() {
+function SignUp() {
   const [email, setEmail] = useState("");
+  const [name, setName] = useState("");
   const [password, setPassword] = useState("");
   const [remember, setRemember] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
@@ -15,8 +16,18 @@ function Login() {
   return (
     <div className="login-container">
       <div className="login-card">
-        <h2>Welcome Back!</h2>
+        <h2>Welcome!</h2>
         <form onSubmit={handleSubmit}>
+        <div className="input-group">
+            <i className="fas fa-user"></i>
+            <input
+              type="email"
+              placeholder="Name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              required
+            />
+          </div>
           <div className="input-group">
             <i className="fas fa-envelope"></i>
             <input
@@ -48,15 +59,15 @@ function Login() {
               <input type="checkbox" checked={remember} onChange={() => setRemember(!remember)} />
               Remember me
             </label>
-            <a href="#!" className="forgot-password">Forgot Password?</a>
+            {/* <a href="#!" className="forgot-password">Forgot Password?</a> */}
           </div>
           <p className="error-message">Error message placeholder</p>
-          <button type="submit">Login</button>
+          <button type="submit">Sign Up</button>
           
           
           <div className="signup-option">
             <span>or</span>
-            <a href="/signup">Sign Up</a>
+            <a href="/login">Log In</a>
           </div>
 
 
@@ -66,4 +77,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default SignUp;
