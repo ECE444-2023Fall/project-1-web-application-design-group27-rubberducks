@@ -7,6 +7,18 @@ h1 {
   text-align: center;
 }
 
+.cards--item--subtitle {
+  display: flex;
+  align-items: center;
+  font-size: 10px;
+  color: #999;
+  margin-top: 5px;
+}
+
+.cards--item--icon {
+  margin-right: 5px;
+}
+
 .cards--container {
   display: flex;
   flex-flow: column;
