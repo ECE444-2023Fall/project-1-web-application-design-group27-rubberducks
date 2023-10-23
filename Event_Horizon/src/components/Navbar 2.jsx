@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "./Button";
-import { RiArrowDropDownFill } from "react-icons/ri";
 import "./Navbar.css";
 
 function Navbar() {
@@ -55,7 +54,7 @@ function Navbar() {
           </li>
           <li className={`nav-item ${dropdownOpen ? "active" : ""}`}>
             <div className="nav-links" onClick={toggleDropdown}>
-              Account <RiArrowDropDownFill />
+              Account
             </div>
             <ul className={`dropdown-menu ${dropdownOpen ? "active" : ""}`}>
               <li>
