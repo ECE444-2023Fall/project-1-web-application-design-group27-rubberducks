@@ -16,6 +16,7 @@ import Profile_upcoming from "./components/pages/profile/Profile_upcoming";
 import Host_profile from "./components/pages/host_profile/Host_Profile";
 import Host_previous from "./components/pages/host_profile/Host_previous";
 import Host_upcoming from "./components/pages/host_profile/Host_upcoming";
+import Create_Event from "./components/pages/host_profile/Create_Event";
 
 function App() {
   return (
@@ -38,6 +39,7 @@ function App() {
           <Route path="/profile/previous" exact Component={Profile_previous} />
           <Route path="/profile/upcoming" exact Component={Profile_upcoming} />
           <Route path="/host_profile" exact Component={Host_profile} />
+          <Route path="/host_profile/create_event" exact Component={Create_Event} />
           <Route
             path="/host_profile/previous"
             exact
