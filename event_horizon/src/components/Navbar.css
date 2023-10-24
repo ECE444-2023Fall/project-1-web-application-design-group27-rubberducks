@@ -36,7 +36,7 @@
 
 .nav-menu {
   display: grid;
-  grid-template-columns: repeat(4, auto);
+  grid-template-columns: repeat(5, auto);
   grid-gap: 10px;
   list-style: none;
   text-align: center;
@@ -161,4 +161,41 @@
     color: #002452;
     transition: 250ms;
   }
+}
+
+/* Style for the dropdown menu */
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  background: #002452;
+  font-size: 0.965rem;
+  width: 6.7%;
+  z-index: 1;
+  transition: all 0.5s ease;
+  padding-top: 0px;
+  text-align: left;
+}
+
+/* Style for the expanded text (list items) in the dropdown */
+.dropdown-menu.active {
+  display: block;
+  list-style: none;
+}
+
+.dropdown-nav-links {
+  color: #b0abab;
+  background-color: #002452;
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  padding: 0.5rem 1rem;
+  height: 100%;
+  width: 120px;
+  font-size: 0.8rem;
+  justify-content: flex-end;
+}
+
+.dropdown-nav-links:hover {
+  color: #fff; /* Set the text color to white on hover */
+  transition: all 0.2s ease-out;
 }

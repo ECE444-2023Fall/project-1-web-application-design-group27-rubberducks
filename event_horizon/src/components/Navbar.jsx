@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { Link, Router } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Button } from "./Button";
+import { RiArrowDropDownFill } from "react-icons/ri";
 import "./Navbar.css";
 
 function Navbar() {
   const [click, setClick] = useState(false);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
   const [button, setButton] = useState(true);
 
   const handleClick = () => setClick(!click);
+  const toggleDropdown = () => setDropdownOpen(!dropdownOpen);
   const closeMobileMenu = () => setClick(false);
 
   const showButton = () => {
@@ -23,6 +26,7 @@ function Navbar() {
   }, []);
 
   window.addEventListener("resize", showButton);
+
   return (
     <>
       <nav className="navbar">
@@ -49,6 +53,31 @@ function Navbar() {
               Clubs
             </Link>
           </li>
+          <li className={`nav-item ${dropdownOpen ? "active" : ""}`}>
+            <div className="nav-links" onClick={toggleDropdown}>
+              Account <RiArrowDropDownFill />
+            </div>
+            <ul className={`dropdown-menu ${dropdownOpen ? "active" : ""}`}>
+              <li>
+                <Link
+                  to="/user-profile"
+                  className="dropdown-nav-links"
+                  onClick={closeMobileMenu}
+                >
+                  My Profile
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/create_host_profile"
+                  className="dropdown-nav-links"
+                  onClick={closeMobileMenu}
+                >
+                  + Create Profile
+                </Link>
+              </li>
+            </ul>
+          </li>
           <li className="nav-item">
             <Link
               to="/login"
@@ -59,7 +88,11 @@ function Navbar() {
             </Link>
           </li>
         </ul>
-        {button && <Button buttonStyle="btn--outline">LOGIN</Button>}
+        {button && (
+          <Button to="/login" buttonStyle="btn--outline">
+            LOGIN
+          </Button>
+        )}
       </nav>
     </>
   );
