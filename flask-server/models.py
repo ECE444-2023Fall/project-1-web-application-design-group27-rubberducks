@@ -18,7 +18,7 @@ class Account(db.Model):
     uid = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), nullable=False)
     email = db.Column(db.String(50), unique=True, nullable=False)
-    password = db.Column(db.String(50), nullable=False)
+    password = db.Column(db.String(120), nullable=False)
     events = db.Column(db.ARRAY(db.Integer))
     fav_events = db.Column(db.ARRAY(db.Integer))
     orgs = db.relationship("Host", backref="account")
