@@ -1,5 +1,5 @@
 import React from "react";
-import "./Host_profile.css";
+import "./Host_Profile.css";
 import Cards from "../../Cards";
 import { MdEdit } from "react-icons/md";
 
