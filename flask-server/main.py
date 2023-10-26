@@ -7,9 +7,10 @@ from events import events_ns
 from accounts import accounts_ns
 from hosts import hosts_ns
 from auth import auth_ns
+from config import DevConfig
 
 
-def create_app(config):
+def create_app(config=DevConfig):
     app = Flask(__name__)
     app.config.from_object(config)
     db.init_app(app)

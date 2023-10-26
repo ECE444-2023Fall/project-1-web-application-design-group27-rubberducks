@@ -1,9 +1,18 @@
+import time
 from flask import request
 from flask_restx import Namespace, Resource, fields
 from models import Event
 from flask_jwt_extended import jwt_required
 
 events_ns = Namespace("events", description="Event operations")
+
+class DateFormat(fields.Raw):
+    def format(self, value):
+        return value.strftime('%Y-%m-%d')
+    
+class TimeFormat(fields.Raw):
+    def format(self, value):
+        return time.strftime(value, "%H:%M")
 
 event_model = events_ns.model(
     "Event",
@@ -13,6 +22,7 @@ event_model = events_ns.model(
         "description": fields.String,
         "location": fields.String,
         "date": fields.String,
+        "time": fields.String,
         "capacity": fields.Integer,
         "attendees": fields.List(fields.Integer),
         "owner": fields.String,
