@@ -47,5 +47,17 @@ class TestHosts(BaseTest):
         response=self.client.get("/hosts/")
         self.assertEqual(response.status_code, 200)
 
+class TestSignUp(BaseTest):
+    def test_post_signup(self):
+        response=self.client.post("/auth/signup", json={
+            "name": "Test",
+            "email": "test@utoronto.ca",
+            "password": "test",
+        })
+        self.assertEqual(response.status_code, 201)
+        self.assertEqual(response.json["message"], "user with email test@utoronto.ca created")
+                         
+                         
+
 if __name__ == "__main__":
     unittest.main()
