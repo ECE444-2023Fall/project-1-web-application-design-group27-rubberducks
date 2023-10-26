@@ -10,6 +10,4 @@ python run.py
 
 To test:
 
-run server
-
 then in seperate terminal: python3 -m pytest
