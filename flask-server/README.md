@@ -12,4 +12,4 @@ To test:
 
 run server
 
-then in seperate terminal: python app_test.py
+then in seperate terminal: python3 -m pytest
