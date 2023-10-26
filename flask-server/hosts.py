@@ -18,7 +18,7 @@ host_model = hosts_ns.model(
 )
 
 
-@hosts_ns.route("/hosts")
+@hosts_ns.route("/")
 class Hosts(Resource):
     @hosts_ns.marshal_list_with(host_model)
     def get(self):
@@ -32,7 +32,7 @@ class Hosts(Resource):
         return host, 201
 
 
-@hosts_ns.route("/hosts/<int:hid>")
+@hosts_ns.route("/<int:hid>")
 class HostById(Resource):
     @hosts_ns.marshal_with(host_model)
     def get(self, hid):

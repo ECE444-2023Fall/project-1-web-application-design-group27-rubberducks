@@ -20,7 +20,7 @@ event_model = events_ns.model(
 )
 
 
-@events_ns.route("/events")
+@events_ns.route("/")
 class Events(Resource):
     @events_ns.marshal_list_with(event_model)
     def get(self):
@@ -34,7 +34,7 @@ class Events(Resource):
         return event, 201
 
 
-@events_ns.route("/events/<int:eid>")
+@events_ns.route("/<int:eid>")
 class EventById(Resource):
     @events_ns.marshal_with(event_model)
     def get(self, eid):

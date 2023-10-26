@@ -19,7 +19,7 @@ account_model = accounts_ns.model(
 )
 
 
-@accounts_ns.route("/accounts")
+@accounts_ns.route("/")
 class Accounts(Resource):
     @accounts_ns.marshal_list_with(account_model)
     def get(self):
@@ -33,7 +33,7 @@ class Accounts(Resource):
         return account, 201
 
 
-@accounts_ns.route("/accounts/<int:uid>")
+@accounts_ns.route("/<int:uid>")
 class AccountById(Resource):
     @accounts_ns.marshal_with(account_model)
     def get(self, uid):
