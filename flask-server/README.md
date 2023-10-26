@@ -10,4 +10,4 @@ python run.py
 
 To test:
 
-then in seperate terminal: python3 -m pytest
+python3 -m pytest
