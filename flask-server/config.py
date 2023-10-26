@@ -20,4 +20,7 @@ class ProdConfig(Config):
 
 
 class TestConfig(Config):
-    pass
+    SQLALCHEMY_DATABASE_URI = config("TEST_DATABASE_URL")
+    SQLACHEMY_ECHO = False
+    TESTING = True
+

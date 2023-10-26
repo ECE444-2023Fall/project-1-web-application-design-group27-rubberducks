@@ -104,6 +104,8 @@ class Event:
     eid: int primary key
     name: str
     location: str
+    description: str
+    time: time
     date: date
     capacity: int
     attendees: list of Account
@@ -116,21 +118,25 @@ class Event(db.Model):
     eid = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), nullable=False)
     location = db.Column(db.String(50), nullable=False)
+    description = db.Column(db.String(50), nullable=False)
     date = db.Column(db.Date, nullable=False)
+    time = db.Column(db.Time, nullable=False)
     capacity = db.Column(db.Integer, nullable=False)
     attendees = db.Column(db.ARRAY(db.Integer))
     owner = db.Column(db.Integer, db.ForeignKey("host.hid"), nullable=False)
 
-    def __init__(self, name, location, date, capacity, attendees, owner):
+    def __init__(self, name, location, description, date, time, capacity, attendees, owner):
         self.name = name
         self.location = location
+        self.description = description
         self.date = date
+        self.time = time
         self.capacity = capacity
         self.attendees = attendees
         self.owner = owner
 
     def __repr__(self):
-        return f"<Event {self.eid} {self.name} {self.location} {self.date} {self.capacity} {self.attendees} {self.owner}>"
+        return f"<Event {self.eid} {self.name} {self.location} {self.description} {self.date} {self.time} {self.capacity} {self.attendees} {self.owner}>"
 
     def save(self):
         db.session.add(self)
@@ -140,10 +146,12 @@ class Event(db.Model):
         db.session.delete(self)
         db.session.commit()
 
-    def update(self, name, location, date, capacity, attendees, owner):
+    def update(self, name, location, description, date, time, capacity, attendees, owner):
         self.name = name
         self.location = location
+        self.description = description
         self.date = date
+        self.time = time
         self.capacity = capacity
         self.attendees = attendees
         self.owner = owner
