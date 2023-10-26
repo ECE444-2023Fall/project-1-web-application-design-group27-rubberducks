@@ -16,11 +16,11 @@ class BaseTest(unittest.TestCase):
             db.drop_all()
 
 class TestAccounts(BaseTest):
-    def test_get_all_accounts(self):
+    def test_get_all_accounts(self): #danny ahmad
         response=self.client.get("/accounts/")
         self.assertEqual(response.status_code, 200)
 
-    def test_post_account(self):
+    def test_post_account(self):#danny ahmad
         response=self.client.post("/accounts/", json={
             "name": "Test",
             "email": "test@utoronto.ca",
@@ -38,17 +38,17 @@ class TestAccounts(BaseTest):
         self.assertEqual(response.json["orgs"], [])
 
 class TestEvents(BaseTest):          
-    def test_get_all_events(self):
+    def test_get_all_events(self):#danny ahmad
         response=self.client.get("/events/")
         self.assertEqual(response.status_code, 200)
 
 class TestHosts(BaseTest):
-    def test_get_all_hosts(self):
+    def test_get_all_hosts(self):#danny ahmad
         response=self.client.get("/hosts/")
         self.assertEqual(response.status_code, 200)
 
 class TestSignUp(BaseTest):
-    def test_post_signup(self):
+    def test_post_signup(self):#danny ahmad
         response=self.client.post("/auth/signup", json={
             "name": "Test",
             "email": "test@utoronto.ca",
