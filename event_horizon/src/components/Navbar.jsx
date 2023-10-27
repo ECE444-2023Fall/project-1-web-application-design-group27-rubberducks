@@ -7,7 +7,9 @@ import "./Navbar.css";
 function Navbar() {
   const [click, setClick] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(true); // Track user's login status
   const [button, setButton] = useState(true);
+  const [userOrgs, setUserOrgs] = useState([]); // To store the user's organizations
 
   const handleClick = () => setClick(!click);
   const toggleDropdown = () => setDropdownOpen(!dropdownOpen);
@@ -26,6 +28,22 @@ function Navbar() {
   }, []);
 
   window.addEventListener("resize", showButton);
+
+  // Simulated function to fetch user's organizations
+  const fetchUserOrgs = () => {
+    // Replace this with actual API call to get user's organizations
+    // Example:
+    // fetch("/api/user/orgs")
+    //   .then((response) => response.json())
+    //   .then((data) => setUserOrgs(data));
+  };
+
+  useEffect(() => {
+    // Fetch user's organizations when the component loads
+    if (isLoggedIn) {
+      fetchUserOrgs();
+    }
+  }, [isLoggedIn]);
 
   return (
     <>
@@ -53,42 +71,68 @@ function Navbar() {
               Clubs
             </Link>
           </li>
-          <li className={`nav-item ${dropdownOpen ? "active" : ""}`}>
-            <div className="nav-links" onClick={toggleDropdown}>
-              Account <RiArrowDropDownFill />
-            </div>
-            <ul className={`dropdown-menu ${dropdownOpen ? "active" : ""}`}>
-              <li>
-                <Link
-                  to="/user-profile"
-                  className="dropdown-nav-links"
-                  onClick={closeMobileMenu}
-                >
-                  My Profile
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/create_host_profile"
-                  className="dropdown-nav-links"
-                  onClick={closeMobileMenu}
-                >
-                  + Create Profile
-                </Link>
-              </li>
-            </ul>
-          </li>
-          <li className="nav-item">
-            <Link
-              to="/login"
-              className="nav-links-mobile"
-              onClick={closeMobileMenu}
-            >
-              Login
-            </Link>
-          </li>
+          {isLoggedIn ? (
+            // If user is logged in, display the dropdown menu with organizations
+            <li className={`nav-item ${dropdownOpen ? "active" : ""}`}>
+              <div className="nav-links" onClick={toggleDropdown}>
+                Account <RiArrowDropDownFill />
+              </div>
+              <ul className={`dropdown-menu ${dropdownOpen ? "active" : ""}`}>
+                <li>
+                  <Link
+                    to="/user-profile"
+                    className="dropdown-nav-links"
+                    onClick={closeMobileMenu}
+                  >
+                    My Profile
+                  </Link>
+                </li>
+                {userOrgs.length > 0 && (
+                  <li>
+                    <span className="dropdown-nav-links">My Organizations</span>
+                    <ul>
+                      {userOrgs.map((org) => (
+                        <li key={org.hid}>
+                          <Link
+                            // this needs to route to the host profile
+                            // host_profile at the specified hid
+                            // to={`/org/${org.hid}`}
+                            to="/host_profile"
+                            className="dropdown-nav-links"
+                            onClick={closeMobileMenu}
+                          >
+                            {org.name}
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  </li>
+                )}
+                <li>
+                  <Link
+                    to="/create_host_profile"
+                    className="dropdown-nav-links"
+                    onClick={closeMobileMenu}
+                  >
+                    + Create Profile
+                  </Link>
+                </li>
+              </ul>
+            </li>
+          ) : (
+            // If user is not logged in, display the "Login" button
+            <li className="nav-item">
+              <Link
+                to="/login"
+                className="nav-links-mobile"
+                onClick={closeMobileMenu}
+              >
+                Login
+              </Link>
+            </li>
+          )}
         </ul>
-        {button && (
+        {!isLoggedIn && button && (
           <Button to="/login" buttonStyle="btn--outline">
             LOGIN
           </Button>

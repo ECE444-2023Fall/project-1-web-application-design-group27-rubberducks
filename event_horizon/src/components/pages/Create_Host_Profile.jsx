@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "../../App.css";
 import "./Create_Host_Profile.css";
+import axios from "axios";  // run npm install axios
 
 function CreateHostProfile() {
   const [name, setName] = useState("");
@@ -22,11 +23,22 @@ function CreateHostProfile() {
       club_name,
       email,
       bio,
-      profilePhoto, // Include the profile photo in the form data
+      profilePhoto,
     };
 
-    // Handle form submission, including the profile photo data
-    console.log("Profile Data:", profile);
+    // Send the form data to the server using Axios
+    axios.post("/create_host_profile", profile)
+      .then((response) => {
+        // Handle a successful response from the server
+        console.log("Server response:", response.data);
+        // Redirect to the created page
+        // update with the hid from the response
+        history.push("/host_profile");
+      })
+      .catch((error) => {
+        // Handle errors
+        console.error("Error:", error);
+      });
   };
 
   return (
