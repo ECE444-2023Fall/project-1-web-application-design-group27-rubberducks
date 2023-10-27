@@ -1,0 +1,6 @@
+/venv
+/flask-server
+/node_modules
+package.json
+package-lock.json
+/api

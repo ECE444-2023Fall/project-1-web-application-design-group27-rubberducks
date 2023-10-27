@@ -1,0 +1,107 @@
+.eventCard {
+    position: relative;
+    overflow: hidden;
+    border-radius: 10px;  /* Rounded edges */
+    transition: transform 0.2s;
+    width: 100%;  /* Assuming the card takes up 100% width of its container */
+    padding-top: 75%;  /* This will give the card a 4:3 aspect ratio */
+    background-color: #eee;  /* This can be a placeholder background color */
+}
+
+.eventCardLink {
+    text-decoration: none;  /* Removes the underline */
+    color: inherit;  /* Ensures the text color is unchanged */
+    display: block;  /* Makes the entire area of the link clickable */
+}
+
+
+.eventImageContainer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: radial-gradient(circle at center, transparent, black 80%);
+    z-index: 0;
+}
+
+.eventImage {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;  /* This will ensure the image covers the container without stretching */
+    transition: transform 0.3s;
+    filter: blur(4px); /* This blurs the image */
+    transition: transform 0.3s;
+    z-index: 1;
+}
+
+.eventCard:hover .eventImage {
+    transform: scale(1.1);
+}
+
+.eventInfo {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: #fff;
+    padding: 20px;
+}
+
+.eventCard h3 {
+    margin: 0 0 10px;
+    font-size: 20px;
+}
+
+.eventHost {
+    text-align: center;
+    margin: 0 0 10px;
+}
+
+.eventDetails {
+    position: absolute;
+    left: 20px;
+    right: 20px;
+    bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    width: calc(100% - 40px);
+}
+
+.eventDateTime {
+    text-align: left;
+}
+
+.eventLocation {
+    text-align: right;
+}
+
+.eventHeart {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 1.5em; /* Adjust size if necessary */
+    cursor: pointer; /* Make it look clickable */
+    transition: color 0.3s ease; /* Smooth transition for color change */
+}
+
+.eventHeart:after {
+    content: "❤️";
+    color: red;
+    display: none;
+    cursor: pointer;
+}
+
+.eventCard[data-favorited="true"] .eventHeart:after {
+    display: inline;
+}
+.eventCard[data-favorited="true"] .eventHeart:before {
+    display: none;
+}

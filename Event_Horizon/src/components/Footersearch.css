@@ -1,0 +1,70 @@
+.footerSearch {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: #333;
+    padding: 5px 15px;
+    display: flex;
+    align-items: center;
+}
+
+.footerSearch form {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.footerSearchInput {
+    flex-grow: 1;
+    padding: 10px 45px 10px 15px; /* Increased padding on the right to prevent text from appearing beneath the button */
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    color: #333;
+    width: 100%;
+}
+
+.footerSearchButton {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    margin-left: -40px; /* This positions the button over the right side of the input */
+    z-index: 2;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s;
+}
+
+.footerSearchButton[type="submit"] {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    margin-left: -45px; 
+    z-index: 2;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s;
+    appearance: none;  /* Disable default browser styles */
+    outline: none;     /* Remove focus outline */
+    padding: 0;        /* Remove any default padding */
+}
+
+.footerSearchButton[type="submit"]:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.footerSearchButton[type="submit"]:before {
+    content: '\1F50D'; 
+    font-size: 24px;
+}
