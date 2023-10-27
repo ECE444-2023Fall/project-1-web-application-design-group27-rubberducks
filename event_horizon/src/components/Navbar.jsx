@@ -7,7 +7,7 @@ import "./Navbar.css";
 function Navbar() {
   const [click, setClick] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(true); // Track user's login status
+  const [isLoggedIn, setIsLoggedIn] = useState(false); // Need to set this based on login backend logic
   const [button, setButton] = useState(true);
   const [userOrgs, setUserOrgs] = useState([]); // To store the user's organizations
 
