@@ -4,7 +4,6 @@ import "./Create_Host_Profile.css";
 import axios from "axios";  // run npm install axios
 
 function CreateHostProfile() {
-  const [name, setName] = useState("");
   const [club_name, setClubName] = useState("");
   const [email, setEmail] = useState("");
   const [bio, setBio] = useState("");
@@ -19,41 +18,38 @@ function CreateHostProfile() {
     e.preventDefault();
 
     const profile = {
-      name,
-      club_name,
-      email,
-      bio,
-      profilePhoto,
+      name: club_name,
+      email: email,
+      bio: bio,
+      // replace with proper values taken from logged in user
+      events: [1],
+      owner: 1,
+      // modify host schema to store pic
+      // profilePhoto,
     };
 
     // Send the form data to the server using Axios
-    axios.post("/create_host_profile", profile)
+    axios.post("http://127.0.0.1:8000/hosts/", profile)
       .then((response) => {
         // Handle a successful response from the server
         console.log("Server response:", response.data);
         // Redirect to the created page
         // update with the hid from the response
+        // need to figure out the redirect (how to use history)
         history.push("/host_profile");
       })
       .catch((error) => {
         // Handle errors
         console.error("Error:", error);
       });
+
+    // Next step is to update the orgs of the logged in user with the hid
   };
 
   return (
     <div className="container">
       <h2>Create Host Profile</h2>
       <form onSubmit={handleSubmit}>
-        <label htmlFor="name">Name:</label>
-        <input
-          type="text"
-          id="name"
-          placeholder="Host Username"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          required
-        />
 
         <label htmlFor="club_name">Club Name:</label>
         <input
