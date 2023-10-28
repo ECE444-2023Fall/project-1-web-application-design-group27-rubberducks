@@ -22,7 +22,7 @@ host_model = hosts_ns.model(
 class Hosts(Resource):
     @hosts_ns.marshal_list_with(host_model)
     def get(self):
-        return Host.query.all()
+        return Host.query.all(), 200
 
     @hosts_ns.expect(host_model)
     @hosts_ns.marshal_with(host_model)
@@ -36,16 +36,17 @@ class Hosts(Resource):
 class HostById(Resource):
     @hosts_ns.marshal_with(host_model)
     def get(self, hid):
-        return Host.query.get_or_404(hid)
+        host = Host.query.get_or_404(hid)
+        return host, 200
 
     @hosts_ns.expect(host_model)
     @hosts_ns.marshal_with(host_model)
     def put(self, hid):
         host = Host.query.get_or_404(hid)
         host.update(**hosts_ns.payload)
-        return host
+        return host, 200
 
     def delete(self, hid):
         host = Host.query.get_or_404(hid)
         host.delete()
-        return {"message": "host deleted"}
+        return {"message": "host deleted"}, 200

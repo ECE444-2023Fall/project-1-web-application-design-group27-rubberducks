@@ -47,3 +47,10 @@ def signup():
             "email": "test@utoronto.ca",
             "password": "test",
         })
+
+@pytest.fixture
+def login():
+    return ({
+            "email": "test@utoronto.ca",
+            "password": "test"
+    })

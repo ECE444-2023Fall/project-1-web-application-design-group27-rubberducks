@@ -34,7 +34,7 @@ event_model = events_ns.model(
 class Events(Resource):
     @events_ns.marshal_list_with(event_model)
     def get(self):
-        return Event.query.all()
+        return Event.query.all(), 200
 
     @events_ns.expect(event_model)
     @events_ns.marshal_with(event_model)
@@ -49,16 +49,16 @@ class EventById(Resource):
     @events_ns.marshal_with(event_model)
     def get(self, eid):
         event = Event.query.get_or_404(eid)
-        return event
+        return event, 200
 
     @events_ns.expect(event_model)
     @events_ns.marshal_with(event_model)
     def put(self, eid):
         event = Event.query.get_or_404(eid)
         event.update(**events_ns.payload)
-        return event
+        return event, 200
 
     def delete(self, eid):
         event = Event.query.get_or_404(eid)
         event.delete()
-        return {"message": "event deleted"}
+        return {"message": "event deleted"}, 200

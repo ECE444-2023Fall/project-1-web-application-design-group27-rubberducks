@@ -23,7 +23,7 @@ account_model = accounts_ns.model(
 class Accounts(Resource):
     @accounts_ns.marshal_list_with(account_model)
     def get(self):
-        return Account.query.all()
+        return Account.query.all(), 200
 
     @accounts_ns.expect(account_model)
     @accounts_ns.marshal_with(account_model)
@@ -37,16 +37,16 @@ class Accounts(Resource):
 class AccountById(Resource):
     @accounts_ns.marshal_with(account_model)
     def get(self, uid):
-        return Account.query.get_or_404(uid)
+        return Account.query.get_or_404(uid), 200
 
     @accounts_ns.expect(account_model)
     @accounts_ns.marshal_with(account_model)
     def put(self, uid):
         account = Account.query.get_or_404(uid)
         account.update(**accounts_ns.payload)
-        return account
+        return account, 200
 
     def delete(self, uid):
         account = Account.query.get_or_404(uid)
         account.delete()
-        return {"message": "account deleted"}
+        return {"message": "account deleted"}, 200
