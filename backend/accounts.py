@@ -1,4 +1,4 @@
-from flask import request
+from flask import request, jsonify
 from flask_restx import Namespace, Resource, fields
 from models import Account
 from flask_jwt_extended import jwt_required
@@ -18,6 +18,11 @@ account_model = accounts_ns.model(
     },
 )
 
+
+@accounts_ns.route("/test")
+class Test(Resource):
+    def get(self):
+        return {"message": "test"}, 404
 
 @accounts_ns.route("/")
 class Accounts(Resource):

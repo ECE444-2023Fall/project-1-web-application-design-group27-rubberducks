@@ -28,7 +28,11 @@ function App() {
           <Route path="/events" exact Component={Events} />
           <Route path="/clubs" exact Component={Clubs} />
           <Route path="/login" exact Component={Login} />
-          <Route path="/create_host_profile" exact Component={Create_Host_Profile} />
+          <Route
+            path="/create_host_profile"
+            exact
+            Component={Create_Host_Profile}
+          />
           <Route path="/signup" exact Component={SignUp} />
           <Route path="/profile" exact Component={Profile} />
           <Route
@@ -40,6 +44,11 @@ function App() {
           <Route path="/profile/upcoming" exact Component={Profile_upcoming} />
           <Route path="/host_profile" exact Component={Host_profile} />
           <Route path="/host_profile/create_event" exact Component={Create_Event} />
+          <Route
+            path="/host_profile/create_event"
+            exact
+            Component={Create_Event}
+          />
           <Route
             path="/host_profile/previous"
             exact

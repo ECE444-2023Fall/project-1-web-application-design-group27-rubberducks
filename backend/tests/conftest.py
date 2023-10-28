@@ -5,11 +5,8 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import logging
 import pytest
 from models import Account, Host
-# from webtest import TestApp
 from main import create_app
 from config import TestConfig
-# from main import db as _db
-# from .factories import AccountFactory, HostFactory, EventFactory
 from exts import db
 
 @pytest.fixture()
