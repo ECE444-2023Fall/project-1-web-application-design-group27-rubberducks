@@ -55,7 +55,5 @@ class HostById(Resource):
 class HostByName(Resource):
     @hosts_ns.marshal_with(host_model)
     def get(self, name):
-        host = Host.query.filter_by(name=name).first()
-        if host:
-            return host
-        hosts_ns.abort(404, f"Host with name {name} not found")
+        host = Host.query.filter_by(name=name).first_or_404()
+        return host, 200
