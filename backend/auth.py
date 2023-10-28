@@ -7,6 +7,7 @@ from flask_jwt_extended import (
     create_access_token,
     create_refresh_token,
     jwt_required,
+    get_jwt_identity,
 )
 
 auth_ns = Namespace("auth", description="Authentication operations")
@@ -76,3 +77,11 @@ class Login(Resource):
 
         else:
             return {"message": "invalid email or password"}, 401
+
+@auth_ns.route("/refresh")
+class Refresh(Resource):
+    @jwt_required(refresh=True)
+    def post(self):
+        current_user = get_jwt_identity()
+        access_token = create_access_token(identity=current_user)
+        return {"access_token": access_token}, 200

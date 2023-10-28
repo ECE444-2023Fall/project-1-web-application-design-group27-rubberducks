@@ -1,11 +1,20 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "./Profile.css";
 import Cards from "../../Cards";
 import { MdEdit } from "react-icons/md";
+import ReactDOM from "react-dom";
 
 export default function Profile() {
+  useEffect(() => {
+    fetch("/accounts/1")
+      .then((res) => res.json())
+      .then((data) => console.log(data));
+  }, []);
+
+  const [message, setMessage] = React.useState("");
   return (
     <>
+      <div>{message}</div>
       <div className="edit--button">
         <button className="edit--button-icon">
           <MdEdit />
