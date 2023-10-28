@@ -18,6 +18,7 @@ signup_model = auth_ns.model(
         "name": fields.String,
         "email": fields.String,
         "password": fields.String,
+        "picture": fields.String,
     },
 )
 
@@ -43,6 +44,7 @@ class SignUp(Resource):
 
         new_account = Account(
             name=data["name"],
+            picture = data["picture"],
             email=email,
             password=generate_password_hash(data["password"]),
             events=[],
