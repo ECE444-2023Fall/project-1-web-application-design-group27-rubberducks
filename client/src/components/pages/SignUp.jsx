@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import "../../Login.css";
+import axios from "axios";  
+
 
 function SignUp() {
   const [email, setEmail] = useState("");
@@ -7,11 +9,32 @@ function SignUp() {
   const [password, setPassword] = useState("");
   const [remember, setRemember] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-
-  const handleSubmit = (e) => {
+  const [errorMessage, setErrorMessage] = useState("");
+  
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Email:", email, "Password:", password, "Remember me:", remember);
+    
+    try {
+      const response = await axios.post("/api/auth/signup", { 
+        email: email,
+        password: password,
+        name: name 
+      });
+  
+      if (response.data && response.data.access_token) {
+        localStorage.setItem("access_token", response.data.access_token);
+        localStorage.setItem("refresh_token", response.data.refresh_token);
+        // Navigate to the main/dashboard page 
+      } else {
+        setErrorMessage("There was an issue with your Signup. Please try again.");
+      }
+    } catch (error) {
+      console.error("Error signing up:", error);
+      setErrorMessage("There was an issue with your Signup. Please try again.");
+    }
   };
+  
+  
 
   return (
     <div className="login-container">
@@ -21,7 +44,7 @@ function SignUp() {
         <div className="input-group">
             <i className="fas fa-user"></i>
             <input
-              type="email"
+              type="text"
               placeholder="Name"
               value={name}
               onChange={(e) => setName(e.target.value)}
@@ -59,9 +82,10 @@ function SignUp() {
               <input type="checkbox" checked={remember} onChange={() => setRemember(!remember)} />
               Remember me
             </label>
-            {/* <a href="#!" className="forgot-password">Forgot Password?</a> */}
+            <a href="#!" className="forgot-password">Forgot Password?</a>
           </div>
-          <p className="error-message">Error message placeholder</p>
+          const [errorMessage, setErrorMessage] = useState("");
+          {/* <p className="error-message">Error message placeholder</p> */}
           <button type="submit">Sign Up</button>
           
           
