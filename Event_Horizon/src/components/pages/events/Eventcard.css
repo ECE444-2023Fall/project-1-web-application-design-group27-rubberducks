@@ -1,107 +1,110 @@
+.eventSubtitle {
+    display: flex;
+    align-items: center;
+    font-size: 10px;
+    color: #999;
+    margin-top: 5px;
+  }
+  
+.eventIcon {
+    margin-right: 5px;
+}
+
 .eventCard {
-    position: relative;
+    display: flex;
+    flex: 1;
+    margin: 0 1rem;
+    border-radius: 10px;
+}
+
+.eventLink {
+    display: flex;
+    flex-flow: column;
+    width: 100%;
+    box-shadow: 0 6px 20px rgba(56, 125, 255, 0.17);
+    -webkit-filter: drop-shadow(0 6px 20px rgba(56, 125, 255, 0.017));
+    filter: drop-shadow(0 6px 20px rgba(56, 125, 255, 0.017));
+    border-radius: 10px;
     overflow: hidden;
-    border-radius: 10px;  /* Rounded edges */
-    transition: transform 0.2s;
-    width: 100%;  /* Assuming the card takes up 100% width of its container */
-    padding-top: 75%;  /* This will give the card a 4:3 aspect ratio */
-    background-color: #eee;  /* This can be a placeholder background color */
+    text-decoration: none;
 }
 
-.eventCardLink {
-    text-decoration: none;  /* Removes the underline */
-    color: inherit;  /* Ensures the text color is unchanged */
-    display: block;  /* Makes the entire area of the link clickable */
+.eventImgWrapper {
+    position: relative;
+    width: 100%;
+    padding-top: 67%;
+    overflow: hidden;
 }
 
+.fade-img {
+    animation-name: fade-img;
+    animation-duration: 2s;
+}
 
-.eventImageContainer {
+.eventImgWrapper::after {
+    content: attr(data-category) ' ';
+    display: none;
+    position: absolute;
+    bottom: 0;
+    margin-left: 10px;
+    padding: 6px 8px;
+    max-width: calc((100%) - 60px);
+    font-size: 12px;
+    font-weight: 700;
+    color: #fff;
+    background-color: #1f98f4;
+    box-sizing: border-box;
+}
+
+.eventImgWrapper[data-category]:not([data-category=""])::after {
+    display: block;
+}
+
+.eventImg {
     position: absolute;
     top: 0;
+    right: 0;
+    bottom: 0;
     left: 0;
+    display: block;
     width: 100%;
+    max-width: 100%;
     height: 100%;
-    overflow: hidden;
-    background: radial-gradient(circle at center, transparent, black 80%);
-    z-index: 0;
+    max-height: 100%;
+    object-fit: cover;
+    transition: all 0.2s linear;
 }
 
-.eventImage {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;  /* This will ensure the image covers the container without stretching */
-    transition: transform 0.3s;
-    filter: blur(4px); /* This blurs the image */
-    transition: transform 0.3s;
-    z-index: 1;
-}
-
-.eventCard:hover .eventImage {
+.eventImg:hover {
     transform: scale(1.1);
 }
 
 .eventInfo {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    background-color: rgba(0, 0, 0, 0.5);
-    color: #fff;
-    padding: 20px;
+    padding: 20px 30px 30px;
 }
-
-.eventCard h3 {
-    margin: 0 0 10px;
-    font-size: 20px;
+  
+.eventName {
+    color: #252e48;
+    font-size: 18px;
+    line-height: 24px;
 }
-
-.eventHost {
-    text-align: center;
-    margin: 0 0 10px;
-}
-
-.eventDetails {
-    position: absolute;
-    left: 20px;
-    right: 20px;
-    bottom: 20px;
-    display: flex;
-    justify-content: space-between;
-    width: calc(100% - 40px);
-}
-
-.eventDateTime {
-    text-align: left;
-}
-
-.eventLocation {
-    text-align: right;
-}
-
-.eventHeart {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    font-size: 1.5em; /* Adjust size if necessary */
-    cursor: pointer; /* Make it look clickable */
-    transition: color 0.3s ease; /* Smooth transition for color change */
-}
-
-.eventHeart:after {
-    content: "❤️";
-    color: red;
-    display: none;
+  
+.starIcon {
     cursor: pointer;
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+    transition: transform 0.3s ease-in-out; 
 }
 
-.eventCard[data-favorited="true"] .eventHeart:after {
-    display: inline;
+.starIcon:hover {
+    transform: scale(1.2);
 }
-.eventCard[data-favorited="true"] .eventHeart:before {
-    display: none;
+
+.starIcon .defaultStar {
+    color: #FFF;
+}
+
+.starIcon .filledStar {
+    color: gold;
 }
