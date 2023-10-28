@@ -4,7 +4,7 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 import logging
 import pytest
-
+from models import Account, Host
 # from webtest import TestApp
 from main import create_app
 from config import TestConfig
@@ -30,6 +30,28 @@ def client(app):
     return app.test_client()
 
 @pytest.fixture
+def add_host_to_db(app):
+    with app.app_context():
+        account1 = Account(
+            name="Test User 1", 
+            email="test1@example.com",
+            password="1234",
+            events = [],
+            fav_events= [],
+            orgs = [],
+        )
+        db.session.add(account1)
+        db.session.commit()
+        host1 = Host(
+            name="Test Host 1", 
+            owner=account1.uid, 
+            email="test1@example.com",
+            events= [],
+            bio="Host bio 1")
+        db.session.add(host1)
+        db.session.commit()
+
+@pytest.fixture
 def account():
     return ({
             "name": "Test",
@@ -39,6 +61,17 @@ def account():
             "fav_events": [],
             "orgs": [],
         })
+
+@pytest.fixture
+def host():
+    return ({
+        'hid': 1, 
+        'name': 'Test Host 1', 
+        'email': 'test1@example.com', 
+        'bio': 'Host bio 1', 
+        'events': [], 
+        'owner': 1}
+        )
 
 @pytest.fixture
 def signup():

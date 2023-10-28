@@ -50,3 +50,10 @@ class HostById(Resource):
         host = Host.query.get_or_404(hid)
         host.delete()
         return {"message": "host deleted"}, 200
+
+@hosts_ns.route("/<string:name>")
+class HostByName(Resource):
+    @hosts_ns.marshal_with(host_model)
+    def get(self, name):
+        host = Host.query.filter_by(name=name).first_or_404()
+        return host, 200
