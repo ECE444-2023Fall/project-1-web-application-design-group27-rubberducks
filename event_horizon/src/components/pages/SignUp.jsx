@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import "../../Login.css";
+import axios from "axios";  
+
 
 function SignUp() {
   const [email, setEmail] = useState("");
@@ -8,9 +10,28 @@ function SignUp() {
   const [remember, setRemember] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Email:", email, "Password:", password, "Remember me:", remember);
+    
+    try {
+      const response = await axios.post("http://localhost:5173/auth/signup", {
+        name: name,
+        email: email,
+        password: password
+      });
+  
+      if (response.data && response.data.message) {
+        console.log(response.data.message);
+        // Navigate user to the login page or display a success message
+        //  react-router: history.push("/login");
+      } else {
+        setErrorMessage("There was an issue with your signup. Please try again.");
+      }
+    } catch (error) {
+      console.error("Error signing up:", error);
+      setErrorMessage("There was an issue with your signup. Please try again.");
+
+    }
   };
 
   return (
@@ -21,7 +42,7 @@ function SignUp() {
         <div className="input-group">
             <i className="fas fa-user"></i>
             <input
-              type="email"
+              type="text"
               placeholder="Name"
               value={name}
               onChange={(e) => setName(e.target.value)}
@@ -61,7 +82,7 @@ function SignUp() {
             </label>
             {/* <a href="#!" className="forgot-password">Forgot Password?</a> */}
           </div>
-          <p className="error-message">Error message placeholder</p>
+          {/* <p className="error-message">Error message placeholder</p> */}
           <button type="submit">Sign Up</button>
           
           

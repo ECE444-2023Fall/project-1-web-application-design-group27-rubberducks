@@ -8,10 +8,11 @@ from accounts import accounts_ns
 from hosts import hosts_ns
 from auth import auth_ns
 from config import DevConfig
-
+from flask_cors import CORS
 
 def create_app(config=DevConfig):
     app = Flask(__name__)
+    CORS(app)
     app.config.from_object(config)
     db.init_app(app)
     JWTManager(app)
