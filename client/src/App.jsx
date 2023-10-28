@@ -43,6 +43,7 @@ function App() {
           <Route path="/profile/previous" exact Component={Profile_previous} />
           <Route path="/profile/upcoming" exact Component={Profile_upcoming} />
           <Route path="/host_profile" exact Component={Host_profile} />
+          <Route path="/host_profile/create_event" exact Component={Create_Event} />
           <Route
             path="/host_profile/create_event"
             exact
