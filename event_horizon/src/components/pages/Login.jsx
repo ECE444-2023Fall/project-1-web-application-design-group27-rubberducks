@@ -11,7 +11,7 @@ function Login() {
     e.preventDefault();
     
     try {
-      const response = await axios.post("http://localhost:5173/auth/login", {
+      const response = await axios.post("/auth/login", {
         email: email,
         password: password
       });
@@ -28,6 +28,7 @@ function Login() {
       setErrorMessage("There was an issue with your Login. Please try again.");
     }
   };
+  
   
 
   return (
