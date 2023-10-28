@@ -14,25 +14,26 @@ function SignUp() {
     e.preventDefault();
     
     try {
-      const response = await axios.post("http://localhost:5173/auth/signup", {
-        name: name,
+      const response = await axios.post("/auth/signup", { 
         email: email,
-        password: password
+        password: password,
+        name: name 
       });
   
-      if (response.data && response.data.message) {
-        console.log(response.data.message);
-        // Navigate user to the login page or display a success message
-        //  react-router: history.push("/login");
+      if (response.data && response.data.access_token) {
+        localStorage.setItem("access_token", response.data.access_token);
+        localStorage.setItem("refresh_token", response.data.refresh_token);
+        // Navigate to the main/dashboard page 
       } else {
-        setErrorMessage("There was an issue with your signup. Please try again.");
+        setErrorMessage("There was an issue with your Signup. Please try again.");
       }
     } catch (error) {
       console.error("Error signing up:", error);
-      setErrorMessage("There was an issue with your signup. Please try again.");
-
+      setErrorMessage("There was an issue with your Signup. Please try again.");
     }
   };
+  
+  
 
   return (
     <div className="login-container">
