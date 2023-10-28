@@ -4,7 +4,6 @@ from sqlalchemy.dialects.postgresql import JSON
 """
 class Account:
     uid: int primary key
-    picture: bytea
     name: str
     email: str unique
     password: str
@@ -17,7 +16,6 @@ class Account:
 class Account(db.Model):
     __tablename__ = "account"
     uid = db.Column(db.Integer, primary_key=True)
-    picture = db.Column(db.LargeBinary, nullable=True)
     name = db.Column(db.String(50), nullable=False)
     email = db.Column(db.String(50), unique=True, nullable=False)
     password = db.Column(db.String(120), nullable=False)
@@ -25,9 +23,8 @@ class Account(db.Model):
     fav_events = db.Column(db.ARRAY(db.Integer))
     orgs = db.relationship("Host", backref="account")
 
-    def __init__(self, picture, name, email, password, events, fav_events, orgs):
+    def __init__(self, name, email, password, events, fav_events, orgs):
         self.name = name
-        self.picture = picture
         self.email = email
         self.password = password
         self.events = events
@@ -35,7 +32,7 @@ class Account(db.Model):
         self.orgs = orgs
 
     def __repr__(self):
-        return f"<Account {self.uid} {self.picture} {self.name} {self.email} {self.password} {self.events} {self.fav_events} {self.orgs}>"
+        return f"<Account {self.uid} {self.name} {self.email} {self.password} {self.events} {self.fav_events} {self.orgs}>"
 
     def save(self):
         db.session.add(self)
@@ -45,9 +42,8 @@ class Account(db.Model):
         db.session.delete(self)
         db.session.commit()
 
-    def update(self, picture, name, email, password, events, fav_events, orgs):
+    def update(self, name, email, password, events, fav_events, orgs):
         self.name = name
-        self.picture = picture
         self.email = email
         self.password = password
         self.events = events
@@ -59,7 +55,6 @@ class Account(db.Model):
 """
 class Host:
     hid: int primary key
-    picture: bytea
     name: str
     email: str
     bio: str
@@ -71,23 +66,21 @@ class Host:
 class Host(db.Model):
     __tablename__ = "host"
     hid = db.Column(db.Integer, primary_key=True)
-    picture = db.Column(db.LargeBinary, nullable=True)
     name = db.Column(db.String(50), nullable=False, unique=True)
     email = db.Column(db.String(50), nullable=False)
     bio = db.Column(db.String(50), nullable=False)
     events = db.Column(db.ARRAY(db.Integer))
     owner = db.Column(db.Integer, db.ForeignKey("account.uid"), nullable=False)
 
-    def __init__(self, picture, name, email, bio, events, owner):
+    def __init__(self, name, email, bio, events, owner):
         self.name = name
-        self.picture = picture
         self.email = email
         self.bio = bio
         self.events = events
         self.owner = owner
 
     def __repr__(self):
-        return f"<Host {self.hid} {self.picture} {self.name} {self.email} {self.bio} {self.events} {self.owner}>"
+        return f"<Host {self.hid} {self.name} {self.email} {self.bio} {self.events} {self.owner}>"
 
     def save(self):
         db.session.add(self)
@@ -97,9 +90,8 @@ class Host(db.Model):
         db.session.delete(self)
         db.session.commit()
 
-    def update(self, picture, name, email, bio, events, owner):
+    def update(self, name, email, bio, events, owner):
         self.name = name
-        self.picture = picture
         self.email = email
         self.bio = bio
         self.events = events
@@ -127,7 +119,6 @@ class Event:
 class Event(db.Model):
     __tablename__ = "event"
     eid = db.Column(db.Integer, primary_key=True)
-    picture = db.Column(db.LargeBinary, nullable=True)
     name = db.Column(db.String(50), nullable=False)
     location = db.Column(db.String(50), nullable=False)
     description = db.Column(db.String(50), nullable=False)
@@ -140,9 +131,8 @@ class Event(db.Model):
     date_created = db.Column(db.Date, nullable=False)
     owner = db.Column(db.Integer, db.ForeignKey("host.hid"), nullable=False)
 
-    def __init__(self, picture, name, location, description, date, time, capacity, attendees, tags, reoccuring, date_created, owner):
+    def __init__(self, name, location, description, date, time, capacity, attendees, tags, reoccuring, date_created, owner):
         self.name = name
-        self.picture = picture
         self.location = location
         self.description = description
         self.date = date
@@ -155,7 +145,7 @@ class Event(db.Model):
         self.owner = owner
 
     def __repr__(self):
-        return f"<Event {self.eid} {self.picture} {self.name} {self.location} {self.description} {self.date} {self.time} {self.capacity} {self.attendees} {self.tags} {self.reoccuring} {self.date_created} {self.owner}>"
+        return f"<Event {self.eid} {self.name} {self.location} {self.description} {self.date} {self.time} {self.capacity} {self.attendees} {self.tags} {self.reoccuring} {self.date_created} {self.owner}>"
 
     def save(self):
         db.session.add(self)
@@ -165,9 +155,9 @@ class Event(db.Model):
         db.session.delete(self)
         db.session.commit()
 
-    def update(self, picture, name, location, description, date, time, capacity, attendees, tags, reoccuring, date_created, owner):
+    def update(self, name, location, description, date, time, capacity, attendees, tags, reoccuring, date_created, owner):
         self.name = name
-        self.picture = picture
+
         self.location = location
         self.description = description
         self.date = date

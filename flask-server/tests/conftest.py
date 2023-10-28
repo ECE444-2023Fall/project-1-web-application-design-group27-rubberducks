@@ -33,7 +33,6 @@ def client(app):
 def account():
     return ({
             "name": "Test",
-            "picture": None,
             "email": "test@utoronto.ca",
             "password": "test",
             "events": [],
@@ -47,7 +46,6 @@ def signup():
             "name": "Test",
             "email": "test@utoronto.ca",
             "password": "test",
-            "picture": None,
         })
 
 @pytest.fixture
