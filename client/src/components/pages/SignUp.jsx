@@ -84,7 +84,7 @@ function SignUp() {
             </label>
             <a href="#!" className="forgot-password">Forgot Password?</a>
           </div>
-          const [errorMessage, setErrorMessage] = useState("");
+          {/* const [errorMessage, setErrorMessage] = useState(""); */}
           {/* <p className="error-message">Error message placeholder</p> */}
           <button type="submit">Sign Up</button>
           
