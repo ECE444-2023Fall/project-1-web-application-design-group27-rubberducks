@@ -24,6 +24,7 @@ event_model = events_ns.model(
         "date": fields.String,
         "time": fields.String,
         "capacity": fields.Integer,
+        "tags": fields.List(fields.String),
         "attendees": fields.List(fields.Integer),
         "owner": fields.Integer,
     },
