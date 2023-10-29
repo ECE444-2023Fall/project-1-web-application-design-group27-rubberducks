@@ -13,3 +13,8 @@ def test_post_account(client, account):#danny ahmad
     assert response.json["events"] == []
     assert response.json["fav_events"] == []
     assert response.json["orgs"] == []
+
+def test_get_nonexistent_account(client): #Ruoyi Xie
+    response = client.get("/accounts/9999")
+    assert response.status_code == 404
+    assert "error" in response.json
