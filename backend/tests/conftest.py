@@ -4,7 +4,7 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 import logging
 import pytest
-from models import Account, Host
+from models import Account, Host, Event
 from main import create_app
 from config import TestConfig
 from exts import db
@@ -46,6 +46,25 @@ def add_host_to_db(app):
             events= [],
             bio="Host bio 1")
         db.session.add(host1)
+        db.session.commit()
+
+@pytest.fixture
+def add_event_to_db(app):
+    with app.app_context():
+        event1 = Event(
+            name="Test Event",
+            description="A test event description",
+            location="Test Location",
+            date="2023-10-30",
+            time="12:00 PM",
+            capacity=100,
+            attendees=[],
+            tags=[],
+            reoccuring=0,
+            date_created="2023-10-30",
+            owner=1,
+        )
+        db.session.add(event1)
         db.session.commit()
 
 @pytest.fixture
