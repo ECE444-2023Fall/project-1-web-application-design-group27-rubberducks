@@ -99,23 +99,6 @@ def host():
         )
 
 @pytest.fixture
-def event():
-    return {
-        "name": "Test Event 1",
-        "location": "Test Location 1",
-        "description": "Test Description 1",
-        "date": "2023-10-29",
-        "time": "12:00:00",
-        "capacity": 100,
-        "attendees": [],
-        "tags": ["TestTag1", "TestTag2"],
-        "reoccuring": False,
-        "date_created": "2023-10-28",
-        "owner": 1  
-    }
-
-
-@pytest.fixture
 def signup():
     return ({
             "name": "Test",
@@ -137,12 +120,12 @@ def sample_event_data():
         "name": "Sample Event",
         "location": "Sample Location",
         "description": "Sample Description",
-        "date": "2023-10-30", # You can adjust the format based on your requirements.
-        "time": "12:00:00", # Adjust the format if needed.
+        "date": "2023-10-30", 
+        "time": "12:00:00",
         "capacity": 100,
         "attendees": [],
         "tags": ["tag1", "tag2"],
         "reoccuring": False,
-        "date_created": "2023-10-29", # Adjust the format if needed.
-        "owner": 1 # Adjust based on the Host you're using for the test.
+        "date_created": "2023-10-29", 
+        "owner": 1 
     }
