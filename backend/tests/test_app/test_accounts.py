@@ -13,3 +13,11 @@ def test_post_account(client, account):#danny ahmad
     assert response.json["events"] == []
     assert response.json["fav_events"] == []
     assert response.json["orgs"] == []
+
+def test_get_account_by_uid(client, add_account_to_db): #lily li
+      response=client.get("/accounts/1")
+      assert response.status_code == 200
+
+def test_put_account_by_uid(client, add_account_to_db, account): #lily li
+      response=client.put("/accounts/1", json=account)
+      assert response.status_code == 200
