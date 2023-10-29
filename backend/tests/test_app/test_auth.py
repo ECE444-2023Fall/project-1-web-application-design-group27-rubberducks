@@ -29,4 +29,4 @@ def test_login_with_wrong_password(client, signup, login): #Ruoyi Xie
     response = client.post("/auth/login", json=login)
     
     assert response.status_code == 401
-    assert response.json["message"] == "Invalid credentials"
+    assert response.json["message"] == "invalid email or password"
