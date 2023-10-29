@@ -10,3 +10,14 @@ def test_login(client, signup, login):
         response = client.post("/auth/login", json=login)
         assert response.status_code == 200
         assert response.json["message"] == "logged in as Test"
+
+def test_login_with_wrong_password(client, signup, login): #Ruoyi Xie
+    # First signup the user.
+    client.post("/auth/signup", json=signup)
+    
+    # Try logging in with a wrong password.
+    login["password"] = "wrong_password"
+    response = client.post("/auth/login", json=login)
+    
+    assert response.status_code == 401
+    assert response.json["message"] == "Invalid credentials"
