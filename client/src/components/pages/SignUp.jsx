@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import "../../Login.css";
-import axios from "axios";
 
 function SignUp() {
   const [email, setEmail] = useState("");
@@ -10,7 +9,7 @@ function SignUp() {
   const [showPassword, setShowPassword] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
-  const signup = (e) => {
+  const submitSignUpForm = (e) => { // Updated function name here
     e.preventDefault();
   
     fetch("/api/auth/signup", {
@@ -61,7 +60,7 @@ function SignUp() {
     <div className="login-container">
       <div className="login-card">
         <h2>Welcome!</h2>
-        <form onSubmit={signup}>
+        <form onSubmit={submitSignUpForm}> {/* Updated function name here */}
           <div className="input-group">
             <i className="fas fa-user"></i>
             <input
@@ -104,7 +103,7 @@ function SignUp() {
               Remember me
             </label>
           </div>
-          <button onClick={signup}>Sign Up</button>
+          <button onClick={submitSignUpForm}>Sign Up</button> {/* Updated function name here */}
           <div className="signup-option">
             <span>or</span>
             <a href="/login">Log In</a>

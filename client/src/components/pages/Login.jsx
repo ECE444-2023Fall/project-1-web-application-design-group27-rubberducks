@@ -8,7 +8,7 @@ function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
-  const login = (e) => {
+  const submitLoginForm = (e) => { // Updated function name here
     e.preventDefault();
   
     fetch("/api/auth/login", {
@@ -53,7 +53,7 @@ function Login() {
     <div className="login-container">
       <div className="login-card">
         <h2>Welcome Back!</h2>
-        <form onSubmit={login}>
+        <form onSubmit={submitLoginForm}> {/* Updated function name here */}
           <div className="input-group">
             <i className="fas fa-envelope"></i>
             <input
@@ -87,7 +87,7 @@ function Login() {
             </label>
             <a href="#!" className="forgot-password">Forgot Password?</a>
           </div>
-          <button onClick={login}>Login</button>
+          <button onClick={submitLoginForm}>Login</button> {/* Updated function name here */}
           
           <div className="signup-option">
             <span>or</span>
