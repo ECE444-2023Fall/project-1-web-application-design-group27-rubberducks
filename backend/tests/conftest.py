@@ -4,7 +4,7 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 import logging
 import pytest
-from models import Account, Host
+from models import Account, Host, Event
 from main import create_app
 from config import TestConfig
 from exts import db
@@ -48,6 +48,34 @@ def add_host_to_db(app):
         db.session.add(host1)
         db.session.commit()
 
+
+@pytest.fixture
+def add_event_to_db(app, add_host_to_db): 
+    with app.app_context():
+        host = Host.query.first()
+        
+        if not host:
+            return None
+        
+        event1 = Event(
+            name="Sample Event",
+            location="Sample Location",
+            description="Sample Description",
+            date="2023-10-30",
+            time="12:00:00",
+            capacity=100,
+            attendees=[],
+            tags=["tag1", "tag2"],
+            reoccuring=False,
+            date_created="2023-10-29",
+            owner=host.hid  
+        )
+        db.session.add(event1)
+        db.session.commit()
+
+        return event1  
+
+
 @pytest.fixture
 def account():
     return ({
@@ -58,6 +86,20 @@ def account():
             "fav_events": [],
             "orgs": [],
         })
+
+@pytest.fixture
+def add_account_to_db(app):
+    with app.app_context():
+        account1 = Account(
+            name="Test User 1", 
+            email="test1@example.com",
+            password="1234",
+            events = [],
+            fav_events= [],
+            orgs = [],
+        )
+        db.session.add(account1)
+        db.session.commit()
 
 @pytest.fixture
 def host():
@@ -84,3 +126,24 @@ def login():
             "email": "test@utoronto.ca",
             "password": "test"
     })
+
+
+@pytest.fixture
+def sample_event_data():
+    data = {
+        "name": "Sample Event",
+        "location": "Sample Location",
+        "description": "Sample Description",
+        "date": "2023-10-30", 
+        "time": "12:00:00",
+        "capacity": 100,
+        "attendees": [],
+        "tags": ["tag1", "tag2"],
+        "reoccuring": False,
+        "date_created": "2023-10-29", 
+        "owner": 1  
+    }
+    
+    data["owner"] = int(data["owner"])
+
+    return data
