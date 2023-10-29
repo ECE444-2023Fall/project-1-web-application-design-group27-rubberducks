@@ -20,3 +20,13 @@ def test_signup_duplicate_email(client, signup): #Kartikey Sachdeva
     response_duplicate_signup = client.post("/auth/signup", json=signup)
     assert response_duplicate_signup.status_code == 409  
     assert response_duplicate_signup.json["message"] == "email test@utoronto.ca already in use"
+def test_login_with_wrong_password(client, signup, login): #Ruoyi Xie
+    # First signup the user.
+    client.post("/auth/signup", json=signup)
+    
+    # Try logging in with a wrong password.
+    login["password"] = "wrong_password"
+    response = client.post("/auth/login", json=login)
+    
+    assert response.status_code == 401
+    assert response.json["message"] == "Invalid credentials"
