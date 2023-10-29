@@ -58,16 +58,16 @@ def add_event_to_db(app, add_host_to_db):
             return None
         
         event1 = Event(
-            name="Test Event 1",
-            location="Test Location 1",
-            description="Test Description 1",
-            date="2023-10-29",  
-            time="12:00:00",  
+            name="Sample Event",
+            location="Sample Location",
+            description="Sample Description",
+            date="2023-10-30",
+            time="12:00:00",
             capacity=100,
             attendees=[],
-            tags=["TestTag1", "TestTag2"],
+            tags=["tag1", "tag2"],
             reoccuring=False,
-            date_created="2023-10-28",  
+            date_created="2023-10-29",
             owner=host.hid  
         )
         db.session.add(event1)
@@ -127,5 +127,5 @@ def sample_event_data():
         "tags": ["tag1", "tag2"],
         "reoccuring": False,
         "date_created": "2023-10-29", 
-        "owner": 1 
+        "owner": '1' 
     }

@@ -19,4 +19,4 @@ def test_signup_duplicate_email(client, signup): #Kartikey Sachdeva
 
     response_duplicate_signup = client.post("/auth/signup", json=signup)
     assert response_duplicate_signup.status_code == 409  
-    assert response_duplicate_signup.json["message"] == "email already registered"
+    assert response_duplicate_signup.json["message"] == "email test@utoronto.ca already in use"
