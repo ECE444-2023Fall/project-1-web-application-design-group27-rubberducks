@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useHistory } from "react-router-dom";  
 import "../../Login.css";
 
 function SignUp() {
@@ -9,9 +10,10 @@ function SignUp() {
   const [showPassword, setShowPassword] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
-  const submitSignUpForm = (e) => { // Updated function name here
+  const history = useHistory();  
+
+  const submitSignUpForm = (e) => {
     e.preventDefault();
-  
     fetch("/api/auth/signup", {
       method: "POST",
       headers: {
@@ -23,44 +25,34 @@ function SignUp() {
         password: password,
       }),
     })
-      .then((res) => {
-        if (!res.ok) {
-          throw new Error(`HTTP error! Status: ${res.status}`);
-        }
-        return res.json();
-      })
-      .then((data) => {
-        console.log(data);
-        if (data && data.access_token) {
-          localStorage.setItem("access_token", data.access_token);
-          localStorage.setItem("refresh_token", data.refresh_token);
-          // Navigate to the main/dashboard page 
-  
-          // Clear the input fields and error message
-          setName("");
-          setEmail("");
-          setPassword("");
-          setErrorMessage("");
-        } else {
-          setErrorMessage("There was an issue with your Signup. Please try again.");
-        }
-      })
-      .catch((err) => {
-        console.log("error:", err);
-        if (err.message && err.message.includes("409")) {
-          setErrorMessage("Email already in use.");
-        } else {
-          setErrorMessage("There was an issue with your Signup. Please try again.");
-        }
-      });
-  };
-  
+    .then((res) => {
+      if (res.status === 409) {
+        throw new Error('Email already in use.');
+      }
+      if (!res.ok) {
+        throw new Error('There was an issue with your Signup. Please try again.');
+      }
+      return res.json();
+    })
+    .then((data) => {
+      if (data && data.access_token) {
+        localStorage.setItem("access_token", data.access_token);
+        localStorage.setItem("refresh_token", data.refresh_token);
+        history.push("/");  // Redirect to the home page
+      }
+    })
+    .catch((err) => {
+      console.log("error:", err);
+      setErrorMessage(err.message);
+    });
+};
+
 
   return (
     <div className="login-container">
       <div className="login-card">
         <h2>Welcome!</h2>
-        <form onSubmit={submitSignUpForm}> {/* Updated function name here */}
+        <form onSubmit={submitSignUpForm}>
           <div className="input-group">
             <i className="fas fa-user"></i>
             <input
@@ -103,7 +95,9 @@ function SignUp() {
               Remember me
             </label>
           </div>
-          <button onClick={submitSignUpForm}>Sign Up</button> {/* Updated function name here */}
+          {/* Here's the error message element */}
+          {errorMessage && <div className="error-message">{errorMessage}</div>}
+          <button onClick={submitSignUpForm}>Sign Up</button>
           <div className="signup-option">
             <span>or</span>
             <a href="/login">Log In</a>
@@ -111,7 +105,8 @@ function SignUp() {
         </form>
       </div>
     </div>
-  );
+);
+
 }
 
 export default SignUp;

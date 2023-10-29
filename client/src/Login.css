@@ -48,7 +48,7 @@
   .input-group i {
     position: absolute;
     top: 50%;
-    left: 15px;
+    left: 20px;
     transform: translateY(-50%);
     color: #74b9ff; 
   }
@@ -56,7 +56,7 @@
   .input-group .toggle-password {
     position: absolute;
     top: 50%;
-    right: 15px;
+    right: 10px;
     /* transform: translateY(-50%); */
     color: #74b9ff;
     cursor: pointer;
@@ -109,8 +109,11 @@
   
   .error-message {
     color: red;
-    margin-bottom: 20px;
-  }
+    margin-top: 10px;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
   
   button {
     padding: 15px 0;
