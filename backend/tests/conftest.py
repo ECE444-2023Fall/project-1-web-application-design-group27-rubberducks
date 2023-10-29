@@ -88,6 +88,20 @@ def account():
         })
 
 @pytest.fixture
+def add_account_to_db(app):
+    with app.app_context():
+        account1 = Account(
+            name="Test User 1", 
+            email="test1@example.com",
+            password="1234",
+            events = [],
+            fav_events= [],
+            orgs = [],
+        )
+        db.session.add(account1)
+        db.session.commit()
+
+@pytest.fixture
 def host():
     return ({
         'hid': 1, 
