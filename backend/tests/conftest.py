@@ -116,7 +116,7 @@ def login():
 
 @pytest.fixture
 def sample_event_data():
-    return {
+    data = {
         "name": "Sample Event",
         "location": "Sample Location",
         "description": "Sample Description",
@@ -127,5 +127,9 @@ def sample_event_data():
         "tags": ["tag1", "tag2"],
         "reoccuring": False,
         "date_created": "2023-10-29", 
-        "owner": 1
+        "owner": 1  
     }
+    
+    data["owner"] = int(data["owner"])
+
+    return data
