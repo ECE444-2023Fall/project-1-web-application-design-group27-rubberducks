@@ -127,5 +127,5 @@ def sample_event_data():
         "tags": ["tag1", "tag2"],
         "reoccuring": False,
         "date_created": "2023-10-29", 
-        "owner": '1' 
+        "owner": 1
     }
