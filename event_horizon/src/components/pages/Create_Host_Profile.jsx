@@ -1,13 +1,16 @@
 import React, { useState } from "react";
+// import { useHistory } from "react-router-dom";  
 import "../../App.css";
 import "./Create_Host_Profile.css";
-import axios from "axios";  // run npm install axios
 
 function CreateHostProfile() {
   const [club_name, setClubName] = useState("");
   const [email, setEmail] = useState("");
   const [bio, setBio] = useState("");
   const [profilePhoto, setProfilePhoto] = useState(null);
+  const [errorMessage, setErrorMessage] = useState("");
+
+  // const history = useHistory();
 
   const handleProfilePhotoChange = (e) => {
     const file = e.target.files[0];
@@ -28,22 +31,41 @@ function CreateHostProfile() {
       // profilePhoto,
     };
 
-    // Send the form data to the server using Axios
-    axios.post("http://127.0.0.1:8000/hosts/", profile)
-      .then((response) => {
-        // Handle a successful response from the server
-        console.log("Server response:", response.data);
-        // Redirect to the created page
-        // update with the hid from the response
-        // need to figure out the redirect (how to use history)
-        history.push("/host_profile");
+    fetch("/api/hosts", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(profile)
+    })
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error(`HTTP error! Status: ${res.status}`);
+        }
+        return res.json();
       })
-      .catch((error) => {
-        // Handle errors
-        console.error("Error:", error);
-      });
+      .then((data) => {
+        console.log(data);
+        if (data && data.access_token) {
+          // Redirect to the created page
+          // update with the hid from the response
+          // need to figure out the redirect (how to use history)
+          // history.push("/host_profile");
+  
+          // Clear the input fields and error message
+          setEmail("");
+          setBio("");
+          setClubName("");
+          setProfilePhoto(null);
 
-    // Next step is to update the orgs of the logged in user with the hid
+        } else {
+          setErrorMessage("Club creation failed");
+        }
+      })
+      .catch((err) => {
+        console.log("error:", err);
+        setErrorMessage(err.message);
+      });
   };
 
   return (
@@ -95,7 +117,7 @@ function CreateHostProfile() {
             style={{ maxWidth: "100px", maxHeight: "100px" }}
           />
         )}
-
+         {errorMessage && <div className="error-message">{errorMessage}</div>}
         <button type="submit">Create Profile</button>
       </form>
     </div>
