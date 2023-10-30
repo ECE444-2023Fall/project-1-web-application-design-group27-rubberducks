@@ -6,7 +6,7 @@ def test_get_all_events(client):#danny ahmad
     assert response.status_code == 200
 
 # Test to fetch an event by its eid
-def test_get_event_by_eid(client, sample_event_data, add_event_to_db):  
+def test_get_event_by_eid(client, sample_event_data, add_event_to_db):  #Kartikey Sachdeva 
     response = client.get("/events/1")
     assert response.status_code == 200
 
