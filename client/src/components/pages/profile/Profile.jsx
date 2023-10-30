@@ -40,7 +40,6 @@ export default function Profile() {
 
   return (
     <>
-      <div className="edit--button"></div>
       <Sidebar name={name} email={email} orgs={orgs} />
       <div className="user--events">
         <EventCategory title="Favourite Events" link="/profile/favourite" />

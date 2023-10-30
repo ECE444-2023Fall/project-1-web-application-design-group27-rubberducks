@@ -16,14 +16,13 @@
   justify-content: center;
 }
 
-  .login-container {
-    width: 100vw;           
-    height: 100vh;          
-    display: flex;
-    justify-content: center; 
-    align-items: center;   
-  }
-
+.login-container {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
 .login-card {
   width: 400px;
@@ -50,7 +49,7 @@ h2 {
   top: 50%;
   left: 20px;
   transform: translateY(-50%);
-  color: #74b9ff; 
+  color: #74b9ff;
 }
 
 .input-group .toggle-password {
@@ -62,7 +61,6 @@ h2 {
   cursor: pointer;
   transition: color 0.3s;
 }
-
 
 .input-group input {
   width: 100%;
@@ -106,7 +104,6 @@ h2 {
   color: #569cd6;
 }
 
-
 .error-message {
   color: red;
   margin-top: 10px;
@@ -114,11 +111,10 @@ h2 {
   text-align: center;
 }
 
-
-button {
+/* button {
   padding: 15px 0;
   width: 100%;
-  background-color: #74b9ff;
+  background-color: red;
   border: none;
   border-radius: 25px;
   color: white;
@@ -130,7 +126,7 @@ button {
 button:hover {
   background-color: #569cd6;
   transform: translateY(-2px);
-}
+} */
 
 .signup-option {
   display: flex;
@@ -147,7 +143,7 @@ button:hover {
 
 .signup-option a {
   text-decoration: none;
-  color: #74b9ff;
+  color: red;
   transition: color 0.3s;
 }
 
