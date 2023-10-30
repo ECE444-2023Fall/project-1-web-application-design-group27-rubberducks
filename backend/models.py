@@ -21,7 +21,7 @@ class Account(db.Model):
     password = db.Column(db.String(120), nullable=False)
     events = db.Column(db.ARRAY(db.Integer))
     fav_events = db.Column(db.ARRAY(db.Integer))
-    orgs = db.relationship("Host", backref="account")
+    orgs = db.Column(db.ARRAY(db.Integer))
 
     def __init__(self, name, email, password, events, fav_events, orgs):
         self.name = name
