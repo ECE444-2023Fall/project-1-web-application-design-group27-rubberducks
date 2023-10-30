@@ -72,6 +72,11 @@
     max-height: 100px;
     margin-top: 10px;
   }
+
+  .error-message {
+    color: red;
+    margin-bottom: 20px;
+  }
   
   /* Style for the submit button */
   button[type="submit"] {

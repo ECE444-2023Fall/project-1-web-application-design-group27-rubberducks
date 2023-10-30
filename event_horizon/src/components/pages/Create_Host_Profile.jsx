@@ -19,22 +19,29 @@ function CreateHostProfile() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
+  
+    // Get the current account from local storage
+    // CHANGE WHEN LOGIN INFO ACTUALLY STORED
+    const curr_account = {
+      uid: 1,
+      orgs: [] 
+    };
+  
     const profile = {
       name: club_name,
       email: email,
       bio: bio,
-      // replace with proper values taken from logged in user
-      events: [1],
-      owner: 1,
-      // modify host schema to store pic
-      // profilePhoto,
+      events: [],
+      owner: curr_account.uid
+      // Modify host schema to store pic
+      // profilePhoto
     };
-
+  
+    // Create the new host
     fetch("/api/hosts", {
       method: "POST",
       headers: {
-        "Content-Type": "application/json",
+        "Content-Type": "application/json"
       },
       body: JSON.stringify(profile)
     })
@@ -46,18 +53,31 @@ function CreateHostProfile() {
       })
       .then((data) => {
         console.log(data);
-        if (data && data.access_token) {
-          // Redirect to the created page
-          // update with the hid from the response
-          // need to figure out the redirect (how to use history)
-          // history.push("/host_profile");
+        if (data && data.hid) {
+          // Update the orgs of the current account
+          curr_account.orgs.push(data.hid); // Add the new host's hid to the orgs
   
-          // Clear the input fields and error message
-          setEmail("");
-          setBio("");
-          setClubName("");
-          setProfilePhoto(null);
-
+          fetch(`/api/accounts/${curr_account.uid}`, {
+            method: "PUT", // Use PUT to update the account
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ orgs: curr_account.orgs }) // Update orgs field
+          })
+            .then((res2) => {
+              if (!res2.ok) {
+                throw new Error(`HTTP error! Status: ${res2.status}`);
+              }
+              return res2.json();
+            })
+            .then((data2) => {
+              console.log(data2);
+              // Redirect to the created page or handle as needed
+            })
+            .catch((err) => {
+              console.log("error:", err);
+              setErrorMessage(err.message);
+            });
         } else {
           setErrorMessage("Club creation failed");
         }
@@ -66,7 +86,14 @@ function CreateHostProfile() {
         console.log("error:", err);
         setErrorMessage(err.message);
       });
+  
+    // Clear the input fields and error message
+    setEmail("");
+    setBio("");
+    setClubName("");
+    setProfilePhoto(null);
   };
+  
 
   return (
     <div className="container">
