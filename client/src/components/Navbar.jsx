@@ -6,8 +6,8 @@ import "./Navbar.css";
 
 function Navbar() {
   const [click, setClick] = useState(false);
-  const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // Default to false, change based on login backend logic
+  const [dropdownOpen, setDropdownOpen] = useState(true);
+  const [isLoggedIn, setIsLoggedIn] = useState(true); // Default to false, change based on login backend logic
   const [button, setButton] = useState(true);
   const [userOrgs, setUserOrgs] = useState([]);
 
@@ -64,7 +64,7 @@ function Navbar() {
                 <ul className={`dropdown-menu ${dropdownOpen ? "active" : ""}`}>
                   <li>
                     <Link
-                      to="/user-profile"
+                      to="/profile"
                       className="dropdown-nav-links"
                       onClick={closeMobileMenu}
                     >
