@@ -169,3 +169,26 @@ class Event(db.Model):
         self.date_created = date_created
         self.owner = owner
         db.session.commit()
+
+"""
+class Tag:
+    tag: str primary key
+"""
+
+class Tag(db.Model):
+    __tablename__ = "tag"
+    tag = db.Column(db.String(50), primary_key=True)
+
+    def __init__(self, tag):
+        self.tag = tag
+
+    def __repr__(self):
+        return f"<Tag {self.tag}>"
+
+    def save(self):
+        db.session.add(self)
+        db.session.commit()
+
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()

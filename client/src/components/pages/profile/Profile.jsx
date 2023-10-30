@@ -1,59 +1,54 @@
 import React, { useState, useEffect } from "react";
 import "./Profile.css";
 import Cards from "../../Cards";
-import { MdEdit } from "react-icons/md";
 import ReactDOM from "react-dom";
+import Sidebar from "../../Sidebar";
+import EventCategory from "../../EventCategory";
 
 export default function Profile() {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [orgs, setOrgs] = useState([]);
+  const [favouriteEvents, setFavouriteEvents] = useState([]);
+  const [upcomingEvents, setUpcomingEvents] = useState([]);
+  const [previousEvents, setPreviousEvents] = useState([]);
+  const [events, setEvents] = useState([]);
+
   useEffect(() => {
-    fetch("/accounts/1")
+    fetch("/api/accounts/2")
       .then((res) => res.json())
-      .then((data) => console.log(data));
+      .then((data) => {
+        setName(data.name);
+        setEmail(data.email);
+        setOrgs(data.orgs);
+        setFavouriteEvents(data.fav_events);
+        setEvents(data.events);
+
+        setPreviousEvents(
+          data.events.filter((event) => {
+            return new Date(event.date) < new Date();
+          })
+        );
+
+        setUpcomingEvents(
+          data.events.filter((event) => {
+            return new Date(event.date) >= new Date();
+          })
+        );
+      });
   }, []);
 
-  const [message, setMessage] = React.useState("");
   return (
     <>
-      <div>{message}</div>
-      <div className="edit--button">
-        <button className="edit--button-icon">
-          <MdEdit />
-        </button>
-      </div>
-      <div className="sidebar">
-        <img src="../../../images/placeholder.png" alt="Profile Picture" />
-        <div className="user--name">John Doe</div>
-        <div className="user--email">john.doe@example.com</div>
-      </div>
+      <div className="edit--button"></div>
+      <Sidebar name={name} email={email} orgs={orgs} />
       <div className="user--events">
-        <div className="profile--category">
-          <div className="card--header">
-            <h2 className="card--heading">Favourite Events</h2>
-            <span className="card--see-all small">
-              <a href="/profile/favourite">See all</a>
-            </span>
-          </div>
-          <Cards />
-        </div>
+        <EventCategory title="Favourite Events" link="/profile/favourite" />
         <hr />
-        <div className="profile--category">
-          <div className="card--header">
-            <h2 className="card--heading">Upcoming Events</h2>
-            <span className="card--see-all small">
-              <a href="/profile/upcoming">See all</a>
-            </span>
-          </div>
-          <Cards />
-        </div>
+        <EventCategory title="Upcoming Events" link="/profile/upcoming" />
         <hr />
-        <div className="profile--category previous">
-          <div className="card--header">
-            <h2 className="card--heading">Previous Events</h2>
-            <span className="card--see-all small">
-              <a href="/profile/previous">See all</a>
-            </span>
-          </div>
-          <Cards />
+        <div className="previous--events">
+          <EventCategory title="Previous Events" link="/profile/previous" />
         </div>
       </div>
     </>
