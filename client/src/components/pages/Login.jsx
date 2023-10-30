@@ -6,17 +6,44 @@ function Login() {
   const [password, setPassword] = useState("");
   const [remember, setRemember] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [loginSuccess, setLoginSuccess] = useState(false);
 
-  const handleSubmit = (e) => {
+  const submitLoginForm = (e) => {
     e.preventDefault();
-    console.log("Email:", email, "Password:", password, "Remember me:", remember);
+
+    fetch("/api/auth/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email: email,
+        password: password,
+      }),
+    })
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error("Login failed. Please check your credentials.");
+        }
+        return res.json();
+      })
+      .then((data) => {
+        setEmail("");
+        setPassword("");
+        setLoginSuccess(true);
+        setErrorMessage("");
+      })
+      .catch((err) => {
+        setErrorMessage(err.message);
+      });
   };
 
   return (
     <div className="login-container">
       <div className="login-card">
         <h2>Welcome Back!</h2>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={submitLoginForm}>
           <div className="input-group">
             <i className="fas fa-envelope"></i>
             <input
@@ -36,8 +63,8 @@ function Login() {
               onChange={(e) => setPassword(e.target.value)}
               required
             />
-            <span 
-              className="toggle-password" 
+            <span
+              className="toggle-password"
               onClick={() => setShowPassword(!showPassword)}
             >
               {showPassword ? <i className="fas fa-eye-slash"></i> : <i className="fas fa-eye"></i>}
@@ -45,21 +72,22 @@ function Login() {
           </div>
           <div className="additional-options">
             <label>
-              <input type="checkbox" checked={remember} onChange={() => setRemember(!remember)} />
+              <input
+                type="checkbox"
+                checked={remember}
+                onChange={() => setRemember(!remember)}
+              />
               Remember me
             </label>
             <a href="#!" className="forgot-password">Forgot Password?</a>
           </div>
-          <p className="error-message">Error message placeholder</p>
+          {errorMessage && <p className="error-message">{errorMessage}</p>}
+          {loginSuccess && <p className="success-message" style={{textAlign: 'center'}}>Login successful!</p>}
           <button type="submit">Login</button>
-          
-          
           <div className="signup-option">
             <span>or</span>
             <a href="/signup">Sign Up</a>
           </div>
-
-
         </form>
       </div>
     </div>
