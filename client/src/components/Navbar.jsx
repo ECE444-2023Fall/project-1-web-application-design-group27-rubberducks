@@ -8,8 +8,13 @@ import "./Navbar.css";
 
 function Navbar() {
   const [click, setClick] = useState(false);
+<<<<<<< HEAD:event_horizon/src/components/Navbar.jsx
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(true); // Replace this based on login backend logic
+=======
+  const [dropdownOpen, setDropdownOpen] = useState(true);
+  const [isLoggedIn, setIsLoggedIn] = useState(false); // Default to false, change based on login backend logic
+>>>>>>> 780309745f4d696a3f3b1820fbfbd7c036f6da17:client/src/components/Navbar.jsx
   const [button, setButton] = useState(true);
   const [userOrgs, setUserOrgs] = useState([]); // To store the user's organizations
   const [userClubs, setUserClubs] = useState([]); // To store the user's clubs
@@ -25,6 +30,10 @@ function Navbar() {
       setButton(true);
     }
   };
+
+  if (localStorage.getItem("userData")){
+    setIsLoggedIn(true);
+  }
 
   useEffect(() => {
     showButton();
@@ -112,6 +121,7 @@ function Navbar() {
                 )}
                 {/* {userClubs.length >= 0 && (
                   <li>
+<<<<<<< HEAD:event_horizon/src/components/Navbar.jsx
                     <span className="dropdown-nav-links">My Clubs</span>
                     <ul>
                       {userClubs.map((club) => (
@@ -128,6 +138,15 @@ function Navbar() {
                         </li>
                       ))}
                     </ul>
+=======
+                    <Link
+                      to="/profile"
+                      className="dropdown-nav-links"
+                      onClick={closeMobileMenu}
+                    >
+                      My Profile
+                    </Link>
+>>>>>>> 780309745f4d696a3f3b1820fbfbd7c036f6da17:client/src/components/Navbar.jsx
                   </li>
                 )} */}
                 {
