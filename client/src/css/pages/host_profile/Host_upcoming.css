@@ -1,0 +1,95 @@
+/* * {
+  border: red 1px solid;
+} */
+.sidebar {
+  display: inline-block;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  max-width: 300px;
+  background-color: #f1f1f1;
+  position: fixed;
+  height: 100%;
+  overflow: auto;
+}
+
+.host--tags {
+  font-size: 12px;
+  margin-top: 30px;
+  margin-left: 30px;
+  padding: 10px;
+  border-radius: 5px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.card--header {
+  display: flex;
+  align-items: center;
+}
+
+@media screen and (min-width: 768px) {
+  .sidebar {
+    width: 30%;
+  }
+}
+
+.profile--category {
+  margin-left: 300px;
+}
+
+.cards {
+  padding: 0rem;
+  background: #fff;
+}
+
+.card--heading {
+  margin-left: 25px;
+  margin-top: 25px;
+}
+
+.card--see-all a {
+  text-decoration: none;
+}
+
+.card--see-all {
+  display: inline-block;
+  vertical-align: middle;
+  margin-left: 10px;
+  margin-top: 30px;
+  text-decoration: none;
+}
+
+.card--see-all.small {
+  font-size: 0.8em;
+}
+
+.sidebar img {
+  display: block;
+  margin: 20px auto;
+  width: 80%;
+  max-width: 200px;
+  border-radius: 50%;
+}
+
+.sidebar .user--name {
+  text-align: center;
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+.sidebar .user--email {
+  text-align: center;
+  font-size: 1rem;
+  margin-top: 5px;
+  color: #666;
+}
+
+.profile--category.previous .cards--item {
+  opacity: 0.5;
+}
+
+.profile--category.previous .cards--item:hover {
+  opacity: 1;
+}
