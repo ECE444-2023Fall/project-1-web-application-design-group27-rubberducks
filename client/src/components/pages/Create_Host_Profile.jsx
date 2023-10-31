@@ -22,77 +22,81 @@ function CreateHostProfile() {
   
     // Get the current account from local storage
     // CHANGE WHEN LOGIN INFO ACTUALLY STORED
-    const curr_account = {
-      uid: 1,
-      orgs: [] 
-    };
-  
-    const profile = {
-      name: club_name,
-      email: email,
-      bio: bio,
-      events: [],
-      owner: curr_account.uid
-      // Modify host schema to store pic
-      // profilePhoto
-    };
-  
-    // Create the new host
-    fetch("/api/hosts", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(profile)
-    })
-      .then((res) => {
-        if (!res.ok) {
-          throw new Error(`HTTP error! Status: ${res.status}`);
-        }
-        return res.json();
-      })
-      .then((data) => {
-        console.log(data);
-        if (data && data.hid) {
-          // Update the orgs of the current account
-          curr_account.orgs.push(data.hid); // Add the new host's hid to the orgs
-  
-          fetch(`/api/accounts/${curr_account.uid}`, {
-            method: "PUT", // Use PUT to update the account
-            headers: {
-              "Content-Type": "application/json"
-            },
-            body: JSON.stringify({ orgs: curr_account.orgs }) // Update orgs field
+    if (localStorage.getItem("userData")){
+        curr_account = JSON.parse(localStorage.getItem("userData"))
+
+        const profile = {
+          name: club_name,
+          email: email,
+          bio: bio,
+          events: [],
+          owner: curr_account.uid
+          // Modify host schema to store pic
+          // profilePhoto
+        };
+      
+        // Create the new host
+        fetch("/api/hosts", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(profile)
+        })
+          .then((res) => {
+            if (!res.ok) {
+              throw new Error(`HTTP error! Status: ${res.status}`);
+            }
+            return res.json();
           })
-            .then((res2) => {
-              if (!res2.ok) {
-                throw new Error(`HTTP error! Status: ${res2.status}`);
-              }
-              return res2.json();
-            })
-            .then((data2) => {
-              console.log(data2);
-              // Redirect to the created page or handle as needed
-            })
-            .catch((err) => {
-              console.log("error:", err);
-              setErrorMessage(err.message);
-            });
-        } else {
-          setErrorMessage("Club creation failed");
-        }
-      })
-      .catch((err) => {
-        console.log("error:", err);
-        setErrorMessage(err.message);
-      });
+          .then((data) => {
+            console.log(data);
+            if (data && data.hid) {
+              // Update the orgs of the current account
+              curr_account.orgs.push(data.hid); // Add the new host's hid to the orgs
+      
+              fetch(`/api/accounts/${curr_account.uid}`, {
+                method: "PUT", // Use PUT to update the account
+                headers: {
+                  "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ orgs: curr_account.orgs }) // Update orgs field
+              })
+                .then((res2) => {
+                  if (!res2.ok) {
+                    throw new Error(`HTTP error! Status: ${res2.status}`);
+                  }
+                  return res2.json();
+                })
+                .then((data2) => {
+                  console.log(data2);
+                  // Redirect to the created page or handle as needed
+                })
+                .catch((err) => {
+                  console.log("error:", err);
+                  setErrorMessage(err.message);
+                });
+            } else {
+              setErrorMessage("Club creation failed");
+            }
+          })
+          .catch((err) => {
+            console.log("error:", err);
+            setErrorMessage(err.message);
+          });
+      
+        // Clear the input fields and error message
+        setEmail("");
+        setBio("");
+        setClubName("");
+        setProfilePhoto(null);
+      };
+      setErrorMessage("please log in");
+    }
+
+    
   
-    // Clear the input fields and error message
-    setEmail("");
-    setBio("");
-    setClubName("");
-    setProfilePhoto(null);
-  };
+    
   
 
   return (
