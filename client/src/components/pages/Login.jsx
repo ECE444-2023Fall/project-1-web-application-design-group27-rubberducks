@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "../../Login.css";
+import { useNavigate } from 'react-router-dom';
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -8,6 +9,7 @@ function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [loginSuccess, setLoginSuccess] = useState(false);
+  const navigate = useNavigate();
 
   const submitLoginForm = (e) => {
     e.preventDefault();
@@ -29,10 +31,15 @@ function Login() {
         return res.json();
       })
       .then((data) => {
+        localStorage.setItem('access_token', data.access_token);
+        localStorage.setItem('refresh_token', data.refresh_token);
+    
         setEmail("");
         setPassword("");
         setLoginSuccess(true);
         setErrorMessage("");
+
+        navigate('/');
       })
       .catch((err) => {
         setErrorMessage(err.message);

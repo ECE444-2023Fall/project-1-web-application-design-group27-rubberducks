@@ -8,12 +8,14 @@ from accounts import accounts_ns
 from hosts import hosts_ns
 from auth import auth_ns
 from config import DevConfig
+from auth import login_manager
 
 def create_app(config=DevConfig):
     app = Flask(__name__)
     app.config.from_object(config)
     db.init_app(app)
     JWTManager(app)
+    login_manager.init_app(app)
     api = Api(app, doc="/docs")
     api.add_namespace(events_ns)
     api.add_namespace(accounts_ns)
