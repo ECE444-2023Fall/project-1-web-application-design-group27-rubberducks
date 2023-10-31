@@ -17,6 +17,7 @@ import Host_profile from "./components/pages/host_profile/Host_Profile";
 import Host_previous from "./components/pages/host_profile/Host_previous";
 import Host_upcoming from "./components/pages/host_profile/Host_upcoming";
 import Create_Event from "./components/pages/host_profile/Create_Event";
+import UserClubs from "./components/pages/host_profile/User_Clubs";
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
           <Route path="/create_host_profile" exact Component={Create_Host_Profile} />
           <Route path="/signup" exact Component={SignUp} />
           <Route path="/profile" exact Component={Profile} />
+          <Route path="/my-clubs" exact Component={UserClubs} />
           <Route
             path="/profile/favourite"
             exact
