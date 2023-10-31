@@ -82,6 +82,10 @@ class Login(Resource):
                 "message": f"logged in as {account.name}",
                 "access_token": access_token,
                 "refresh_token": refresh_token,
+                "user": {
+                    "email": account.email,
+                    "id": str(account.uid)
+                }
             }, 200
 
         else:

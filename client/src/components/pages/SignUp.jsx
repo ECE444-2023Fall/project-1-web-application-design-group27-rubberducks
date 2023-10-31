@@ -55,7 +55,7 @@ function SignUp() {
             setErrorMessage("");
             setSignupSuccess(true);
             
-            navigate('/');
+            navigate('/login');
         })
         .catch((err) => {
             console.log("error:", err);
