@@ -1,5 +1,6 @@
 from exts import db
 from sqlalchemy.dialects.postgresql import JSON
+from flask_login import UserMixin
 
 """
 class Account:
@@ -13,7 +14,7 @@ class Account:
 """
 
 
-class Account(db.Model):
+class Account(UserMixin, db.Model):
     __tablename__ = "account"
     uid = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), nullable=False)
@@ -50,6 +51,13 @@ class Account(db.Model):
         self.fav_events = fav_events
         self.orgs = orgs
         db.session.commit()
+    
+    @property
+    def is_active(self):
+        return True
+    
+    def get_id(self):
+        return str(self.uid)
 
 
 """
