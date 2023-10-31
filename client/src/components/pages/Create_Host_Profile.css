@@ -13,7 +13,7 @@
   }
   
   /* Style for form title */
-  h2 {
+  .create-host-title {
     text-align: center;
     margin-top: 20px;
     margin-bottom: 20px;
@@ -21,7 +21,14 @@
   }
   
   /* Style for form labels */
-  label {
+  .club_name {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+    margin-left: 10px; /* Increase left margin of labels */
+  }
+
+  .club_email {
     display: block;
     font-weight: bold;
     margin-bottom: 5px;
@@ -29,8 +36,8 @@
   }
   
   /* Style for text input fields */
-  input[type="text"],
-  input[type="email"],
+  input[type="club_name"],
+  input[type="club_email"],
   textarea {
     width: 100%;
     padding: 15px 45px;
@@ -41,6 +48,7 @@
   }
   
   /* Style for the textarea field */
+  input[type="club_bio"],
   textarea {
     height: 120px;
   }
@@ -51,7 +59,7 @@
   }
   
   /* Style for the custom file input button */
-  label[for="profilePhoto"] {
+  .club_photo {
     padding: 15px 0;
     width: 15%;
     background-color: #585a5c;
@@ -62,6 +70,8 @@
     cursor: pointer;
     text-align: center;
     transition: background-color 0.3s, transform 0.3s;
+    margin-top: 10px;
+    margin-bottom: 10px;
   }
   
   /* Style for the selected profile photo */
@@ -73,13 +83,14 @@
     margin-top: 10px;
   }
 
-  .error-message {
+  .club-error-message {
     color: red;
     margin-bottom: 20px;
   }
   
   /* Style for the submit button */
-  button[type="submit"] {
+
+  /* .host-submit {
     padding: 15px 0;
     width: 100%;
     background-color: #74b9ff;
@@ -89,10 +100,11 @@
     font-size: 16px;
     cursor: pointer;
     transition: background-color 0.3s, transform 0.3s;
+    height:20px;
   }
   
-  button[type="submit"]:hover {
+  .host-submit:hover {
     background-color: #569cd6;
     transform: translateY(-2px);
-  }
+  } */
   

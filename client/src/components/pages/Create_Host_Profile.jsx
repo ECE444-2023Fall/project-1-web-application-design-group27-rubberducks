@@ -97,38 +97,46 @@ function CreateHostProfile() {
 
   return (
     <div className="container">
-      <h2>Create Host Profile</h2>
+      <div className="create-host-title"><h2>Create Host Profile</h2></div>
       <form onSubmit={handleSubmit}>
 
+        <div className="club_name">
         <label htmlFor="club_name">Club Name:</label>
         <input
-          type="text"
+          type="club_name"
           id="club_name"
           placeholder="Club Name"
           value={club_name}
           onChange={(e) => setClubName(e.target.value)}
           required
         />
+        </div>
 
+        <div className="club_email">
         <label htmlFor="email">Email:</label>
         <input
-          type="email"
-          id="email"
+          type="club_email"
+          id="club_email"
           placeholder="Email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
         />
+        </div>
 
+        <div className="club_bio">
         <label htmlFor="bio">Bio:</label>
         <textarea
-          id="bio"
+          type="club_bio"
+          id="club_bio"
           value={bio}
           onChange={(e) => setBio(e.target.value)}
           rows="4"
           cols="50"
         />
+        </div>
 
+        <div className="club_photo">
         <label htmlFor="profilePhoto">Club Photo</label>
         <input
           type="file"
@@ -136,6 +144,7 @@ function CreateHostProfile() {
           accept="image/*"
           onChange={handleProfilePhotoChange}
         />
+        </div>
 
         {profilePhoto && (
           <img
@@ -144,8 +153,10 @@ function CreateHostProfile() {
             style={{ maxWidth: "100px", maxHeight: "100px" }}
           />
         )}
-         {errorMessage && <div className="error-message">{errorMessage}</div>}
-        <button type="submit">Create Profile</button>
+         {errorMessage && <div className="club-error-message">{errorMessage}</div>}
+        <div className="host-submit">
+          <button type="submit">Create Profile</button>
+        </div>
       </form>
     </div>
   );
