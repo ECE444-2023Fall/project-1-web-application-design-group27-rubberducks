@@ -14,7 +14,7 @@ export default function Create_Event() {
   const [description, setDescription] = useState("");
   const [capacity, setCapacity] = useState(0);
   const [tags, setSelectedTags] = useState([]);
-  const [reoccuring, setReoccuring] = useState(false);
+  const [reoccuring, setReoccuring] = useState('');
   const [eventPhoto, setEventPhoto] = useState(null);
   const handleTagChange = (tags) => {
     setSelectedTags(tags);
@@ -28,6 +28,9 @@ export default function Create_Event() {
   };
   const handleDateChange = (newDate) => {
     setDate(newDate);
+  };
+  const handleSelectReocurring = (event) => {
+    setReoccuring(event.target.value);
   };
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -48,6 +51,7 @@ export default function Create_Event() {
 
     console.log("Event Data:", event);
   };
+  
   return (
     <>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
@@ -65,9 +69,9 @@ export default function Create_Event() {
           <h2 className="sidebar--heading">Tags</h2>
         </div>
       </div>
-    <div className='form_block'>
+    <div className='form_block_event'>
         <h1>Create Event</h1>
-        <form>
+        <form onSubmit={handleSubmit}>
           <div className="form-group">
             <label htmlFor="name">Name:</label>
             <input 
@@ -143,22 +147,22 @@ export default function Create_Event() {
           </div>
 
           <div className="form-group">
+          <label htmlFor="tags">Select Tags:  </label>
           <TagSelect selectedTags={tags} onTagChange={handleTagChange} />
           </div>
 
-          <div className="form-check">
-          <input
-            type="checkbox"
-            className="form-check-input"
-            id="recurring"
-            name="recurring"
-            checked={reoccuring}
-            onChange={(e) => setReoccuring(e.target.checked)}
-          />
-          <label className="form-check-label" htmlFor="recurring">
-            Recurring Event
-          </label>
-        </div>
+          <div className="form-group">
+          <label htmlFor="reoccuring" className='form_label_oneline'>Reoccuring Options:  </label>
+            <select id="reoccuring" value={reoccuring} onChange={handleSelectReocurring}>
+              <option value="">Not Recurring</option>
+              <option value="daily">Daily</option>
+              <option value="weekly">Weekly</option>
+              <option value="biweekly">Bi-weekly</option>
+              <option value="montly">Monthly</option>
+            </select>
+
+          </div>
+
         <div className="form-group">
         <label htmlFor="eventPhoto" className="col-form-label">Event Photo</label>
         <div className="d-flex align-items-start">
@@ -179,7 +183,7 @@ export default function Create_Event() {
           </div>
           </div>
           <div className="d-flex justify-content-center">
-          <button type="submit" className='form_button'>Create Event</button>
+          <button type="submit" className='button_event'>Create Event</button>
           </div>
 
         </form>
