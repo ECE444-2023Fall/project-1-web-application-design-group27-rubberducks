@@ -33,7 +33,12 @@ function Login() {
       .then((data) => {
         localStorage.setItem('access_token', data.access_token);
         localStorage.setItem('refresh_token', data.refresh_token);
-    
+        localStorage.setItem('user', JSON.stringify(data.user));
+
+        const user = JSON.parse(localStorage.getItem('user'));
+        console.log(user.email);  // accessing stored user email  
+        console.log(user.id);    // accessing stored user id
+
         setEmail("");
         setPassword("");
         setLoginSuccess(true);
