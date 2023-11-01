@@ -43,7 +43,7 @@ function Navbar() {
     localStorage.removeItem('refresh_token');
     localStorage.removeItem('user');
     setButtonText("Login");
-    // Additional logout logic can be added here if needed
+    
   };
 
   return (
