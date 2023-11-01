@@ -1,0 +1,129 @@
+.eventSubtitle {
+    display: flex;
+    align-items: center;
+    font-size: 10px;
+    color: #999;
+    margin-top: 5px;
+  }
+  
+.eventIcon {
+    margin-right: 5px;
+}
+
+.eventCard {
+    display: flex;
+    flex: 1;
+    margin: 0 1rem;
+    border-radius: 10px;
+}
+
+.eventLink {
+    display: flex;
+    flex-flow: column;
+    width: 100%;
+    box-shadow: 0 6px 20px rgba(56, 125, 255, 0.17);
+    -webkit-filter: drop-shadow(0 6px 20px rgba(56, 125, 255, 0.017));
+    filter: drop-shadow(0 6px 20px rgba(56, 125, 255, 0.017));
+    border-radius: 10px;
+    overflow: hidden;
+    text-decoration: none;
+}
+
+.eventImgWrapper {
+    position: relative;
+    width: 100%;
+    padding-top: 67%;
+    overflow: hidden;
+}
+
+.fade-img {
+    animation-name: fade-img;
+    animation-duration: 2s;
+}
+
+.eventImgWrapper::after {
+    content: attr(data-category) ' ';
+    display: none;
+    position: absolute;
+    bottom: 0;
+    margin-left: 10px;
+    padding: 6px 8px;
+    max-width: calc((100%) - 60px);
+    font-size: 12px;
+    font-weight: 700;
+    color: #fff;
+    box-sizing: border-box;
+}
+
+.eventImgWrapper[data-category="Hot"]::after {
+    background-color: #f47b1f; /* Orange for Hot */
+}
+
+.eventImgWrapper[data-category="New"]::after {
+    background-color: #1f98f4; /* Blue for New */
+}
+
+.eventImgWrapper[data-category]:not([data-category=""])::after {
+    display: block;
+}
+
+.eventImg {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    height: 100%;
+    max-height: 100%;
+    object-fit: cover;
+    transition: all 0.2s linear;
+}
+
+.eventImg:hover {
+    transform: scale(1.1);
+}
+
+.eventInfo {
+    padding: 20px 30px 30px;
+}
+  
+.eventName {
+    color: #252e48;
+    font-size: 18px;
+    line-height: 24px;
+}
+  
+.starIcon {
+    cursor: pointer;
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+    transition: transform 0.3s ease-in-out; 
+}
+
+.starIcon:hover {
+    transform: scale(1.2);
+}
+
+.starIcon .defaultStar {
+    color: #FFF;
+}
+
+.starIcon .filledStar {
+    color: gold;
+}
+
+.redoIconSpan {
+    position: absolute;
+    top: 10px;    /* Adjust as per your preference */
+    left: 10px;   /* Adjust as per your preference */
+    z-index: 10;  /* To ensure it stays above the image */
+  }
+  
+  .redoIcon {
+    color: #FFF; /* or any other color you prefer */
+    font-size: 18px;  /* Adjust size as needed */
+  }

@@ -1,0 +1,64 @@
+{
+    "tags": [
+        {
+            "tag": "Fundraiser",
+            "description": "Fundraiser for a cause."
+        },
+        {
+            "tag": "Meeting",
+            "description": "Organization-specific meetings."
+        },
+        {
+            "tag": "Social",
+            "description": "Networking and social gathering."
+        },
+        {
+            "tag": "Educational",
+            "description": "Workshops, seminars, guest presentations."
+        },
+        {
+            "tag": "Cultural",
+            "description": "Celebration or education of cultures."
+        },
+        {
+            "tag": "Service & Volunteer",
+            "description": "Community or volunteer opportunities."
+        },
+        {
+            "tag": "Sports & Fitness",
+            "description": "Physical activity, sports, or wellness."
+        },
+        {
+            "tag": "Arts & Crafts",
+            "description": "Create or discuss arts."
+        },
+        {
+            "tag": "Travel & Trips",
+            "description": "Trips and outtings."
+        },
+        {
+            "tag": "Academic",
+            "description": "Study session, research, or tutoring."
+        },
+        {
+            "tag": "Recruitment",
+            "description": "Recruitment for an organization."
+        },
+        {
+            "tag": "Advocacy & Awareness",
+            "description": "Raising awareness for a cause."
+        },
+        {
+            "tag": "Celebration",
+            "description": "Celebration of an occasion."
+        },
+        {
+            "tag": "Collaboration",
+            "description": "Collaboration with another organization."
+        },
+        {
+            "tag": "Skill Building",
+            "description": "Developing skillsets."
+        }
+    ]
+}

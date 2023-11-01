@@ -4,7 +4,7 @@ import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./components/pages/Home";
-import Events from "./components/pages/Events";
+import Events from "./components/pages/events/Events";
 import Clubs from "./components/pages/Clubs";
 import Login from "./components/pages/Login";
 import Create_Host_Profile from "./components/pages/Create_Host_Profile";
