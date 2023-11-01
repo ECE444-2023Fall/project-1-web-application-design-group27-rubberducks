@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { FaSlidersH } from 'react-icons/fa';
-import tagData from './tags.json';
+import tagData from './event_tags.json';
 import './TagDrawerButton.css';
 
 function TagDrawerButton({ onTagSelection }) {
@@ -24,7 +24,7 @@ function TagDrawerButton({ onTagSelection }) {
 
         {drawerOpen && (
             <div className="tag-drawer">
-                {tagData.tags.map(({ tag, description }) => (
+                {tagData.tags.map(({ etid, tag, description }) => (
                 <div
                 key={tag}
                 className={`event-tag ${selectedTags.includes(tag) ? 'selected' : ''}`}

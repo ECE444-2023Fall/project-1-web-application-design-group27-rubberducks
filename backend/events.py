@@ -3,7 +3,7 @@ from datetime import datetime
 from sqlalchemy import text
 from flask import request
 from flask_restx import Namespace, Resource, fields
-from models import Event
+from models import Event, Event_tag
 from flask_jwt_extended import jwt_required
 
 events_ns = Namespace("events", description="Event operations")
@@ -26,18 +26,19 @@ event_model = events_ns.model(
         "date": fields.String,
         "time": fields.String,
         "capacity": fields.Integer,
-        "tags": fields.List(fields.String),
-        "reoccuring": fields.Boolean,
+        "reoccuring": fields.Integer,
         "date_created": fields.String,
         "attendees": fields.List(fields.Integer),
         "owner": fields.Integer,
+        "tags": fields.List(fields.Integer),
     },
 )
 
 tags_model = events_ns.model(
-    "Tag",
+    "Event_tag",
     {
-        "tag": fields.String,
+        "etid": fields.Integer,
+        "name": fields.String,
         "description": fields.String,
     }
 )
@@ -84,20 +85,20 @@ class EventById(Resource):
         event.delete()
         return {"message": "event deleted"}, 200
     
-"""@events_ns.route("/tags")
-class Tags(Resource):
+@events_ns.route("/tags")
+class Event_tags(Resource):
     @events_ns.marshal_list_with(tags_model)
     def get(self):
-        return Tag.query.all(), 200
+        return Event_tag.query.all(), 200
 
-    @events_ns.expect(tags_model)
+    """@events_ns.expect(tags_model)
     @events_ns.marshal_with(tags_model)
     def post(self):
-        tag = Tag(**events_ns.payload)
+        tag = Event_tag(**events_ns.payload)
         tag.save()
         return tag, 201"""
 
-@events_ns.route("/filtered")
+"""@events_ns.route("/filtered")
 class FilteredEvents(Resource):
     @events_ns.expect(filters_model)
     @events_ns.marshal_list_with(event_model)
@@ -110,4 +111,4 @@ class FilteredEvents(Resource):
 
         filtered_events = [event for event in all_events if event.tags and all(tag in event.tags for tag in filters_list)]
 
-        return filtered_events, 200
+        return filtered_events, 200"""

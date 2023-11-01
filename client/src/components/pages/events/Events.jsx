@@ -25,14 +25,14 @@ function Events() {
     fetchEvents();
 }, []);
 
-/*
-const [tags, setTags] = useState([]);
+  const [tags, setTags] = useState([]);
   const [selectedTags, setSelectedTags] = useState([]);
 
+  
   useEffect(() => {
     async function fetchTags() {
         try {
-            const response = await fetch("api/tags/");
+            const response = await fetch("api/events/tags");
             if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
             }
@@ -46,8 +46,11 @@ const [tags, setTags] = useState([]);
 
     fetchTags();
   }, []);
-*/
 
+  console.log(tags)
+  
+
+  /*
 const handleFilter = async (filterTags) => {
   async function fetchFilteredEvents() {
       try {
@@ -72,17 +75,18 @@ const handleFilter = async (filterTags) => {
 
   fetchFilteredEvents();
 };
+*/
 
 const handleTagsSelected = (selectedTags) => {
   // Here, you can use the selectedTags for filtering or other logic.
   // For instance, calling your handleFilter function.
   console.log(`Handle tags ${selectedTags}`);
-  handleFilter(selectedTags);
+  // handleFilter(selectedTags);
 }
 
 const handleStarClick = (clickedEvent) => {
   /* Favorite logic */
-  console.log(`Favorited ${clickedEvent.eid}`);
+  console.log(`Favorite clicked ${clickedEvent.eid}`);
 }
 
   return (
