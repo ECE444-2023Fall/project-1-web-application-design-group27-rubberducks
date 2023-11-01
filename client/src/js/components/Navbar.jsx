@@ -62,7 +62,7 @@ function Navbar() {
                 <Link
                   to="/profile"
                   className="dropdown-nav-links"
-                  onClick={closeMobileMenu}
+                  onClick={(closeMobileMenu, toggleDropdown)}
                 >
                   My Profile
                 </Link>
@@ -71,7 +71,7 @@ function Navbar() {
                 <Link
                   to="/create_host_profile"
                   className="dropdown-nav-links"
-                  onClick={closeMobileMenu}
+                  onClick={(closeMobileMenu, toggleDropdown)}
                 >
                   + Create Profile
                 </Link>
