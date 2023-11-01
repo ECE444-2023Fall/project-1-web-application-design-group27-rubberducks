@@ -97,7 +97,21 @@
     color: red;
     margin-bottom: 20px;
   }
+
+  .button-group {
+    display: flex; /* Use flex layout */
+    justify-content: space-between; /* Place buttons at each end of the container */
+  }  
   
+  .back-button {
+    background-color: red; /* Set the background color to red */
+    margin-right: 10px; /* Add some space to the right (adjust the value as needed) */
+  }
+
+  .back-button:hover {
+    background-color: rgb(219, 3, 3); /* Change the background color to red on hover */
+  }
+
   /* Style for the submit button */
 
   /* .host-submit {

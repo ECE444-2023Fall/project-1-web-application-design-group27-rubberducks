@@ -122,6 +122,10 @@ function CreateHostProfile() {
     }
   };
   
+  const handleBack = () => {
+    // Navigate back to the previous page
+    navigate(-1);
+  };
 
     return (
       <div className="container">
@@ -189,7 +193,12 @@ function CreateHostProfile() {
             <div className="club-error-message">{errorMessage}</div>
           )}
   
-          <button type="submit" className="btn btn-primary">Create Profile</button>
+          <div className="button-group">
+            <button type="button" className="btn btn-secondary back-button" onClick={handleBack}>
+              Back
+            </button>
+            <button type="submit" className="btn btn-primary">Create Profile</button>
+          </div>
         </form>
       </div>
     );
