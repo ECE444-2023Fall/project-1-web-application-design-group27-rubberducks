@@ -2,7 +2,7 @@ import React from "react";
 import "../../../css/pages/host_profile/Host_upcoming.css";
 import Cards from "../../components/Cards";
 
-export default function Host_upcoming() {
+export default function Host_upcoming({hid}) {
   return (
     <>
       <div className="sidebar">

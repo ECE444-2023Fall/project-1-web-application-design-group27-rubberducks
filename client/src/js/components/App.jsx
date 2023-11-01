@@ -1,8 +1,8 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import "../../css/components/App.css";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Outlet, useParams } from "react-router-dom";
 import Home from "../pages/Home";
 import Events from "../pages/Events";
 import Clubs from "../pages/Clubs";
@@ -40,45 +40,34 @@ function App() {
         <Navbar key={loginEvent} />{" "}
         {/* Add key to force Navbar to re-render on loginEvent change */}
         <Routes>
-          <Route path="/" exact Component={Home} />
-          <Route path="/events" exact Component={Events} />
-          <Route path="/clubs" exact Component={Clubs} />
-          <Route path="/login" exact Component={Login} />
-          <Route
-            path="/create_host_profile"
-            exact
-            Component={Create_Host_Profile}
-          />
-          <Route path="/signup" exact Component={SignUp} />
-          <Route path="/profile/" exact Component={Profile} />
-          <Route path="/profile/edit" exact Component={Profile_edit} />
-          <Route
-            path="/profile/favourite"
-            exact
-            Component={Profile_favourites}
-          />
-          <Route path="/profile/previous" exact Component={Profile_previous} />
-          <Route path="/profile/upcoming" exact Component={Profile_upcoming} />
-          <Route path="/host_profile" exact Component={Host_profile} />
-          <Route path="/host_profile/edit" exact Component={Host_edit} />
-          <Route
-            path="/host_profile/create_event"
-            exact
-            Component={Create_Event}
-          />
-          <Route
-            path="/host_profile/previous"
-            exact
-            Component={Host_previous}
-          />
-          <Route
-            path="/host_profile/upcoming"
-            exact
-            Component={Host_upcoming}
-          />
+          <Route path="/" element={<Home />} />
+          <Route path="/events" element={<Events />} />
+          <Route path="/clubs" element={<Clubs />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/create_host_profile" element={<Create_Host_Profile />} />
+          <Route path="/signup" element={<SignUp />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/profile/edit" element={<Profile_edit />} />
+          <Route path="/profile/favourite" element={<Profile_favourites />} />
+          <Route path="/profile/previous" element={<Profile_previous />} />
+          <Route path="/profile/upcoming" element={<Profile_upcoming />} />
+          <Route path="/host_profile/:hid/*" element={<HostProfileRoutes />} />
         </Routes>
       </Router>
     </>
+  );
+}
+
+function HostProfileRoutes() {
+  const { hid } = useParams();
+  return (
+    <Routes>
+      <Route path="/" element={<Host_profile hid={hid} />} />
+      <Route path="/edit" element={<Host_edit hid={hid} />} />
+      <Route path="/create_event" element={<Create_Event hid={hid} />} />
+      <Route path="/previous" element={<Host_previous hid={hid} />} />
+      <Route path="/upcoming" element={<Host_upcoming hid={hid} />} />
+    </Routes>
   );
 }
 
