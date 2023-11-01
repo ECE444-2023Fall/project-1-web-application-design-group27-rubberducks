@@ -9,17 +9,28 @@ function Navbar() {
   const [dropdownOpen, setDropdownOpen] = useState(true);
   const [isLoggedIn, setIsLoggedIn] = useState(false); // Default to false, change based on login backend logic
   const [button, setButton] = useState(true);
-  const [userOrgs, setUserOrgs] = useState([]);
+  const [buttonText, setButtonText] = useState("Login");
+
 
   const handleClick = () => setClick(!click);
   const toggleDropdown = () => setDropdownOpen(!dropdownOpen);
   const closeMobileMenu = () => setClick(false);
 
+  const updateButtonText = () => {
+    const user = JSON.parse(localStorage.getItem('user'));
+    setButtonText(user ? "Logout" : "Login");
+  };
+
   const showButton = () => {
     if (window.innerWidth <= 960) {
-      setButton(false);
+      setButtonText("Login"); // Change to "Login" when the button should be shown
     } else {
-      setButton(true);
+      const user = JSON.parse(localStorage.getItem('user'));
+      if (user) {
+        setButtonText("Logout");
+      } else {
+        setButtonText("Login");
+      }
     }
   };
 
@@ -36,6 +47,14 @@ function Navbar() {
   }, []);
 
   window.addEventListener("resize", showButton);
+
+  const handleLogout = () => {
+    localStorage.removeItem('access_token');
+    localStorage.removeItem('refresh_token');
+    localStorage.removeItem('user');
+    setButtonText("Login");
+    
+  };
 
   return (
     <>
@@ -119,14 +138,24 @@ function Navbar() {
                   Login
                 </Link>
               </li>
-            )}
-          </ul>
-          {!isLoggedIn && button && (
-            <Button to="/login" buttonStyle="btn--outline">
-              LOGIN
-            </Button>
-          )}
-        </div>
+            </ul>
+          </li>
+          <li className="nav-item">
+            <Link
+              to="/login"
+              className="nav-links-mobile"
+              onClick={buttonText === "Logout" ? handleLogout : closeMobileMenu}
+            >
+              Login
+            </Link>
+          </li>
+        </ul>
+        {button && (
+          <Button to="/login" buttonStyle="btn--outline" onClick={buttonText === "Logout" ? handleLogout : null}>
+            {buttonText}
+          </Button>
+        )}
+
       </nav>
     </>
   );
