@@ -13,7 +13,7 @@
   }
   
   /* Style for form title */
-  h2 {
+  .create-host-title {
     text-align: center;
     margin-top: 20px;
     margin-bottom: 20px;
@@ -21,16 +21,32 @@
   }
   
   /* Style for form labels */
-  label {
+  #club_name_label {
     display: block;
     font-weight: bold;
     margin-bottom: 5px;
     margin-left: 10px; /* Increase left margin of labels */
   }
+
+  #club_email_label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+    margin-left: 10px; /* Increase left margin of labels */
+    margin-top: 10px;
+  }
+
+  #club_bio_label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+    margin-left: 10px; /* Increase left margin of labels */
+    margin-top: 10px;
+  }
   
   /* Style for text input fields */
-  input[type="text"],
-  input[type="email"],
+  input[id="club_name"],
+  input[id="club_email"],
   textarea {
     width: 100%;
     padding: 15px 45px;
@@ -41,6 +57,7 @@
   }
   
   /* Style for the textarea field */
+  input[id="club_bio"],
   textarea {
     height: 120px;
   }
@@ -51,17 +68,20 @@
   }
   
   /* Style for the custom file input button */
-  label[for="profilePhoto"] {
-    padding: 15px 0;
+  #photo_label {
+    display:block;
+    padding: 5px 5px;
     width: 15%;
     background-color: #585a5c;
     border: none;
-    border-radius: 25px;
+    border-radius: 0;
     color: white;
     font-size: 16px;
     cursor: pointer;
     text-align: center;
     transition: background-color 0.3s, transform 0.3s;
+    margin-top: 10px;
+    margin-bottom: 10px;
   }
   
   /* Style for the selected profile photo */
@@ -72,9 +92,29 @@
     max-height: 100px;
     margin-top: 10px;
   }
+
+  .club-error-message {
+    color: red;
+    margin-bottom: 20px;
+  }
+
+  .button-group {
+    display: flex; /* Use flex layout */
+    justify-content: space-between; /* Place buttons at each end of the container */
+  }  
   
+  .back-button {
+    background-color: red; /* Set the background color to red */
+    margin-right: 10px; /* Add some space to the right (adjust the value as needed) */
+  }
+
+  .back-button:hover {
+    background-color: rgb(219, 3, 3); /* Change the background color to red on hover */
+  }
+
   /* Style for the submit button */
-  button[type="submit"] {
+
+  /* .host-submit {
     padding: 15px 0;
     width: 100%;
     background-color: #74b9ff;
@@ -84,10 +124,11 @@
     font-size: 16px;
     cursor: pointer;
     transition: background-color 0.3s, transform 0.3s;
+    height:20px;
   }
   
-  button[type="submit"]:hover {
+  .host-submit:hover {
     background-color: #569cd6;
     transform: translateY(-2px);
-  }
+  } */
   
