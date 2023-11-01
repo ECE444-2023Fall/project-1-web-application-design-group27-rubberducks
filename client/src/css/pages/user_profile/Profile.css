@@ -1,0 +1,15 @@
+.profile--category {
+  margin-left: 300px;
+}
+
+.previous--events .cards--item {
+  opacity: 0.5;
+}
+
+.previous--events .cards--item:hover {
+  opacity: 1;
+}
+
+hr{
+  color: rgba(172, 172, 172, 0.788);
+}
