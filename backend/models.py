@@ -184,7 +184,7 @@ class Tag:
     description: str
 """
 
-class Tag(db.Model):
+"""class Tag(db.Model):
     __tablename__ = "tags"
     tag = db.Column(db.String(50), primary_key=True, nullable=False)
     description = db.Column(db.String(255), nullable=False)
@@ -207,4 +207,4 @@ class Tag(db.Model):
     def update(self, tag, description):
         self.tag = tag
         self.description = description
-        db.session.commit()
+        db.session.commit()"""

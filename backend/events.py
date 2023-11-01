@@ -1,8 +1,9 @@
 import time
 from datetime import datetime
+from sqlalchemy import text
 from flask import request
 from flask_restx import Namespace, Resource, fields
-from models import Event, Tag
+from models import Event
 from flask_jwt_extended import jwt_required
 
 events_ns = Namespace("events", description="Event operations")
@@ -41,18 +42,27 @@ tags_model = events_ns.model(
     }
 )
 
+filters_model = events_ns.model(
+    "Filters",
+    {
+        "filters": fields.List(fields.String)
+    }
+)
+
+
 @events_ns.route("/")
 class Events(Resource):
     @events_ns.marshal_list_with(event_model)
     def get(self):
         return Event.query.all(), 200
 
-    @events_ns.expect(event_model)
+
+    """@events_ns.expect(event_model)
     @events_ns.marshal_with(event_model)
     def post(self):
         event = Event(**events_ns.payload)
         event.save()
-        return event, 201
+        return event, 201"""
 
 
 @events_ns.route("/<int:eid>")
@@ -74,17 +84,30 @@ class EventById(Resource):
         event.delete()
         return {"message": "event deleted"}, 200
     
-@events_ns.route("/tags")
+"""@events_ns.route("/tags")
 class Tags(Resource):
     @events_ns.marshal_list_with(tags_model)
     def get(self):
-        """Fetch all tags"""
         return Tag.query.all(), 200
 
     @events_ns.expect(tags_model)
     @events_ns.marshal_with(tags_model)
     def post(self):
-        """Create a new tag"""
         tag = Tag(**events_ns.payload)
         tag.save()
-        return tag, 201
+        return tag, 201"""
+
+@events_ns.route("/filtered")
+class FilteredEvents(Resource):
+    @events_ns.expect(filters_model)
+    @events_ns.marshal_list_with(event_model)
+    def post(self):
+        filters_list = request.json.get('filters')
+        if not filters_list:
+            return Event.query.all(), 200
+
+        all_events = Event.query.all()
+
+        filtered_events = [event for event in all_events if event.tags and all(tag in event.tags for tag in filters_list)]
+
+        return filtered_events, 200

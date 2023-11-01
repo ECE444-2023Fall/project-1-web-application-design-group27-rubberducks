@@ -6,7 +6,7 @@ function EventsGrid({ events, onStarClick }) {
     return (
         <div className="eventsGrid">
             {events.map(event => (
-                <EventCard key={event.id} event={event} onStarClick={onStarClick}/>
+                <EventCard key={event.eid} event={event} onStarClick={onStarClick}/>
             ))}
         </div>
     );

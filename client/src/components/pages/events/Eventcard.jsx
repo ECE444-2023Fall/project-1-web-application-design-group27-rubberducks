@@ -6,11 +6,11 @@ import './Eventcard.css';
 function EventCard({event, onStarClick}) {
   return (
     <li title = {`View ${event.name}`} className="eventCard">
-        <Link className="eventLink" to={event.path}>
+        <Link className="eventLink" to={`/events/${event.eid}`}>
           <figure className={"eventImgWrapper ${event.label}"}
           data-category={event.label ? event.label : null}>
             <img
-              src={event.img}
+              src={event.img ? event.img : "images/placeholder.png"}
               alt="Event Image"
               className="eventImg"
             />

@@ -1,63 +1,63 @@
 {
     "tags": [
         {
-            "name": "Fundraiser",
+            "tag": "Fundraiser",
             "description": "Fundraiser for a cause."
         },
         {
-            "name": "Meeting",
+            "tag": "Meeting",
             "description": "Organization-specific meetings."
         },
         {
-            "name": "Social",
+            "tag": "Social",
             "description": "Networking and social gathering."
         },
         {
-            "name": "Educational",
+            "tag": "Educational",
             "description": "Workshops, seminars, guest presentations."
         },
         {
-            "name": "Cultural",
+            "tag": "Cultural",
             "description": "Celebration or education of cultures."
         },
         {
-            "name": "Service & Volunteer",
+            "tag": "Service & Volunteer",
             "description": "Community or volunteer opportunities."
         },
         {
-            "name": "Sports & Fitness",
+            "tag": "Sports & Fitness",
             "description": "Physical activity, sports, or wellness."
         },
         {
-            "name": "Arts & Crafts",
+            "tag": "Arts & Crafts",
             "description": "Create or discuss arts."
         },
         {
-            "name": "Travel & Trips",
+            "tag": "Travel & Trips",
             "description": "Trips and outtings."
         },
         {
-            "name": "Academic",
+            "tag": "Academic",
             "description": "Study session, research, or tutoring."
         },
         {
-            "name": "Recruitment",
+            "tag": "Recruitment",
             "description": "Recruitment for an organization."
         },
         {
-            "name": "Advocacy & Awareness",
+            "tag": "Advocacy & Awareness",
             "description": "Raising awareness for a cause."
         },
         {
-            "name": "Celebration",
+            "tag": "Celebration",
             "description": "Celebration of an occasion."
         },
         {
-            "name": "Collaboration",
+            "tag": "Collaboration",
             "description": "Collaboration with another organization."
         },
         {
-            "name": "Skill Building",
+            "tag": "Skill Building",
             "description": "Developing skillsets."
         }
     ]
