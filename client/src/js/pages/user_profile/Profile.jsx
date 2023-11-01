@@ -15,7 +15,7 @@ export default function Profile() {
   const [events, setEvents] = useState([]);
 
   const fetchData = () => {
-    fetch("/api/accounts/2")
+    fetch("/api/accounts/11")
       .then((res) => res.json())
       .then((data) => {
         setName(data.name);

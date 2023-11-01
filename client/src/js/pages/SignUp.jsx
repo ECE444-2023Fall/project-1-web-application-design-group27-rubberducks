@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "../../css/pages/Login.css";
+import { useNavigate } from "react-router-dom";
 
 function SignUp() {
   const [name, setName] = useState("");
@@ -10,6 +11,7 @@ function SignUp() {
   const [showPassword, setShowPassword] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [signupSuccess, setSignupSuccess] = useState(false);
+  const navigate = useNavigate();
 
   const submitSignUpForm = (e) => {
     e.preventDefault();
@@ -49,10 +51,11 @@ function SignUp() {
         setEmail("");
         setConfirmEmail("");
         setPassword("");
-        setConfirmPassword(""); // Reset confirmed password
+        setConfirmPassword("");
         setErrorMessage("");
         setSignupSuccess(true);
-        // Maybe navigate to login or dashboard page after successful signup
+
+        navigate("/login");
       })
       .catch((err) => {
         console.log("error:", err);
