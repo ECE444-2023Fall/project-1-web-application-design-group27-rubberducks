@@ -1,4 +1,6 @@
 import time
+from datetime import datetime
+from sqlalchemy import text
 from flask import request
 from flask_restx import Namespace, Resource, fields
 from models import Event
@@ -32,6 +34,21 @@ event_model = events_ns.model(
     },
 )
 
+tags_model = events_ns.model(
+    "Tag",
+    {
+        "tag": fields.String,
+        "description": fields.String,
+    }
+)
+
+filters_model = events_ns.model(
+    "Filters",
+    {
+        "filters": fields.List(fields.String)
+    }
+)
+
 
 @events_ns.route("/")
 class Events(Resource):
@@ -39,12 +56,13 @@ class Events(Resource):
     def get(self):
         return Event.query.all(), 200
 
-    @events_ns.expect(event_model)
+
+    """@events_ns.expect(event_model)
     @events_ns.marshal_with(event_model)
     def post(self):
         event = Event(**events_ns.payload)
         event.save()
-        return event, 201
+        return event, 201"""
 
 
 @events_ns.route("/<int:eid>")
@@ -65,3 +83,31 @@ class EventById(Resource):
         event = Event.query.get_or_404(eid)
         event.delete()
         return {"message": "event deleted"}, 200
+    
+"""@events_ns.route("/tags")
+class Tags(Resource):
+    @events_ns.marshal_list_with(tags_model)
+    def get(self):
+        return Tag.query.all(), 200
+
+    @events_ns.expect(tags_model)
+    @events_ns.marshal_with(tags_model)
+    def post(self):
+        tag = Tag(**events_ns.payload)
+        tag.save()
+        return tag, 201"""
+
+@events_ns.route("/filtered")
+class FilteredEvents(Resource):
+    @events_ns.expect(filters_model)
+    @events_ns.marshal_list_with(event_model)
+    def post(self):
+        filters_list = request.json.get('filters')
+        if not filters_list:
+            return Event.query.all(), 200
+
+        all_events = Event.query.all()
+
+        filtered_events = [event for event in all_events if event.tags and all(tag in event.tags for tag in filters_list)]
+
+        return filtered_events, 200

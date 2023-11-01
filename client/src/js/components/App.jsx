@@ -21,10 +21,24 @@ import Host_upcoming from "../pages/host_profile/Host_upcoming";
 import Create_Event from "../pages/host_profile/Create_Event";
 
 function App() {
+  const [loginEvent, setLoginEvent] = useState(false);
+
+  useEffect(() => {
+    const loginListener = () => {
+      setLoginEvent(!loginEvent);
+    };
+    window.addEventListener("login-success", loginListener);
+
+    return () => {
+      window.removeEventListener("login-success", loginListener);
+    };
+  }, [loginEvent]);
+
   return (
     <>
       <Router>
-        <Navbar />
+        <Navbar key={loginEvent} />{" "}
+        {/* Add key to force Navbar to re-render on loginEvent change */}
         <Routes>
           <Route path="/" exact Component={Home} />
           <Route path="/events" exact Component={Events} />

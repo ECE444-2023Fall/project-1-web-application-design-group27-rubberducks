@@ -1,0 +1,33 @@
+.eventsGrid {
+    display: grid;
+    gap: 15px;
+    padding: 15px;
+    margin: 0 auto;
+    width: 70%;
+    max-width: 1400px;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+}
+
+@media screen and (min-width: 420px) {
+    .eventsGrid {
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    }
+}
+
+@media screen and (min-width: 680px) {
+    .eventsGrid {
+        grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    }
+}
+
+@media screen and (min-width: 1200px) {
+    .eventsGrid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+@media screen and (min-width: 1600px) {
+    .eventsGrid {
+        grid-template-columns: repeat(5, 1fr);
+    }
+}

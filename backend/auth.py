@@ -9,6 +9,11 @@ from flask_jwt_extended import (
     jwt_required,
     get_jwt_identity,
 )
+from flask_login import LoginManager, login_user, UserMixin, current_user, login_required
+
+
+login_manager = LoginManager()
+# login_manager.init_app(app)
 
 auth_ns = Namespace("auth", description="Authentication operations")
 
@@ -53,6 +58,9 @@ class SignUp(Resource):
         new_account.save()
         return {"message": f"user with email {email} created"}, 201
 
+@login_manager.user_loader
+def load_user(user_id):
+    return Account.query.get(user_id)
 
 @auth_ns.route("/login")
 class Login(Resource):
@@ -68,11 +76,16 @@ class Login(Resource):
         if account and check_password_hash(account.password, password):
             access_token = create_access_token(identity=account.uid)
             refresh_token = create_refresh_token(identity=account.uid)
+            login_user(account, remember=True)
 
             return {
                 "message": f"logged in as {account.name}",
                 "access_token": access_token,
                 "refresh_token": refresh_token,
+                "user": {
+                    "email": account.email,
+                    "id": str(account.uid)
+                }
             }, 200
 
         else:
@@ -85,3 +98,24 @@ class Refresh(Resource):
         current_user = get_jwt_identity()
         access_token = create_access_token(identity=current_user)
         return {"access_token": access_token}, 200
+
+# @auth_ns.route('/check_login_status')
+# class CheckLoginStatus(Resource):
+#     def get(self):
+#         if current_user.is_authenticated:
+#             return "User is logged in."
+#         else:
+#             return "User is not logged in."
+
+
+# @auth_ns.route('/private')
+# class PrivateRoute(Resource):
+#     @jwt_required()  
+#     def get(self):
+#         return "This is a logged-in user only route."
+
+
+# @auth_ns.route('/private')
+# @login_required
+# def private_route():
+#     return "This is a logged-in user only route."

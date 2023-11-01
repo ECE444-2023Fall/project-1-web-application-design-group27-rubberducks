@@ -1,5 +1,6 @@
 from exts import db
 from sqlalchemy.dialects.postgresql import JSON
+from flask_login import UserMixin
 
 """
 class Account:
@@ -13,7 +14,7 @@ class Account:
 """
 
 
-class Account(db.Model):
+class Account(UserMixin, db.Model):
     __tablename__ = "account"
     uid = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), nullable=False)
@@ -50,6 +51,13 @@ class Account(db.Model):
         self.fav_events = fav_events
         self.orgs = orgs
         db.session.commit()
+    
+    @property
+    def is_active(self):
+        return True
+    
+    def get_id(self):
+        return str(self.uid)
 
 
 """
@@ -173,17 +181,20 @@ class Event(db.Model):
 """
 class Tag:
     tag: str primary key
+    description: str
 """
 
-class Tag(db.Model):
-    __tablename__ = "tag"
-    tag = db.Column(db.String(50), primary_key=True)
+"""class Tag(db.Model):
+    __tablename__ = "tags"
+    tag = db.Column(db.String(50), primary_key=True, nullable=False)
+    description = db.Column(db.String(255), nullable=False)
 
-    def __init__(self, tag):
+    def __init__(self, tag, description):
         self.tag = tag
+        self.description = description
 
     def __repr__(self):
-        return f"<Tag {self.tag}>"
+        return f"<Tag {self.tag} {self.description}>"
 
     def save(self):
         db.session.add(self)
@@ -192,3 +203,8 @@ class Tag(db.Model):
     def delete(self):
         db.session.delete(self)
         db.session.commit()
+
+    def update(self, tag, description):
+        self.tag = tag
+        self.description = description
+        db.session.commit()"""

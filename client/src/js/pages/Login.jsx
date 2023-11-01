@@ -8,6 +8,7 @@ function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [loginSuccess, setLoginSuccess] = useState(false);
+  const navigate = useNavigate();
 
   const submitLoginForm = (e) => {
     e.preventDefault();
@@ -29,10 +30,21 @@ function Login() {
         return res.json();
       })
       .then((data) => {
+        localStorage.setItem("access_token", data.access_token);
+        localStorage.setItem("refresh_token", data.refresh_token);
+        localStorage.setItem("user", JSON.stringify(data.user));
+
+        const user = JSON.parse(localStorage.getItem("user"));
+        console.log(user.email); // accessing stored user email
+        console.log(user.id); // accessing stored user id
+
         setEmail("");
         setPassword("");
         setLoginSuccess(true);
         setErrorMessage("");
+
+        navigate("/");
+        window.dispatchEvent(new Event("login-success"));
       })
       .catch((err) => {
         setErrorMessage(err.message);
