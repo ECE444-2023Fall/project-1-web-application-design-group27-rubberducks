@@ -1,7 +1,8 @@
 import time
+from datetime import datetime
 from flask import request
 from flask_restx import Namespace, Resource, fields
-from models import Event
+from models import Event, Tag
 from flask_jwt_extended import jwt_required
 
 events_ns = Namespace("events", description="Event operations")
@@ -32,6 +33,13 @@ event_model = events_ns.model(
     },
 )
 
+tags_model = events_ns.model(
+    "Tag",
+    {
+        "tag": fields.String,
+        "description": fields.String,
+    }
+)
 
 @events_ns.route("/")
 class Events(Resource):
@@ -65,3 +73,18 @@ class EventById(Resource):
         event = Event.query.get_or_404(eid)
         event.delete()
         return {"message": "event deleted"}, 200
+    
+@events_ns.route("/tags")
+class Tags(Resource):
+    @events_ns.marshal_list_with(tags_model)
+    def get(self):
+        """Fetch all tags"""
+        return Tag.query.all(), 200
+
+    @events_ns.expect(tags_model)
+    @events_ns.marshal_with(tags_model)
+    def post(self):
+        """Create a new tag"""
+        tag = Tag(**events_ns.payload)
+        tag.save()
+        return tag, 201
