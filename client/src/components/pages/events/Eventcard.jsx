@@ -4,16 +4,34 @@ import { FaMapMarkerAlt, FaCalendar, FaClock, FaStar, FaRedo, FaRegUserCircle } 
 import './Eventcard.css';
 
 function EventCard({event, onStarClick}) {
+  const eventDate = new Date(event.date_created);
+  const currentDate = new Date();
+  const threeDaysAgo = new Date();
+  threeDaysAgo.setDate(currentDate.getDate() - 3);
+
+  var label = null;
+  if (event.attendees && event.attendees.length > 20) {
+    label = "Hot";
+  } else if (eventDate >= threeDaysAgo && eventDate <= currentDate){
+    label = "New";
+  }
+
+  console.log(event.reoccuring);
   return (
     <li title = {`View ${event.name}`} className="eventCard">
         <Link className="eventLink" to={`/events/${event.eid}`}>
-          <figure className={"eventImgWrapper ${event.label}"}
-          data-category={event.label ? event.label : null}>
+          <figure className={`eventImgWrapper ${label}`}
+          data-category={label ? label : null}>
             <img
               src={event.img ? event.img : "images/placeholder.png"}
               alt="Event Image"
               className="eventImg"
             />
+            {event.reoccuring && (
+              <span title="Reocurring" className="redoIconSpan">
+                <FaRedo className="redoIcon" />
+              </span>
+            )}
             <span title = {event.favorite ? "Click to Unfavourite!" : "Click to Favourite!"} className="starIcon"
                 onClick={(e) => {
                     e.preventDefault();
@@ -22,11 +40,6 @@ function EventCard({event, onStarClick}) {
                 }}>
                 <FaStar className={event.favorite ? 'filledStar' : 'defaultStar'}/>
             </span>
-            {event.recurring && (
-                <span title = "Recurring" className="redoIconSpan">
-                    <FaRedo className="redoIcon"/>
-                </span>
-            )}
           </figure>
           <div className="eventInfo">
             <h5 className="eventName">{event.name}</h5>
