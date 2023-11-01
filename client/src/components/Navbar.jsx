@@ -6,6 +6,7 @@ import "./Navbar.css";
 
 function Navbar() {
   const [click, setClick] = useState(false);
+  const [dropdownShow, setDropdownShow] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [button, setButton] = useState(true);
   const [buttonText, setButtonText] = useState("Login");
@@ -32,8 +33,20 @@ function Navbar() {
     }
   };
 
+  const showDropdown = () =>{
+    const user = JSON.parse(localStorage.getItem('user'));
+      if (user) {
+        setDropdownShow(true);
+        closeMobileMenu();
+      }
+      else{
+        setDropdownShow(false);
+      }
+  }
+
   useEffect(() => {
     showButton();
+    showDropdown();
   }, []);
 
   window.addEventListener("resize", showButton);
@@ -43,6 +56,7 @@ function Navbar() {
     localStorage.removeItem('refresh_token');
     localStorage.removeItem('user');
     setButtonText("Login");
+    setDropdownShow(false);
     
   };
 
@@ -72,6 +86,7 @@ function Navbar() {
               Clubs
             </Link>
           </li>
+          {dropdownShow && (
           <li className={`nav-item ${dropdownOpen ? "active" : ""}`}>
             <div className="nav-links" onClick={toggleDropdown}>
               Account <RiArrowDropDownFill />
@@ -97,6 +112,7 @@ function Navbar() {
               </li>
             </ul>
           </li>
+          )}
           <li className="nav-item">
             <Link
               to="/login"
