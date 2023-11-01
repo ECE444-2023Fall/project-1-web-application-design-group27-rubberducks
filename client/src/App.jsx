@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./App.css";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
@@ -18,11 +18,25 @@ import Host_previous from "./components/pages/host_profile/Host_previous";
 import Host_upcoming from "./components/pages/host_profile/Host_upcoming";
 import Create_Event from "./components/pages/host_profile/Create_Event";
 
+
 function App() {
+  const [loginEvent, setLoginEvent] = useState(false);
+
+  useEffect(() => {
+    const loginListener = () => {
+      setLoginEvent(!loginEvent);  
+    };
+    window.addEventListener('login-success', loginListener);
+
+    return () => {
+      window.removeEventListener('login-success', loginListener);
+    };
+  }, [loginEvent]);
+
   return (
     <>
       <Router>
-        <Navbar />
+        <Navbar key={loginEvent} /> {/* Add key to force Navbar to re-render on loginEvent change */}
         <Routes>
           <Route path="/" exact Component={Home} />
           <Route path="/events" exact Component={Events} />

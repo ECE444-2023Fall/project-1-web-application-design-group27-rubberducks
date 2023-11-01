@@ -45,6 +45,7 @@ function Login() {
         setErrorMessage("");
 
         navigate('/');
+        window.dispatchEvent(new Event('login-success'));
       })
       .catch((err) => {
         setErrorMessage(err.message);
