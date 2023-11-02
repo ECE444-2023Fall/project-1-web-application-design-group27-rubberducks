@@ -12,6 +12,19 @@ function Events() {
   const [events, setEvents] = useState([]);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
+
+  /* Configure Fetch */
+  const [fName, setfName] = useState(null)
+  const [fLoc, setfLoc] = useState(null)
+  const [fTimeS, setfTimeS] = useState(null)
+  const [fTimeE, setfTimeE] = useState(null)
+  const [fDateS, setfDateS] = useState(null)
+  const [fDateE, setfDateE] = useState(null)
+  const [fCap, setfCap] = useState(null)
+  const [fCapR, setfCapR] = useState(null) // set true to disable filled events
+  const [fReo, setfReo] = useState(null)
+  const [fUid, setfUid] = useState(null)
+
   var spin_lock = false; // access control
 
   const loadEvents = async (page) => {
@@ -129,7 +142,8 @@ const handleStarClick = (clickedEvent) => {
     <div className="eventsPage">
       <span className="eventTagDrawer">
         <TagDrawerButton onTagSelection={handleTagsSelected} />
-        <button onClick={() => loadEvents(page)}>Load More Events</button>
+        <button onClick={() => loadEvents(page)}>Reload Current Offset (Inf Scroll Debug)</button>
+        <button onClick={() => handleTagsSelected(selectedTags)}>Reload Tags Selection (Filter Debug)</button>
       </span>
       <EventsGrid events={events} onStarClick={handleStarClick}/>
     </div>

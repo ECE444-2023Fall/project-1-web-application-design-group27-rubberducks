@@ -7,8 +7,8 @@ function EventsGrid({ events, onStarClick }) {
     const hasDuplicates = eventIds.some((id, index) => eventIds.indexOf(id) !== index);
 
     if (hasDuplicates) {
-    console.warn("Duplicate keys detected:", events);
-}
+        console.warn("Duplicate keys detected:", events);
+    }
     return (
         <div className="eventsGrid">
             {events.map(event => (

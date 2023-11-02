@@ -76,7 +76,8 @@ class Events(Resource):
         limit = int(request.args.get('limit', 20))
         offset = (page - 1) * limit
 
-        """ # Search filtering
+        """
+        # Search filtering
         order = str(request.args.get('ord', 0)) # order
         name = str(request.args.get('name')) # name
         location = str(request.args.get('loc')) # location
@@ -85,22 +86,29 @@ class Events(Resource):
         date_start = str(request.args.get('ds')) # start date
         date_end = str(request.args.get('de')) # end date
         capacity = str(request.args.get('cap')) # capacity
-        cap_r = str(request.args.get('cap_r')) # capacity reached
-        reoccuring = str(request.args.get('re')) # reoccuring"""
-        tags_filter = request.args.get('tags') # tags
+        cap_r = str(request.args.get('cap_r')) # capacity reached, 1 to limit
+        reoccuring = str(request.args.get('re')) # reoccuring
+        uid = str(request.args.get('uid')) # user_id, TODO: implement auth checks for this
+        """
+        tags_filter = str(request.args.get('tags')) # tags
+        
         
         #Query config
         query = Event.query
 
-        """#name
+        """
+        #name
         if name:
             query = query.filter(Event.name.ilike(f"%{name}%"))
         
         #location
         if location:
-            query = query.filter(Event.location.ilike(f"%{location}"))"""
+            query = query.filter(Event.location.ilike(f"%{location}"))
+        
+        """
 
-        """if time_start: # compare time_start < Event.time
+        """
+        if time_start: # compare time_start < Event.time
             #TODO
             if time_end: # compare time_end > Event.end
                 #TODO
@@ -112,7 +120,8 @@ class Events(Resource):
 
         if cap_r: # compare Event.attendees.length < Event.capacity
 
-        if reoccuring:""" #compare Event.reoccuring == reoccuring
+        if reoccuring: #compare Event.reoccuring == reoccuring
+            """ 
 
 
         #tags
@@ -121,7 +130,8 @@ class Events(Resource):
             tags_filter = [int(tag) for tag in tags_filter.split(',')]
             query = query.filter(cast(Event.tags, ARRAY(Integer)).contains(tags_filter))
 
-        """# order
+        """
+        # order
         if order == 0:
             query = query.order_by(Event.date.asc()) # Date ascending
         elif order == 1:
@@ -133,7 +143,8 @@ class Events(Resource):
         elif order == 4:
             query = query.order_by(Event.date.dsc()) # Attendees ascending
         elif order == 5:
-            query = query.order_by(Event.date.dsc()) # Attendees descending"""
+            query = query.order_by(Event.date.dsc()) # Attendees descending
+        """
 
         events = query.order_by(Event.date.asc()).offset(offset).limit(limit).all()
         return events, 200
