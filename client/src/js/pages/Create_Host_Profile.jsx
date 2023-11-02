@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "../../css/components/App.css";
 import "../../css/pages/Create_Host_Profile.css";
 
@@ -97,7 +98,7 @@ function CreateHostProfile() {
                     console.log("successfully updated account orgs");
                     console.log(data3);
                     // Redirect to the created page or handle as needed
-                    navigate("/host_profile");
+                    navigate(`/host_profile/${data.hid}`);
 
                     setEmail("");
                     setBio("");
