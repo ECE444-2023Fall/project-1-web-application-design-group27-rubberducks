@@ -178,6 +178,22 @@ class Event(db.Model):
         self.tags = tags
         db.session.commit()
 
+    def serialize(self):
+        return {
+            "eid": self.eid,
+            "name": self.name,
+            "description": self.description,
+            "location": self.location,
+            "date": self.date,
+            "time": self.time,
+            "capacity": self.capacity,
+            "reoccuring": self.reoccuring,
+            "date_created": self.date_created,
+            "attendees": self.attendees,
+            "owner": self.owner,
+            "tags": self.tags
+        }
+
 """
 class Event_tags:
     etid: int primary key

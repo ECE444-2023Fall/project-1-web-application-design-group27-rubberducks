@@ -51,7 +51,7 @@ filters_model = events_ns.model(
 )
 
 
-@events_ns.route("/")
+@events_ns.route("/all")
 class Events(Resource):
     @events_ns.marshal_list_with(event_model)
     def get(self):
@@ -64,6 +64,16 @@ class Events(Resource):
         event = Event(**events_ns.payload)
         event.save()
         return event, 201"""
+    
+@events_ns.route("/")
+class Events(Resource):
+    @events_ns.marshal_list_with(event_model)
+    def get(self):
+        page = int(request.args.get('page', 1))
+        limit = int(request.args.get('limit', 20))
+        offset = (page - 1) * limit
+        events = Event.query.offset(offset).limit(limit).all()
+        return events, 200
 
 
 @events_ns.route("/<int:eid>")

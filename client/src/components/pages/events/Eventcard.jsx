@@ -15,8 +15,6 @@ function EventCard({event, onStarClick}) {
   } else if (eventDate >= threeDaysAgo && eventDate <= currentDate){
     label = "New";
   }
-
-  console.log(event.reoccuring);
   return (
     <li title = {`View ${event.name}`} className="eventCard">
         <Link className="eventLink" to={`/events/${event.eid}`}>
@@ -27,7 +25,7 @@ function EventCard({event, onStarClick}) {
               alt="Event Image"
               className="eventImg"
             />
-            {event.reoccuring && (
+            {event.reoccuring > 0 && (
               <span title="Reocurring" className="redoIconSpan">
                 <FaRedo className="redoIcon" />
               </span>
