@@ -6,26 +6,38 @@ import TagDrawerButton from './TagDrawerButton';
 
 function Events() {
 
+  /* Configure Tags */
+  
+  const [selectedTags, setSelectedTags] = useState([]);
   const [events, setEvents] = useState([]);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
+  var spin_lock = false; // access control
 
   const loadEvents = async (page) => {
-    setLoading(true);
-    try {
-      const response = await fetch(`api/events/?page=${page}&limit=20`);
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
+    const tagQuery = selectedTags.join(',');
+    if (!spin_lock && !loading) {
+      spin_lock = true;
+      //console.log('loadEvents called with page:', page);
+      setLoading(true);
+      try {
+        const response = await fetch(`api/events/?page=${page}&limit=20&tags=${tagQuery}`);
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        const data = await response.json();
+        //console.log("Fetched data:", data);
+        //console.log("Prev data", events);
+        if (data.length) {
+          setEvents((prevEvents) => [...prevEvents, ...data]);
+          setPage(prevPage => prevPage + 1);
+        }
+      } catch (error) {
+        console.error("Failed to fetch events:", error);
+      } finally {
+        setLoading(false);
+        spin_lock = false;
       }
-      const data = await response.json();
-      console.log("Fetched data:", data);
-      console.log("Prev data", events);
-      setEvents((prevEvents) => [...prevEvents, ...data]);
-      setPage(page + 1);
-    } catch (error) {
-      console.error("Failed to fetch events:", error);
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -33,12 +45,14 @@ function Events() {
     loadEvents(1);
   }, []);
 
+  
   useEffect(() => {
     const handleScroll = () => {
       if (window.innerHeight + document.documentElement.scrollTop !== document.documentElement.offsetHeight || loading) {
         return;
+      } else {
+        loadEvents(page);
       }
-      loadEvents(page);
     };
 
     window.addEventListener('scroll', handleScroll);
@@ -46,6 +60,7 @@ function Events() {
       window.removeEventListener('scroll', handleScroll);
     };
   }, [page, loading]);
+  
 
   /* Get all events */
   /*
@@ -68,28 +83,6 @@ function Events() {
     fetchEvents();
 }, []);
   */
-
-  const [tags, setTags] = useState([]);
-  const [selectedTags, setSelectedTags] = useState([]);
-
-  
-  useEffect(() => {
-    async function fetchTags() {
-        try {
-            const response = await fetch("api/events/tags");
-            if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
-            }
-
-            const data = await response.json();
-            setTags(data);
-        } catch (error) {
-            console.error("Failed to fetch tags:", error);
-        }
-    }
-
-    fetchTags();
-  }, []);
   
 
   /*
@@ -119,22 +112,24 @@ const handleFilter = async (filterTags) => {
 };
 */
 
-const handleTagsSelected = (selectedTags) => {
-  // Here, you can use the selectedTags for filtering or other logic.
-  // For instance, calling your handleFilter function.
-  console.log(`Handle tags ${selectedTags}`);
-  // handleFilter(selectedTags);
+const handleTagsSelected = (selection) => {
+  setSelectedTags(selection);
+  setPage(1);
+  setEvents([]);
+  loadEvents(1);
 }
 
 const handleStarClick = (clickedEvent) => {
   /* Favorite logic */
   console.log(`Favorite clicked ${clickedEvent.eid}`);
+  console.log(`SelectedTags Debug`, selectedTags)
 }
 
   return (
     <div className="eventsPage">
       <span className="eventTagDrawer">
         <TagDrawerButton onTagSelection={handleTagsSelected} />
+        <button onClick={() => loadEvents(page)}>Load More Events</button>
       </span>
       <EventsGrid events={events} onStarClick={handleStarClick}/>
     </div>

@@ -1,16 +1,34 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FaSlidersH } from 'react-icons/fa';
-import tagData from './event_tags.json';
 import './TagDrawerButton.css';
 
 function TagDrawerButton({ onTagSelection }) {
+  const [tags, setTags] = useState([]);
+
+  useEffect(() => {
+    async function fetchTags() {
+        try {
+            const response = await fetch("api/events/tags");
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            const data = await response.json();
+            setTags(data);
+        } catch (error) {
+            console.error("Failed to fetch tags:", error);
+        }
+    }
+
+    fetchTags();
+  }, []);
+
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [selectedTags, setSelectedTags] = useState([]);
 
-  const handleTagClick = (tag) => {
-    const newSelection = selectedTags.includes(tag)
-      ? selectedTags.filter(t => t !== tag)
-      : [...selectedTags, tag];
+  const handleTagClick = (etid) => {
+    const newSelection = selectedTags.includes(etid)
+      ? selectedTags.filter(t => t !== etid)
+      : [...selectedTags, etid];
 
     setSelectedTags(newSelection);
     onTagSelection(newSelection);
@@ -24,14 +42,14 @@ function TagDrawerButton({ onTagSelection }) {
 
         {drawerOpen && (
             <div className="tag-drawer">
-                {tagData.tags.map(({ etid, tag, description }) => (
+                {tags.map(({ etid, name, description }) => (
                 <div
-                key={tag}
-                className={`event-tag ${selectedTags.includes(tag) ? 'selected' : ''}`}
-                onClick={() => handleTagClick(tag)}
+                key={etid}
+                className={`event-tag ${selectedTags.includes(etid) ? 'selected' : ''}`}
+                onClick={() => handleTagClick(etid)}
                 title={description}
                 >
-                    {tag}
+                    {name}
                 </div>
                 ))}
             </div>

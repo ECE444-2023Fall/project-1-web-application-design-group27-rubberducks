@@ -1,6 +1,8 @@
 import time
 from datetime import datetime
-from sqlalchemy import text
+from sqlalchemy.dialects.postgresql import ARRAY
+from sqlalchemy.sql.expression import cast
+from sqlalchemy import Integer
 from flask import request
 from flask_restx import Namespace, Resource, fields
 from models import Event, Event_tag
@@ -69,10 +71,71 @@ class Events(Resource):
 class Events(Resource):
     @events_ns.marshal_list_with(event_model)
     def get(self):
+        # Infinite scroll
         page = int(request.args.get('page', 1))
         limit = int(request.args.get('limit', 20))
         offset = (page - 1) * limit
-        events = Event.query.offset(offset).limit(limit).all()
+
+        """ # Search filtering
+        order = str(request.args.get('ord', 0)) # order
+        name = str(request.args.get('name')) # name
+        location = str(request.args.get('loc')) # location
+        time_start = str(request.args.get('ts')) # start time
+        time_end = str(request.args.get('te')) # end time
+        date_start = str(request.args.get('ds')) # start date
+        date_end = str(request.args.get('de')) # end date
+        capacity = str(request.args.get('cap')) # capacity
+        cap_r = str(request.args.get('cap_r')) # capacity reached
+        reoccuring = str(request.args.get('re')) # reoccuring"""
+        tags_filter = request.args.get('tags') # tags
+        
+        #Query config
+        query = Event.query
+
+        """#name
+        if name:
+            query = query.filter(Event.name.ilike(f"%{name}%"))
+        
+        #location
+        if location:
+            query = query.filter(Event.location.ilike(f"%{location}"))"""
+
+        """if time_start:
+            #TODO
+            if time_end:
+                #TODO
+        if date_start:
+
+        if date_end:
+
+        if capacity:
+
+        if cap_r:
+
+        if reoccuring:"""
+
+
+        #tags
+        if tags_filter:
+            print(tags_filter)
+            tags_filter = [int(tag) for tag in tags_filter.split(',')]
+            query = query.filter(cast(Event.tags, ARRAY(Integer)).contains(tags_filter))
+
+        """# order
+        if order == 0:
+            query = query.order_by(Event.date.asc()) # Date ascending
+        elif order == 1:
+            query = query.order_by(Event.date.dsc()) # Date descending
+        elif order == 2:
+            query = query.order_by(Event.date_created.dsc()) # Creation date ascending
+        elif order == 3:
+            query = query.order_by(Event.date_created.dsc()) # Creation date descending
+        elif order == 4:
+            query = query.order_by(Event.date.dsc()) # Attendees ascending
+        elif order == 5:
+            query = query.order_by(Event.date.dsc()) # Attendees descending"""
+
+        events = query.order_by(Event.date.asc()).offset(offset).limit(limit).all()
         return events, 200
 
 
