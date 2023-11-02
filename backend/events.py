@@ -100,19 +100,19 @@ class Events(Resource):
         if location:
             query = query.filter(Event.location.ilike(f"%{location}"))"""
 
-        """if time_start:
+        """if time_start: # compare time_start < Event.time
             #TODO
-            if time_end:
+            if time_end: # compare time_end > Event.end
                 #TODO
-        if date_start:
+        if date_start: # compare date_start < Event.date
 
-        if date_end:
+        if date_end: # compare date_end > Event.date
 
-        if capacity:
+        if capacity: # compare capacity > Event.capacity
 
-        if cap_r:
+        if cap_r: # compare Event.attendees.length < Event.capacity
 
-        if reoccuring:"""
+        if reoccuring:""" #compare Event.reoccuring == reoccuring
 
 
         #tags
