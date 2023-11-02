@@ -19,6 +19,8 @@ import Host_edit from "../pages/host_profile/Host_edit";
 import Host_previous from "../pages/host_profile/Host_previous";
 import Host_upcoming from "../pages/host_profile/Host_upcoming";
 import Create_Event from "../pages/host_profile/Create_Event";
+import Not_Found from "../../js/pages/Not_Found";
+
 
 function App() {
   const [loginEvent, setLoginEvent] = useState(false);
@@ -44,6 +46,7 @@ function App() {
           <Route path="/events" exact Component={Events} />
           <Route path="/clubs" exact Component={Clubs} />
           <Route path="/login" exact Component={Login} />
+          <Route path="/404" exact Component={Not_Found} />
           <Route
             path="/create_host_profile"
             exact

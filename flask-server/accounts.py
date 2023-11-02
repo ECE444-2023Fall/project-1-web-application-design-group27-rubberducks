@@ -1,8 +1,7 @@
-from flask import request, jsonify
+from flask import request
 from flask_restx import Namespace, Resource, fields
 from models import Account
 from flask_jwt_extended import jwt_required
-from werkzeug.security import generate_password_hash
 
 accounts_ns = Namespace("accounts", description="Account operations")
 
@@ -20,14 +19,8 @@ account_model = accounts_ns.model(
 )
 
 
-@accounts_ns.route("/test")
-class Test(Resource):
-    def get(self):
-        return {"message": "test"}, 404
-
 @accounts_ns.route("/")
 class Accounts(Resource):
-    @jwt_required()
     @accounts_ns.marshal_list_with(account_model)
     def get(self):
         return Account.query.all(), 200
@@ -42,7 +35,6 @@ class Accounts(Resource):
 
 @accounts_ns.route("/<int:uid>")
 class AccountById(Resource):
-    @jwt_required()
     @accounts_ns.marshal_with(account_model)
     def get(self, uid):
         return Account.query.get_or_404(uid), 200
@@ -50,7 +42,6 @@ class AccountById(Resource):
     @accounts_ns.expect(account_model)
     @accounts_ns.marshal_with(account_model)
     def put(self, uid):
-        accounts_ns.payload["password"]= generate_password_hash(accounts_ns.payload["password"])
         account = Account.query.get_or_404(uid)
         account.update(**accounts_ns.payload)
         return account, 200
