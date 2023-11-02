@@ -69,7 +69,34 @@ class Host:
     events: list of Event
     owner: Account
 """
+class Message(db.Model):
+    __tablename__ = "messages"
+    msgid = db.Column(db.Integer, primary_key=True)
+    account_id = db.Column(db.Integer, db.ForeignKey("account.uid"), nullable=False)
+    message = db.Column(db.String(255), nullable=False)
+    created_at = db.Column(db.Date, nullable=False)
 
+    def __init__(self, account_id, message, created_at):
+        self.account_id = account_id
+        self.message = message
+        self.created_at = created_at
+
+    def __repr__(self):
+        return f"<Message {self.msgid} {self.account_id} {self.message} {self.created_at}>"
+
+    def save(self):
+        db.session.add(self)
+        db.session.commit()
+
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
+
+    def update(self, account_id, message, created_at):
+        self.account_id = account_id
+        self.message = message
+        self.created_at = created_at
+        db.session.commit()
 
 class Host(db.Model):
     __tablename__ = "host"
