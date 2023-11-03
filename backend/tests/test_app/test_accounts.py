@@ -21,3 +21,7 @@ def test_get_account_by_uid(client, add_account_to_db): #lily li
 def test_put_account_by_uid(client, add_account_to_db, account): #lily li
       response=client.put("/accounts/1", json=account)
       assert response.status_code == 200
+
+def test_get_account_by_email(client, add_account_to_db): #lily li
+      response=client.get("/accounts/test1@example.com")
+      assert response.status_code == 200
