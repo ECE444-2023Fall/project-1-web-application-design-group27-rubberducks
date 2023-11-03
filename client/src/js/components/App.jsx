@@ -19,6 +19,7 @@ import Host_edit from "../pages/host_profile/Host_edit";
 import Host_previous from "../pages/host_profile/Host_previous";
 import Host_upcoming from "../pages/host_profile/Host_upcoming";
 import Create_Event from "../pages/host_profile/Create_Event";
+import UserClubs from "../pages/user_profile/User_Clubs";
 
 function App() {
   const [loginEvent, setLoginEvent] = useState(false);
@@ -52,6 +53,7 @@ function App() {
           <Route path="/profile/previous" element={<Profile_previous />} />
           <Route path="/profile/upcoming" element={<Profile_upcoming />} />
           <Route path="/host_profile/:hid/*" element={<HostProfileRoutes />} />
+          <Route path="/my-clubs" exact Component={UserClubs} />
         </Routes>
       </Router>
     </>
