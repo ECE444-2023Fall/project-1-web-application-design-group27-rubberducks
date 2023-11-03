@@ -7,6 +7,7 @@ import "../../css/components/Button.css";
 
 
 function EventDetails({event}) {
+
   const [button, setButton] = useState(true);
 
   const showButton = () => {
