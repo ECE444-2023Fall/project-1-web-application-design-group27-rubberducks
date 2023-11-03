@@ -47,10 +47,11 @@ class Account(UserMixin, db.Model):
         db.session.delete(self)
         db.session.commit()
 
-    def update(self, name, email, password, events, fav_events, orgs, msgids):
+    def update(self, name, email, events, fav_events, orgs, msgids, password=None):
         self.name = name
         self.email = email
-        self.password = password
+        if password is not None:
+            self.password = password
         self.events = events
         self.fav_events = fav_events
         self.orgs = orgs

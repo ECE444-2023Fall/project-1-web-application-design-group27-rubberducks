@@ -73,7 +73,6 @@ function CreateHostProfile() {
                 const update_account = {
                   name: data2.name,
                   email: data2.email,
-                  password: data2.password,
                   events: data2.events,
                   fav_events: data2.fav_events,
                   orgs: data2.orgs.concat(data.hid),

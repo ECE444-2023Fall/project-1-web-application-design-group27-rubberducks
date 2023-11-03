@@ -49,7 +49,8 @@ class AccountById(Resource):
     @accounts_ns.expect(account_model)
     @accounts_ns.marshal_with(account_model)
     def put(self, uid):
-        accounts_ns.payload["password"]= generate_password_hash(accounts_ns.payload["password"])
+        if "password" in accounts_ns.payload:
+            accounts_ns.payload["password"]= generate_password_hash(accounts_ns.payload["password"])
         account = Account.query.get_or_404(uid)
         account.update(**accounts_ns.payload)
         return account, 200
