@@ -20,11 +20,12 @@ function EventDetails({event}) {
   return (
     <>
       <div className="event--header-pic">
+        <img></img>
           <div className="event--header-bar">
             <h1 className="event--header-text">{event.name}</h1>
             <ul className="event--subtitle">{event.host}</ul>
           </div>
-        </div>
+      </div>
       <div className="event">
         <div className="event--container">
           <div className="event--column-wrapper">
