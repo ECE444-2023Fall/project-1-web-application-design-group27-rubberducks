@@ -104,6 +104,7 @@ def add_message_to_db(app, add_account_to_db):
             message = "This is a test message",
             created_at = "2023-11-02",
             read = False,
+            msg_type = 1,
             )
         db.session.add(message)
         db.session.commit()
@@ -140,6 +141,7 @@ def add_multiple_messages_to_db(app):
             message = "1st msg for account 1",
             created_at = "2023-11-01",
             read = False,
+            msg_type = 1,
             )
         db.session.add(message1)
         db.session.commit()
@@ -151,6 +153,7 @@ def add_multiple_messages_to_db(app):
             message = "2nd msg for account 1",
             created_at = "2023-11-03 ",
             read = False,
+            msg_type = 1,
             )
         db.session.add(message2)
         db.session.commit()
@@ -160,6 +163,7 @@ def add_multiple_messages_to_db(app):
             message = "2nd msg for account 1",
             created_at = "2023-11-02 ",
             read = False,
+            msg_type = 1,
             )
         db.session.add(message3)
         db.session.commit()
@@ -169,6 +173,7 @@ def add_multiple_messages_to_db(app):
             message = "1st msg for account 2",
             created_at = "2023-11-02",
             read = False,
+            msg_type = 1,
             )
         db.session.add(message4)
         db.session.commit()
@@ -184,6 +189,7 @@ def account():
             "fav_events": [],
             "orgs": [],
             "msgids": [],
+
         })
 
 @pytest.fixture
@@ -194,6 +200,7 @@ def sample_message_data():
         'message': 'This is a test message', 
         'created_at': 'Thu, 02 Nov 2023 00:00:00 -0000',
         'read': False, 
+        'msg_type': 1,
         })
 
 @pytest.fixture

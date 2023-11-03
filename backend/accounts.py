@@ -58,3 +58,10 @@ class AccountById(Resource):
         account = Account.query.get_or_404(uid)
         account.delete()
         return {"message": "account deleted"}, 200
+
+@accounts_ns.route("/<string:email>")
+class AccountByEmail(Resource):
+    @accounts_ns.marshal_with(account_model)
+    def get(self, email):
+        account = Account.query.filter_by(email=email).first_or_404()
+        return account, 200

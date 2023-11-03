@@ -80,11 +80,13 @@ class Message(db.Model):
     account_id = db.Column(db.Integer, db.ForeignKey("account.uid"), nullable=False)
     message = db.Column(db.String(255), nullable=False)
     created_at = db.Column(db.Date, nullable=False)
-    read = db.Column(db.Boolean, default=False, nullable=False)  # New read field
+    read = db.Column(db.Boolean, default=False, nullable=False)
+    msg_type =  db.Column(db.Integer, nullable=False)
 
-    def __init__(self, account_id, message, created_at=None, read=False):
+    def __init__(self, account_id, message, msg_type, created_at=None, read=False):
         self.account_id = account_id
         self.message = message
+        self.msg_type = msg_type
         if created_at is None:
             self.created_at = datetime.now()
         else: 
@@ -92,7 +94,7 @@ class Message(db.Model):
         self.read = read  # Initialize the read field
 
     def __repr__(self):
-        return f"<Message {self.msgid} {self.account_id} {self.message} {self.created_at}>"
+        return f"<Message {self.msgid} {self.account_id} {self.message} {self.created_at} {self.msg_type}>"
 
     def save(self):
         db.session.add(self)
@@ -102,11 +104,13 @@ class Message(db.Model):
         db.session.delete(self)
         db.session.commit()
 
-    def update(self, account_id, message, created_at, read):
+    def update(self, account_id, message, created_at, read, msg_type):
         self.account_id = account_id
         self.message = message
         self.created_at = created_at
         self.read = read  # Update the read field
+        self.msg_type = msg_type
+
         db.session.commit()
 
 class Host(db.Model):

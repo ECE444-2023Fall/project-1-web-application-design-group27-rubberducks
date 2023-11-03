@@ -13,6 +13,10 @@ messages_model = messages_ns.model(
         "message": fields.String,
         "created_at": fields.DateTime(dt_format="rfc822"),
         "read": fields.Boolean,
+        # 1: event-notifcation
+        # 2: club-notification
+        # 3: transfer-host-profile
+        "msg_type": fields.Integer 
     },
 )
 
