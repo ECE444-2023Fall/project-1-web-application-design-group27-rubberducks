@@ -94,7 +94,7 @@ class Message(db.Model):
         self.read = read  # Initialize the read field
 
     def __repr__(self):
-        return f"<Message {self.msgid} {self.account_id} {self.message} {self.created_at} {self.msg_type}>"
+        return f"<Message {self.msgid} {self.account_id} {self.message} {self.created_at} {self.read} {self.msg_type}>"
 
     def save(self):
         db.session.add(self)
