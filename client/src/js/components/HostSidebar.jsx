@@ -1,9 +1,12 @@
 import React from "react";
 import { MdEdit } from "react-icons/md";
 import "../../css/components/Sidebar.css";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 function HostSidebar(props) {
+  const location = useLocation();
+  const isHostTransferPage = location.pathname.includes("/transfer");
+
   return (
     <div className="sidebar">
       <img src="../../../images/placeholder.png" alt="Profile Picture" />
@@ -19,8 +22,14 @@ function HostSidebar(props) {
           </div>
         </div>
         <div className="sidebar--user--email">{props.email}</div>
+        {isHostTransferPage ? null : (
+          <div className="host--transfer--button">
+            <Link to={`/host_profile/${props.hid}/transfer`}>
+              <button className="transfer-button">Transfer Ownership</button>
+            </Link>
+          </div>
+        )}
       </div>
-
       <div className="host--info">
         <div className="host--bio">
           <h2 className="sidebar--heading">Bio</h2>
