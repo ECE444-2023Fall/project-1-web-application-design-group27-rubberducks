@@ -12,6 +12,7 @@ messages_model = messages_ns.model(
         "account_id": fields.Integer,
         "message": fields.String,
         "created_at": fields.DateTime(dt_format="rfc822"),
+        "read": fields.Boolean,
     },
 )
 

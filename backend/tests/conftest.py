@@ -36,6 +36,7 @@ def add_host_to_db(app):
             events = [],
             fav_events= [],
             orgs = [],
+            msgids = [],
         )
         db.session.add(account1)
         db.session.commit()
@@ -75,18 +76,6 @@ def add_event_to_db(app, add_host_to_db):
 
         return event1  
 
-
-@pytest.fixture
-def account():
-    return ({
-            "name": "Test",
-            "email": "test@utoronto.ca",
-            "password": "test",
-            "events": [],
-            "fav_events": [],
-            "orgs": [],
-        })
-
 @pytest.fixture
 def add_account_to_db(app):
     with app.app_context():
@@ -97,6 +86,7 @@ def add_account_to_db(app):
             events = [],
             fav_events= [],
             orgs = [],
+            msgids = [],
         )
         db.session.add(account1)
         db.session.commit()
@@ -112,7 +102,8 @@ def add_message_to_db(app, add_account_to_db):
         message = Message(
             account_id = account.uid,
             message = "This is a test message",
-            created_at = "2023-11-02"
+            created_at = "2023-11-02",
+            read = False,
             )
         db.session.add(message)
         db.session.commit()
@@ -127,6 +118,7 @@ def add_multiple_messages_to_db(app):
             events = [],
             fav_events= [],
             orgs = [],
+            msgids = [],
         )
         db.session.add(account1)
         db.session.commit()
@@ -138,6 +130,7 @@ def add_multiple_messages_to_db(app):
             events = [],
             fav_events= [],
             orgs = [],
+            msgids = [],
         )
         db.session.add(account2)
         db.session.commit()
@@ -145,7 +138,8 @@ def add_multiple_messages_to_db(app):
         message1 = Message(
             account_id = account1.uid,
             message = "1st msg for account 1",
-            created_at = "2023-11-01"
+            created_at = "2023-11-01",
+            read = False,
             )
         db.session.add(message1)
         db.session.commit()
@@ -155,7 +149,8 @@ def add_multiple_messages_to_db(app):
         message2 = Message( 
             account_id = account1.uid,
             message = "2nd msg for account 1",
-            created_at = "2023-11-03 "
+            created_at = "2023-11-03 ",
+            read = False,
             )
         db.session.add(message2)
         db.session.commit()
@@ -163,7 +158,8 @@ def add_multiple_messages_to_db(app):
         message3 = Message(
             account_id = account1.uid,
             message = "2nd msg for account 1",
-            created_at = "2023-11-02 "
+            created_at = "2023-11-02 ",
+            read = False,
             )
         db.session.add(message3)
         db.session.commit()
@@ -171,11 +167,24 @@ def add_multiple_messages_to_db(app):
         message4 = Message(
             account_id = account2.uid,
             message = "1st msg for account 2",
-            created_at = "2023-11-02"
+            created_at = "2023-11-02",
+            read = False,
             )
         db.session.add(message4)
         db.session.commit()
 
+
+@pytest.fixture
+def account():
+    return ({
+            "name": "Test",
+            "email": "test@utoronto.ca",
+            "password": "test",
+            "events": [],
+            "fav_events": [],
+            "orgs": [],
+            "msgids": [],
+        })
 
 @pytest.fixture
 def sample_message_data():
@@ -183,7 +192,8 @@ def sample_message_data():
         'msgid': 1,
         'account_id': 1, 
         'message': 'This is a test message', 
-        'created_at': 'Thu, 02 Nov 2023 00:00:00 -0000', 
+        'created_at': 'Thu, 02 Nov 2023 00:00:00 -0000',
+        'read': False, 
         })
 
 @pytest.fixture

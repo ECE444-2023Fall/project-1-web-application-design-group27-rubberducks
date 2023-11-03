@@ -23,17 +23,20 @@ class Account(UserMixin, db.Model):
     events = db.Column(db.ARRAY(db.Integer))
     fav_events = db.Column(db.ARRAY(db.Integer))
     orgs = db.Column(db.ARRAY(db.Integer))
+    msgids = db.Column(db.ARRAY(db.Integer))
 
-    def __init__(self, name, email, password, events, fav_events, orgs):
+    def __init__(self, name, email, password, events, fav_events, orgs, msgids):
         self.name = name
         self.email = email
         self.password = password
         self.events = events
         self.fav_events = fav_events
         self.orgs = orgs
+        self.msgids = msgids
+
 
     def __repr__(self):
-        return f"<Account {self.uid} {self.name} {self.email} {self.password} {self.events} {self.fav_events} {self.orgs}>"
+        return f"<Account {self.uid} {self.name} {self.email} {self.password} {self.events} {self.fav_events} {self.orgs} {self.msgids}>"
 
     def save(self):
         db.session.add(self)
@@ -43,13 +46,14 @@ class Account(UserMixin, db.Model):
         db.session.delete(self)
         db.session.commit()
 
-    def update(self, name, email, password, events, fav_events, orgs):
+    def update(self, name, email, password, events, fav_events, orgs, msgids):
         self.name = name
         self.email = email
         self.password = password
         self.events = events
         self.fav_events = fav_events
         self.orgs = orgs
+        self.msgids = msgids
         db.session.commit()
     
     @property
@@ -75,11 +79,13 @@ class Message(db.Model):
     account_id = db.Column(db.Integer, db.ForeignKey("account.uid"), nullable=False)
     message = db.Column(db.String(255), nullable=False)
     created_at = db.Column(db.Date, nullable=False)
+    read = db.Column(db.Boolean, default=False, nullable=False)  # New read field
 
-    def __init__(self, account_id, message, created_at):
+    def __init__(self, account_id, message, created_at, read=False):
         self.account_id = account_id
         self.message = message
         self.created_at = created_at
+        self.read = read  # Initialize the read field
 
     def __repr__(self):
         return f"<Message {self.msgid} {self.account_id} {self.message} {self.created_at}>"
@@ -92,10 +98,11 @@ class Message(db.Model):
         db.session.delete(self)
         db.session.commit()
 
-    def update(self, account_id, message, created_at):
+    def update(self, account_id, message, created_at, read):
         self.account_id = account_id
         self.message = message
         self.created_at = created_at
+        self.read = read  # Update the read field
         db.session.commit()
 
 class Host(db.Model):
