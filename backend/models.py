@@ -1,6 +1,7 @@
 from exts import db
 from sqlalchemy.dialects.postgresql import JSON
 from flask_login import UserMixin
+from datetime import datetime
 
 """
 class Account:
@@ -81,10 +82,13 @@ class Message(db.Model):
     created_at = db.Column(db.Date, nullable=False)
     read = db.Column(db.Boolean, default=False, nullable=False)  # New read field
 
-    def __init__(self, account_id, message, created_at, read=False):
+    def __init__(self, account_id, message, created_at=None, read=False):
         self.account_id = account_id
         self.message = message
-        self.created_at = created_at
+        if created_at is None:
+            self.created_at = datetime.now()
+        else: 
+            self.created_at = created_at
         self.read = read  # Initialize the read field
 
     def __repr__(self):
