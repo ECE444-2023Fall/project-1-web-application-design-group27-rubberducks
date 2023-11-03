@@ -16,9 +16,11 @@ import Profile_previous from "../pages/user_profile/Profile_previous";
 import Profile_upcoming from "../pages/user_profile/Profile_upcoming";
 import Host_profile from "../pages/host_profile/Host_Profile";
 import Host_edit from "../pages/host_profile/Host_edit";
+import Host_transfer_send from "../pages/host_profile/Host_Transfer_Send";
 import Host_previous from "../pages/host_profile/Host_previous";
 import Host_upcoming from "../pages/host_profile/Host_upcoming";
 import Create_Event from "../pages/host_profile/Create_Event";
+import InboxPage from "../pages/Inbox";
 
 function App() {
   const [loginEvent, setLoginEvent] = useState(false);
@@ -46,6 +48,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/create_host_profile" element={<Create_Host_Profile />} />
           <Route path="/signup" element={<SignUp />} />
+          <Route path="/inbox" element={<InboxPage />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/profile/edit" element={<Profile_edit />} />
           <Route path="/profile/favourite" element={<Profile_favourites />} />
@@ -64,6 +67,7 @@ function HostProfileRoutes() {
     <Routes>
       <Route path="/" element={<Host_profile hid={hid} />} />
       <Route path="/edit" element={<Host_edit hid={hid} />} />
+      <Route path="/transfer" element={<Host_transfer_send hid={hid} />} />
       <Route path="/create_event" element={<Create_Event hid={hid} />} />
       <Route path="/previous" element={<Host_previous hid={hid} />} />
       <Route path="/upcoming" element={<Host_upcoming hid={hid} />} />
