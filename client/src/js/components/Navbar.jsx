@@ -6,7 +6,7 @@ import "../../css/components/Navbar.css";
 
 function Navbar() {
   const [click, setClick] = useState(false);
-  const [dropdownShow, setDropdownShow] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [button, setButton] = useState(true);
   const [buttonText, setButtonText] = useState("Login");
@@ -33,20 +33,20 @@ function Navbar() {
     }
   };
 
-  const showDropdown = () =>{
+  const loggedIn = () =>{
     const user = JSON.parse(localStorage.getItem('user'));
       if (user) {
-        setDropdownShow(true);
+        setIsLoggedIn(true);
         closeMobileMenu();
       }
       else{
-        setDropdownShow(false);
+        setIsLoggedIn(false);
       }
   }
 
   useEffect(() => {
     showButton();
-    showDropdown();
+    loggedIn();
   }, []);
 
   window.addEventListener("resize", showButton);
@@ -86,7 +86,7 @@ function Navbar() {
               Clubs
             </Link>
           </li>
-          {dropdownShow && (
+          {isLoggedIn && (
           <li className={`nav-item ${dropdownOpen ? "active" : ""}`}>
             <div className="nav-links" onClick={toggleDropdown}>
               Account <RiArrowDropDownFill />
@@ -111,6 +111,13 @@ function Navbar() {
                 </Link>
               </li>
             </ul>
+          </li>
+          )}
+          {isLoggedIn && (
+          <li className="nav-item">
+            <Link to="/inbox" className="nav-links" onClick={closeMobileMenu}>
+              Inbox
+            </Link>
           </li>
           )}
           <li className="nav-item">
