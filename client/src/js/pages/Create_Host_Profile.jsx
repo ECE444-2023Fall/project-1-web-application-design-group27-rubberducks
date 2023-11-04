@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../../css/components/App.css";
 import "../../css/pages/Create_Host_Profile.css";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 
 function CreateHostProfile() {
   const [club_name, setClubName] = useState("");
