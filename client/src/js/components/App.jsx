@@ -5,6 +5,7 @@ import Footer from "./Footer";
 import { BrowserRouter as Router, Routes, Route, Outlet, useParams } from "react-router-dom";
 import Home from "../pages/Home";
 import Events from "../pages/Events";
+import EventDetailsPage from "../pages/EventDetails";
 import Clubs from "../pages/Clubs";
 import Login from "../pages/Login";
 import Create_Host_Profile from "../pages/Create_Host_Profile";
