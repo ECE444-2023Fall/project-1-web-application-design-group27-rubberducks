@@ -17,6 +17,7 @@ import Profile_upcoming from "../pages/user_profile/Profile_upcoming";
 import Host_profile from "../pages/host_profile/Host_Profile";
 import Host_edit from "../pages/host_profile/Host_edit";
 import Host_transfer_send from "../pages/host_profile/Host_Transfer_Send";
+import Host_transfer_Recieve from "../pages/host_profile/Host_Transfer_Recieve";
 import Host_previous from "../pages/host_profile/Host_previous";
 import Host_upcoming from "../pages/host_profile/Host_upcoming";
 import Create_Event from "../pages/host_profile/Create_Event";
@@ -55,6 +56,7 @@ function App() {
           <Route path="/profile/previous" element={<Profile_previous />} />
           <Route path="/profile/upcoming" element={<Profile_upcoming />} />
           <Route path="/host_profile/:hid/*" element={<HostProfileRoutes />} />
+          <Route path="/transfer_recieve/:hid/" element={<Host_transfer_Recieve/>} />
         </Routes>
       </Router>
     </>
@@ -74,5 +76,7 @@ function HostProfileRoutes() {
     </Routes>
   );
 }
+
+
 
 export default App;

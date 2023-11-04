@@ -44,7 +44,7 @@ function Host_transfer_send({ hid }) {
       .then((recieving_account) => {
         const request_host_transfer = {
           account_id: recieving_account.uid,
-          message: JSON.stringify({ request: "host transfer", hid: hid, sender: data.owner }),
+          message: `[Club Transfer Request]: ${name} is requesting to transfer ownership to you. id: ${hid}`,
           msg_type: 3,
         };
 
