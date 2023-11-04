@@ -14,9 +14,10 @@ class s3Upload(Resource):
             f = request.files['file']
             type = request.form['type']
             id = request.form['id']
+            file_name = secure_filename(f.filename)
             path = os.path.join("uploads",type, secure_filename(f.filename))
             f.save(path)
-            upload_file(f"uploads/{type}/{f.filename}", Config.BUCKET)
+            get_client().upload_file(f"uploads/{type}/{f.filename}", Config.BUCKET, file_name)
             return {"message": "file uploaded", "path":f"{path}"}, 200
         
 @s3_ns.route("/download", methods=["GET"])
@@ -26,14 +27,6 @@ class s3Download(Resource):
             path = request.args.get('path')
             get_client().download_file(Config.BUCKET, path, str(path))
             return {"message": f"file saved to {path}"}, 200
-
-
-    
-def upload_file(file_name, bucket):
-    object_name = file_name
-    s3_client = boto3.client('s3')
-    response = s3_client.upload_file(file_name, bucket, object_name)
-    return response
 
 def get_client():
     return boto3.client(
