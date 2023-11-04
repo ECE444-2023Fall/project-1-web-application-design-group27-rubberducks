@@ -5,6 +5,7 @@ import Footer from "./Footer";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "../pages/Home";
 import Events from "../pages/Events";
+import EventDetailsPage from "../pages/EventDetails";
 import Clubs from "../pages/Clubs";
 import Login from "../pages/Login";
 import Create_Host_Profile from "../pages/Create_Host_Profile";
@@ -42,6 +43,7 @@ function App() {
         <Routes>
           <Route path="/" exact Component={Home} />
           <Route path="/events" exact Component={Events} />
+          <Route path="/events/eventdetails" exact Component={EventDetailsPage} />
           <Route path="/clubs" exact Component={Clubs} />
           <Route path="/login" exact Component={Login} />
           <Route
