@@ -13,11 +13,9 @@ class s3Upload(Resource):
         if request.method == "POST":
             f = request.files['file']
             type = request.form['type']
-            id = request.form['id']
-            file_name = secure_filename(f.filename)
             path = os.path.join("uploads",type, secure_filename(f.filename))
             f.save(path)
-            get_client().upload_file(f"uploads/{type}/{f.filename}", Config.BUCKET, file_name)
+            get_client().upload_file(f"uploads/{type}/{f.filename}", Config.BUCKET, path)
             return {"message": "file uploaded", "path":f"{path}"}, 200
         
 @s3_ns.route("/download", methods=["GET"])
