@@ -36,8 +36,23 @@
   position: sticky;
 }
 
+.button-group {
+  display: flex; /* Use flex layout */
+  justify-content: space-evenly; /* Place buttons at each end of the container */
+}
+
 .button_event {
-  background: #002452 !important;
+  background: #002452;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  max-width: 20%;
+}
+
+.cancel-button {
+  background: red;
   color: #fff;
   padding: 10px 20px;
   border: none;
@@ -77,6 +92,20 @@
 
 .form_label_oneline {
   margin-right: 10px;
+}
+
+.time-input-container {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.time-input {
+  width: 60px;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  text-align: center;
 }
 
 @media screen and (min-width: 768px) {
