@@ -140,7 +140,7 @@ function SignUp() {
               Signup successful!
             </p>
           )}
-          <button type="submit">Sign Up</button>
+          <button type="submit" class="btn--login">Sign Up</button>
           <div className="signup-option">
             <span>or</span>
             <a href="/login">Log In</a>

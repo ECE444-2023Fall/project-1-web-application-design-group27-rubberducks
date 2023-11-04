@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "../../css/components/App.css";
 import "../../css/pages/Create_Host_Profile.css";
+import { useNavigate } from "react-router-dom";
 
 function CreateHostProfile() {
   const [club_name, setClubName] = useState("");
@@ -8,7 +9,7 @@ function CreateHostProfile() {
   const [bio, setBio] = useState("");
   const [profilePhoto, setProfilePhoto] = useState(null);
   const [errorMessage, setErrorMessage] = useState("");
-  const navigate = useNavigate();
+  const navigate = useNavigate;
 
   const handleProfilePhotoChange = (e) => {
     const file = e.target.files[0];
