@@ -16,8 +16,10 @@ function convertTimetoString(hour, minute){
 export default function Create_Event({hid}) {
   const [name, setEventName] = useState("");
   const [date, setDate] = useState(new Date());
-  const [hour, setHour] = useState(0);
-  const [minute, setMinute] = useState(0);
+  const [hour1, setHour1] = useState(0);
+  const [minute1, setMinute1] = useState(0);
+  const [hour2, setHour2] = useState(0);
+  const [minute2, setMinute2] = useState(0);
   const [location, setLocation] = useState("");
   const [description, setDescription] = useState("");
   const [capacity, setCapacity] = useState(0);
@@ -66,7 +68,8 @@ export default function Create_Event({hid}) {
       description: description,
       location: location,
       date: date,
-      time: convertTimetoString(hour, minute),
+      start_time: convertTimetoString(hour1, minute1),
+      end_time: convertTimetoString(hour2, minute2),
       capacity: capacity,
       reoccuring: reoccuring,
       date_created: dateCreated,
@@ -170,15 +173,15 @@ export default function Create_Event({hid}) {
           </div>
 
           <div className="form-group">
-            <label htmlFor="time">Time:</label>
+            <label htmlFor="start_time">Start Time:</label>
             <div className="time-input-container">
             <input
               type="number"
               className="time-input"
               min="0"
               max="23"
-              value={hour}
-              onChange={(e) => setHour(e.target.value)}
+              value={hour1}
+              onChange={(e) => setHour1(e.target.value)}
             />
             <span>:</span>
             <input
@@ -186,8 +189,31 @@ export default function Create_Event({hid}) {
               className="time-input"
               min="0"
               max="59"
-              value={minute}
-              onChange={(e) => setMinute(e.target.value)}
+              value={minute1}
+              onChange={(e) => setMinute1(e.target.value)}
+            />
+            </div>
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="end_time">End Time:</label>
+            <div className="time-input-container">
+            <input
+              type="number"
+              className="time-input"
+              min="0"
+              max="23"
+              value={hour2}
+              onChange={(e) => setHour2(e.target.value)}
+            />
+            <span>:</span>
+            <input
+              type="number"
+              className="time-input"
+              min="0"
+              max="59"
+              value={minute2}
+              onChange={(e) => setMinute2(e.target.value)}
             />
             </div>
           </div>

@@ -156,7 +156,8 @@ class Event:
     name: str
     location: str
     description: str
-    time: time
+    start_time: time
+    end_time
     date: date
     capacity: int
     attendees: list of Account
@@ -173,7 +174,8 @@ class Event(db.Model):
     location = db.Column(db.String(50), nullable=False)
     description = db.Column(db.String(50), nullable=False)
     date = db.Column(db.Date, nullable=False)
-    time = db.Column(db.Time, nullable=False)
+    start_time = db.Column(db.Time, nullable=False)
+    end_time = db.Column(db.Time, nullable=False)
     capacity = db.Column(db.Integer, nullable=False)
     attendees = db.Column(db.ARRAY(db.Integer))
     reoccuring = db.Column(db.Integer, nullable=False)
@@ -181,12 +183,13 @@ class Event(db.Model):
     owner = db.Column(db.Integer, db.ForeignKey("host.hid"), nullable=False)
     tags = db.Column(db.ARRAY(db.Integer))
 
-    def __init__(self, name, location, description, date, time, capacity, attendees, reoccuring, date_created, owner, tags):
+    def __init__(self, name, location, description, date, start_time, end_time, capacity, attendees, reoccuring, date_created, owner, tags):
         self.name = name
         self.location = location
         self.description = description
         self.date = date
-        self.time = time
+        self.start_time = start_time
+        self.end_time = end_time
         self.capacity = capacity
         self.attendees = attendees
         self.reoccuring = reoccuring
@@ -195,7 +198,7 @@ class Event(db.Model):
         self.tags = tags
 
     def __repr__(self):
-        return f"<Event {self.eid} {self.name} {self.location} {self.description} {self.date} {self.time} {self.capacity} {self.attendees} {self.reoccuring} {self.date_created} {self.owner} {self.tags}>"
+        return f"<Event {self.eid} {self.name} {self.location} {self.description} {self.date} {self.start_time} {self.end_time} {self.capacity} {self.attendees} {self.reoccuring} {self.date_created} {self.owner} {self.tags}>"
 
     def save(self):
         db.session.add(self)
@@ -205,13 +208,14 @@ class Event(db.Model):
         db.session.delete(self)
         db.session.commit()
 
-    def update(self, name, location, description, date, time, capacity, attendees, reoccuring, date_created, owner, tags):
+    def update(self, name, location, description, date, start_time, end_time, capacity, attendees, reoccuring, date_created, owner, tags):
         self.name = name
 
         self.location = location
         self.description = description
         self.date = date
-        self.time = time
+        self.start_time = start_time
+        self.end_time = end_time
         self.capacity = capacity
         self.attendees = attendees
         self.reoccuring = reoccuring
@@ -227,7 +231,8 @@ class Event(db.Model):
             "description": self.description,
             "location": self.location,
             "date": self.date,
-            "time": self.time,
+            "start_time": self.start_time,
+            "end_time": self.end_time,
             "capacity": self.capacity,
             "reoccuring": self.reoccuring,
             "date_created": self.date_created,
