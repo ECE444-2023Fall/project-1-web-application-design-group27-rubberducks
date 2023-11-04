@@ -1,8 +1,8 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import "../../css/components/App.css";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Outlet, useParams } from "react-router-dom";
 import Home from "../pages/Home";
 import Events from "../pages/Events";
 import Clubs from "../pages/Clubs";
@@ -42,6 +42,7 @@ function App() {
         <Navbar key={loginEvent} />{" "}
         {/* Add key to force Navbar to re-render on loginEvent change */}
         <Routes>
+          
           <Route path="/" exact Component={Home} />
           <Route path="/events" exact Component={Events} />
           <Route path="/clubs" exact Component={Clubs} />
@@ -79,9 +80,23 @@ function App() {
             exact
             Component={Host_upcoming}
           />
+
         </Routes>
       </Router>
     </>
+  );
+}
+
+function HostProfileRoutes() {
+  const { hid } = useParams();
+  return (
+    <Routes>
+      <Route path="/" element={<Host_profile hid={hid} />} />
+      <Route path="/edit" element={<Host_edit hid={hid} />} />
+      <Route path="/create_event" element={<Create_Event hid={hid} />} />
+      <Route path="/previous" element={<Host_previous hid={hid} />} />
+      <Route path="/upcoming" element={<Host_upcoming hid={hid} />} />
+    </Routes>
   );
 }
 

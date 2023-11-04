@@ -13,6 +13,7 @@ function Profile_edit() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [orgs, setOrgs] = useState([]);
+  const [msgids, setMsgids] = useState([]);
   const [favouriteEvents, setFavouriteEvents] = useState([]);
   const [upcomingEvents, setUpcomingEvents] = useState([]);
   const [previousEvents, setPreviousEvents] = useState([]);
@@ -48,6 +49,7 @@ function Profile_edit() {
         setOrgs(data.orgs);
         setFavouriteEvents(data.fav_events);
         setEvents(data.events);
+        setMsgids(data.msgids);
 
         setPreviousEvents(
           data.events.filter((event) => {
@@ -81,6 +83,7 @@ function Profile_edit() {
         events: [],
         fav_events: [],
         orgs: [],
+        msgids: [],
       };
 
       // Replace 'your_access_token_here' with the actual access token stored on the client-side

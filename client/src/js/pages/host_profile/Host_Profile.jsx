@@ -7,7 +7,7 @@ import EventCategory from "../../components/EventCategory";
 import { Link } from "react-router-dom";
 import { Button } from "react-bootstrap";
 
-export default function Host_profile() {
+export default function Host_profile({hid}) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [bio, setBio] = useState("");
@@ -15,7 +15,7 @@ export default function Host_profile() {
   const [owner, setOwner] = useState(-1);
 
   useEffect(() => {
-    fetch("/api/hosts/6")
+    fetch(`/api/hosts/${hid}`)
       .then((res) => res.json())
       .then((data) => {
         setName(data.name);
@@ -24,22 +24,22 @@ export default function Host_profile() {
         setEvents(data.events);
         setOwner(data.owner);
       });
-  }, []);
+  }, [hid]);
   return (
     <>
       <div className="createEventBtnContainer">
-        <Link to="/host_profile/create_event">
+        <Link to={`/host_profile/${hid}/create_event`}>
           <Button variant="primary">Create Event</Button>
         </Link>
       </div>
-      <HostSidebar name={name} email={email} bio={bio} />
+      <HostSidebar hid={hid} name={name} email={email} bio={bio} />
       <div className="host--events">
-        <EventCategory title="Upcoming Events" link="/host_profile/upcoming" />
+        <EventCategory title="Upcoming Events" link={`/host_profile/${hid}/upcoming`} />
         <hr />
         <div className="previous--events">
           <EventCategory
             title="Previous Events"
-            link="/host_profile/previous"
+            link={`/host_profile/${hid}/previous`}
           />
         </div>
       </div>

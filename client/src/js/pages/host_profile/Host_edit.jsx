@@ -5,7 +5,7 @@ import { Form, Button } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 
-function Host_edit() {
+function Host_edit({hid}) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [bio, setBio] = useState("");
@@ -13,7 +13,7 @@ function Host_edit() {
   const [owner, setOwner] = useState(-1);
 
   useEffect(() => {
-    fetch("/api/hosts/6")
+    fetch(`/api/hosts/${hid}`)
       .then((res) => res.json())
       .then((data) => {
         setName(data.name);
@@ -43,7 +43,11 @@ function Host_edit() {
         body: JSON.stringify(body),
       };
 
-      fetch("/api/accounts/2", requestOptions)
+      // have to be logged into to get to this page
+      const user = localStorage.getItem("user");
+      const id = user.id;
+
+      fetch(`/api/accounts/${id}`, requestOptions)
         .then((res) => {
           if (!res.ok) {
             console.log("error:", err);
@@ -153,7 +157,7 @@ function Host_edit() {
               Submit
             </Button>
             {"  "}
-            <Link to="/host_profile">
+            <Link to={`/host_profile/${hid}`}>
               <Button variant="primary">Cancel</Button>
             </Link>
           </Form.Group>

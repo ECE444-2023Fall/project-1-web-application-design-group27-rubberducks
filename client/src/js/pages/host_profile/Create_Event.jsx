@@ -1,12 +1,12 @@
 // CreateEvent.jsx
-import React, { useState } from "react";
+import React, { useState , useEffect } from "react";
 import "../../../css/pages/host_profile/Create_Event.css";
 import TagSelect from "./Tag_Select";
 import TimePicker from "react-bootstrap-time-picker";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
-export default function Create_Event() {
+export default function Create_Event({hid}) {
   const [name, setEventName] = useState("");
   const [date, setDate] = useState(new Date());
   const [time, setTime] = useState(0);
@@ -16,6 +16,10 @@ export default function Create_Event() {
   const [tags, setSelectedTags] = useState([]);
   const [reoccuring, setReoccuring] = useState("");
   const [eventPhoto, setEventPhoto] = useState(null);
+  const [hostname, setHostName] = useState("");
+  const [email, setEmail] = useState("");
+  const [bio, setBio] = useState("");
+  
   const handleTagChange = (tags) => {
     setSelectedTags(tags);
   };
@@ -32,6 +36,17 @@ export default function Create_Event() {
   const handleSelectReocurring = (event) => {
     setReoccuring(event.target.value);
   };
+
+  useEffect(() => {
+    fetch(`/api/hosts/${hid}`)
+      .then((res) => res.json())
+      .then((data) => {
+        setHostName(data.name);
+        setEmail(data.email);
+        setBio(data.bio);
+      });
+  }, [hid]);
+
   const handleSubmit = (e) => {
     e.preventDefault();
     const currentDate = new Date();
@@ -60,12 +75,12 @@ export default function Create_Event() {
       />
       <div className="sidebar">
         <img src="../../../images/placeholder.png" alt="Profile Picture" />
-        <div className="host--name">host</div>
-        <div className="host--email">host@example.com</div>
+        <div className="host--name">{hostname}</div>
+        <div className="host--email">{email}</div>
         <div className="host--bio">
           <h2 className="sidebar--heading">Bio</h2>
           <p className="sidebar--paragraph">
-            This is my bio. I am a host and I love to organize events.
+            {bio}
           </p>
         </div>
         <div className="host--tags">

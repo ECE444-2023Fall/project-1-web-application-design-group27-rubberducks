@@ -7,6 +7,7 @@ export default function Profile_favourites() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [orgs, setOrgs] = useState([]);
+  const [msg, setMsgids] = useState([]);
   const [favouriteEvents, setFavouriteEvents] = useState([]);
   const [upcomingEvents, setUpcomingEvents] = useState([]);
   const [previousEvents, setPreviousEvents] = useState([]);
@@ -21,6 +22,7 @@ export default function Profile_favourites() {
         setOrgs(data.orgs);
         setFavouriteEvents(data.fav_events);
         setEvents(data.events);
+        setMsgids(data.msgids);
 
         setPreviousEvents(
           data.events.filter((event) => {
