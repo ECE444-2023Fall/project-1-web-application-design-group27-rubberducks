@@ -56,7 +56,7 @@ function Navbar() {
     localStorage.removeItem('refresh_token');
     localStorage.removeItem('user');
     setButtonText("Login");
-    setDropdownShow(false);
+    IsLoggedIn(false);
     
   };
 
