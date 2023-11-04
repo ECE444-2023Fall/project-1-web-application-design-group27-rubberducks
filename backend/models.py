@@ -105,12 +105,17 @@ class Message(db.Model):
         db.session.delete(self)
         db.session.commit()
 
-    def update(self, account_id, message, created_at, read, msg_type):
-        self.account_id = account_id
-        self.message = message
-        self.created_at = created_at
-        self.read = read  # Update the read field
-        self.msg_type = msg_type
+    def update(self, account_id=None, message=None, created_at=None, read=None, msg_type=None):
+        if account_id is not None:
+            self.account_id = account_id
+        if message is not None:
+            self.message = message
+        if created_at is not None:
+            self.created_at = created_at
+        if read is not None:
+            self.read = read  # Update the read field
+        if msg_type is not None:
+            self.msg_type = msg_type
 
         db.session.commit()
 
