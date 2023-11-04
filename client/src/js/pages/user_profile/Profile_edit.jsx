@@ -18,21 +18,30 @@ function Profile_edit() {
   const [previousEvents, setPreviousEvents] = useState([]);
   const [events, setEvents] = useState([]);
 
-  useEffect(() => { const accessToken = localStorage.getItem('access_token');
+  useEffect(() => {
+    const accessToken = localStorage.getItem("access_token");
+    console.log("Access Token:", accessToken);
+
+    if (!accessToken) {
+      // If there's no access token, redirect to the /404 page
+      navigate("/404");
+      return;
+    }
 
     // Include the access token in the request headers
     const headers = {
       Authorization: `Bearer ${accessToken}`,
     };
+
     fetch("/api/accounts/2")
-    .then((res) => {
-      if (res.status === 401) {
-        // Handle unauthorized access here, e.g., redirect to the login page
-        navigate("/404");
-        return;
-      }
-      return res.json();
-    })
+      // .then((res) => {
+      //   if (res.status === 401) {
+      //     // Handle unauthorized access here, e.g., redirect to the login page
+      //     navigate("/404");
+      //     return;
+      //   }
+      //   return res.json();
+      // })
       .then((data) => {
         setName(data.name);
         setEmail(data.email);

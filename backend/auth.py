@@ -105,12 +105,12 @@ class Refresh(Resource):
         access_token = create_access_token(identity=current_user)
         return {"access_token": access_token}, 200
 
-@auth_ns.route('/protected')
-class Protected(Resource):
-    @auth_permission.require(http_exception=403)
-    def get(self):
-        # This route can only be accessed by authenticated users
-        return {"message": "This is a protected route"}, 200
+# @auth_ns.route('/protected')
+# class Protected(Resource):
+#     @auth_permission.require(http_exception=403)
+#     def get(self):
+#         # This route can only be accessed by authenticated users
+#         return {"message": "This is a protected route"}, 200
 
 
 # @auth_ns.route('/check_login_status')
