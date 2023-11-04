@@ -43,6 +43,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/events" element={<Events />} />
+          <Route path="/events/eventdetails" element={<EventDetailsPage />} />
           <Route path="/clubs" element={<Clubs />} />
           <Route path="/login" element={<Login />} />
           <Route path="/create_host_profile" element={<Create_Host_Profile />} />
