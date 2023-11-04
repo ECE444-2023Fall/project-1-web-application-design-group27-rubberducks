@@ -7,20 +7,10 @@ from flask_jwt_extended import (
     create_access_token,
     create_refresh_token,
     jwt_required,
-    get_jwt_identity,
 )
-from flask_login import LoginManager, login_user, UserMixin, current_user, login_required
-from flask_principal import Principal, Identity, Permission
-
-
-
-login_manager = LoginManager()
-# login_manager.init_app(app)
 
 auth_ns = Namespace("auth", description="Authentication operations")
 
-principal = Principal()
-auth_permission = Permission()
 
 signup_model = auth_ns.model(
     "SignUp",
@@ -58,16 +48,10 @@ class SignUp(Resource):
             events=[],
             fav_events=[],
             orgs=[],
-            msgids=[],
         )
         new_account.save()
         return {"message": f"user with email {email} created"}, 201
 
-@login_manager.user_loader
-def load_user(user_id):
-    return Account.query.get(user_id)
-
-# from flask_jwt_extended import create_access_token, create_refresh_token
 
 @auth_ns.route("/login")
 class Login(Resource):
@@ -83,54 +67,12 @@ class Login(Resource):
         if account and check_password_hash(account.password, password):
             access_token = create_access_token(identity=account.uid)
             refresh_token = create_refresh_token(identity=account.uid)
-            login_user(account, remember=True)
 
             return {
                 "message": f"logged in as {account.name}",
                 "access_token": access_token,
                 "refresh_token": refresh_token,
-                "user": {
-                    "email": account.email,
-                    "id": str(account.uid)
-                }
             }, 200
 
         else:
             return {"message": "invalid email or password"}, 401
-
-@auth_ns.route("/refresh")
-class Refresh(Resource):
-    @jwt_required(refresh=True)
-    def post(self):
-        current_user = get_jwt_identity()
-        access_token = create_access_token(identity=current_user)
-        return {"access_token": access_token}, 200
-
-# @auth_ns.route('/protected')
-# class Protected(Resource):
-#     @auth_permission.require(http_exception=403)
-#     def get(self):
-#         # This route can only be accessed by authenticated users
-#         return {"message": "This is a protected route"}, 200
-
-
-# @auth_ns.route('/check_login_status')
-# class CheckLoginStatus(Resource):
-#     def get(self):
-#         if current_user.is_authenticated:
-#             return "User is logged in."
-#         else:
-#             return "User is not logged in."
-
-
-# @auth_ns.route('/private')
-# class PrivateRoute(Resource):
-#     @jwt_required()  
-#     def get(self):
-#         return "This is a logged-in user only route."
-
-
-# @auth_ns.route('/private')
-# @login_required
-# def private_route():
-#     return "This is a logged-in user only route."

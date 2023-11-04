@@ -20,8 +20,29 @@ function Profile_edit() {
   const [events, setEvents] = useState([]);
 
   useEffect(() => {
+    const accessToken = localStorage.getItem("access_token");
+    console.log("Access Token:", accessToken);
+
+    if (!accessToken) {
+      // If there's no access token, redirect to the /404 page
+      navigate("/404");
+      return;
+    }
+
+    // Include the access token in the request headers
+    const headers = {
+      Authorization: `Bearer ${accessToken}`,
+    };
+
     fetch("/api/accounts/2")
-      .then((res) => res.json())
+      // .then((res) => {
+      //   if (res.status === 401) {
+      //     // Handle unauthorized access here, e.g., redirect to the login page
+      //     navigate("/404");
+      //     return;
+      //   }
+      //   return res.json();
+      // })
       .then((data) => {
         setName(data.name);
         setEmail(data.email);
@@ -65,17 +86,30 @@ function Profile_edit() {
         msgids: [],
       };
 
+      // Replace 'your_access_token_here' with the actual access token stored on the client-side
+      const accessToken = localStorage.getItem('access_token');
+
+      // Include the access token in the request headers
+      const headers = {
+        Authorization: `Bearer ${accessToken}`,
+        "Content-Type": "application/json",
+      };
+
       const requestOptions = {
         method: "PUT",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+           "Content-Type": "application/json", 
+           'Authorization': `Bearer ${accessToken}`
+          },
         body: JSON.stringify(body),
       };
 
       fetch("/api/accounts/2", requestOptions)
         .then((res) => {
           if (!res.ok) {
-            console.log("error:", err);
+            throw new Error(res.statusText);
           }
+          return res.json();
         })
         .then((data) => {
           navigate("/profile");

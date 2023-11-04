@@ -109,6 +109,27 @@
   margin-bottom: 10px;
   text-align: center;
 }
+.login-btn {
+  padding: 15px 0;
+  width: calc(100% - 30px); /* Adjusted for padding */
+  background-color: #74b9ff;
+  border: none;
+  border-radius: 25px;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.3s;
+  text-align: center; /* Align the text to the center */
+  margin-top: 10px; /* Optional, to match any specific spacing */
+  margin-bottom: 10px; /* Optional, to match any specific spacing */
+}
+
+.login-btn:hover {
+  background-color: #569cd6; /* A slightly darker blue on hover */
+  transform: translateY(-2px); /* Move the button up slightly on hover */
+}
+
+
 
 /* button {
   padding: 15px 0;
