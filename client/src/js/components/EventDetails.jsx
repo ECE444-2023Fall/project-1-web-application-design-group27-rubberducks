@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { FaMapMarkerAlt,  FaCalendar, FaClock } from "react-icons/fa";
 import "../../css/components/EventDetails.css";
-// import { Map } from './Map';
 import { Button } from "./Button";
 import "../../css/components/Button.css";
 
 
-// function EventDetails(props) {
 function EventDetails() {
 
   const [button, setButton] = useState(true);
@@ -25,9 +23,7 @@ function EventDetails() {
       {/* <div className="event--header-pic" style={{ backgroundImage: 'url("images/placeholder.png")' }}> */}
       <div className="event--header-pic">
         <div className="event--header-bar">
-          {/* <h1 className="event--header-text">{props.name}</h1> */}
           <h1 className="event--header-text">{"Placeholder Event"}</h1>
-          {/* <ul className="event--subtitle">{props.owner}</ul> */}
           <ul className="event--subtitle">{"Placeholder Club"}</ul>
         </div>
       </div>
@@ -38,23 +34,19 @@ function EventDetails() {
               <div className="event--column-left">
                 <ul className="event--item-center">
                   <FaCalendar className="event--icon" />
-                  {/* <span>{props.date}</span> */}
                   <span>{"placeholder date"}</span>
                 </ul>
                 <ul className="event--item-center">
                   <FaClock className="event--icon" />
-                  {/* <span>{props.time}</span> */}
                   <span>{"placeholder time"}</span>
                 </ul>
                 <ul className="event--item-center">
                   <FaMapMarkerAlt className="event--icon" />
-                  {/* <span>{props.location}</span> */}
                   <span>{"placeholder location"}</span>
                 </ul>
               </div>
               <div className="event--column-right">
               <ul>
-                {/* <span>{props.description}</span> */}
                 <span>{"placeholder description: Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."}</span>
               </ul>
               </div>
