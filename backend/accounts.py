@@ -28,7 +28,6 @@ class Test(Resource):
 
 @accounts_ns.route("/")
 class Accounts(Resource):
-    @jwt_required()
     @accounts_ns.marshal_list_with(account_model)
     def get(self):
         return Account.query.all(), 200
@@ -43,7 +42,6 @@ class Accounts(Resource):
 
 @accounts_ns.route("/<int:uid>")
 class AccountById(Resource):
-    @jwt_required()
     @accounts_ns.marshal_with(account_model)
     def get(self, uid):
         return Account.query.get_or_404(uid), 200
