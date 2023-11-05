@@ -119,21 +119,30 @@ function InboxPage() {
     <div>
       <h1>Inbox</h1>
       <div className="message-list">
-        {messages.map((message) => (
-          <div key={message.msgid} onClick={() => handleMessageClick(message)} className={`message ${message.read ? 'normal-message' : 'highlighted-message'}`}>
-            <div className="message-content">{message.message}</div>
-            <div className="message-date">Date: {message.created_at}</div>
-            {message.read && (
-              <div className="message-actions">
-                <button onClick={() => handleDelete(message.msgid)}>Delete</button>
-              </div>
-            )}
-          </div>
-        ))}
+        {messages.length > 0 ? (
+          messages.map((message) => (
+            <div key={message.msgid} onClick={() => handleMessageClick(message)} className={`message ${message.read ? 'normal-message' : 'highlighted-message'}`}>
+              <div className="message-content">{message.message}</div>
+              <div className="message-date">Date: {message.created_at}</div>
+              {message.read && (
+                <div className="message-actions">
+                  <button onClick={() => handleDelete(message.msgid)}>Delete</button>
+                </div>
+              )}
+            </div>
+          ))
+        ) : (
+          <p>No messages in your inbox.</p>
+        )}
       </div>
     </div>
   );
-
 }
 
 export default InboxPage;
+
+
+
+
+
+
