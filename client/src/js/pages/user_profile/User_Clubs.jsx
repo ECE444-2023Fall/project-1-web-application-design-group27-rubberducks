@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "../../../css/pages/user_profile/Profile_upcoming.css";
-import Cards from "../../components/Cards";
+import UserCards from "../../components/UserCards";
 import UserSidebar from "../../components/UserSidebar";
 
 export default function My_Clubs() {
@@ -63,7 +63,7 @@ export default function My_Clubs() {
           </div>
           {orgs.length > 0 ? (
             orgs.map((org) => (
-              <Cards key={org.id} club={org} /> // Make sure 'org' object contains all the properties expected by 'Cards'
+              <UserCards key={org.id} org={org} /> // Make sure 'org' object contains all the properties expected by 'Cards'
             ))
           ) : (
             <p>You have not joined any clubs yet.</p>
