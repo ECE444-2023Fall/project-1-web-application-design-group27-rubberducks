@@ -1,8 +1,13 @@
 
 .event {
-    padding: 2rem;
-    background: #fff;
-  }
+  background: #fff;
+  display: flex;
+}
+
+.event--base {
+  flex: 1;
+  background: #fff;
+}
   
   h1 {
     text-align: center;
@@ -188,3 +193,5 @@
         grid-template-columns: 1fr;
     }
   }
+
+  
