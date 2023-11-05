@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../../css/pages/Login.css";
+import "../../css/components/Button.css";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -106,7 +107,7 @@ function Login() {
               Login successful!
             </p>
           )}
-          <button type="submit">Login</button>
+          <button type="submit" class="btn--login">Login</button>
           <div className="signup-option">
             <span>or</span>
             <a href="/signup">Sign Up</a>

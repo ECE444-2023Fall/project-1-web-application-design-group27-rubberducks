@@ -4,7 +4,7 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 import logging
 import pytest
-from models import Account, Host, Event
+from models import Account, Host, Event, Message
 from main import create_app
 from config import TestConfig
 from exts import db
@@ -36,6 +36,7 @@ def add_host_to_db(app):
             events = [],
             fav_events= [],
             orgs = [],
+            msgids = [],
         )
         db.session.add(account1)
         db.session.commit()
@@ -75,18 +76,6 @@ def add_event_to_db(app, add_host_to_db):
 
         return event1  
 
-
-@pytest.fixture
-def account():
-    return ({
-            "name": "Test",
-            "email": "test@utoronto.ca",
-            "password": "test",
-            "events": [],
-            "fav_events": [],
-            "orgs": [],
-        })
-
 @pytest.fixture
 def add_account_to_db(app):
     with app.app_context():
@@ -97,9 +86,122 @@ def add_account_to_db(app):
             events = [],
             fav_events= [],
             orgs = [],
+            msgids = [],
         )
         db.session.add(account1)
         db.session.commit()
+
+@pytest.fixture
+def add_message_to_db(app, add_account_to_db):
+    with app.app_context():
+        account = Account.query.first()
+        
+        if not account:
+            return None
+
+        message = Message(
+            account_id = account.uid,
+            message = "This is a test message",
+            created_at = "2023-11-02",
+            read = False,
+            msg_type = 1,
+            )
+        db.session.add(message)
+        db.session.commit()
+
+@pytest.fixture
+def add_multiple_messages_to_db(app):
+    with app.app_context():
+        account1 = Account(
+            name="Test User 1", 
+            email="test1@example.com",
+            password="1234",
+            events = [],
+            fav_events= [],
+            orgs = [],
+            msgids = [],
+        )
+        db.session.add(account1)
+        db.session.commit()
+
+        account2 = Account(
+            name="Test User 2", 
+            email="test2@example.com",
+            password="1234",
+            events = [],
+            fav_events= [],
+            orgs = [],
+            msgids = [],
+        )
+        db.session.add(account2)
+        db.session.commit()
+
+        message1 = Message(
+            account_id = account1.uid,
+            message = "1st msg for account 1",
+            created_at = "2023-11-01",
+            read = False,
+            msg_type = 1,
+            )
+        db.session.add(message1)
+        db.session.commit()
+
+        # put latest message in the middle to ensure that it is not just grabbing
+        # last message placed in table
+        message2 = Message( 
+            account_id = account1.uid,
+            message = "2nd msg for account 1",
+            created_at = "2023-11-03 ",
+            read = False,
+            msg_type = 1,
+            )
+        db.session.add(message2)
+        db.session.commit()
+
+        message3 = Message(
+            account_id = account1.uid,
+            message = "2nd msg for account 1",
+            created_at = "2023-11-02 ",
+            read = False,
+            msg_type = 1,
+            )
+        db.session.add(message3)
+        db.session.commit()
+
+        message4 = Message(
+            account_id = account2.uid,
+            message = "1st msg for account 2",
+            created_at = "2023-11-02",
+            read = False,
+            msg_type = 1,
+            )
+        db.session.add(message4)
+        db.session.commit()
+
+
+@pytest.fixture
+def account():
+    return ({
+            "name": "Test",
+            "email": "test@utoronto.ca",
+            "password": "test",
+            "events": [],
+            "fav_events": [],
+            "orgs": [],
+            "msgids": [],
+
+        })
+
+@pytest.fixture
+def sample_message_data():
+    return ({
+        'msgid': 1,
+        'account_id': 1, 
+        'message': 'This is a test message', 
+        'created_at': 'Thu, 02 Nov 2023 00:00:00 -0000',
+        'read': False, 
+        'msg_type': 1,
+        })
 
 @pytest.fixture
 def host():

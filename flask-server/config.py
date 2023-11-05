@@ -8,10 +8,7 @@ class Config:
     SECRET_KEY = config("SECRET_KEY")
     SQLALCHEMY_TRACK_MODIFICATIONS = config("SQLALCHEMY_TRACK_MODIFICATIONS", cast=bool)
     SQLALCHEMY_DATABASE_URI = config("DATABASE_URL")
-    BUCKET = config("BUCKET")
-    AWS_ACCESS_KEY_ID = config("AWS_ACCESS_KEY_ID")
-    AWS_SECRET_ACCESS_KEY = config("AWS_SECRET_ACCESS_KEY")
-    AWS_DEFAULT_REGION = config("AWS_DEFAULT_REGION")
+
 
 class DevConfig(Config):
     DEBUG = True

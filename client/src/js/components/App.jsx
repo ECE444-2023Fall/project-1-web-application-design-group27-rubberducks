@@ -20,6 +20,7 @@ import Host_previous from "../pages/host_profile/Host_previous";
 import Host_upcoming from "../pages/host_profile/Host_upcoming";
 import Create_Event from "../pages/host_profile/Create_Event";
 import UserClubs from "../pages/user_profile/User_Clubs";
+import Not_Found from "../../js/pages/Not_Found";
 
 function App() {
   const [loginEvent, setLoginEvent] = useState(false);
@@ -41,19 +42,45 @@ function App() {
         <Navbar key={loginEvent} />{" "}
         {/* Add key to force Navbar to re-render on loginEvent change */}
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/events" element={<Events />} />
-          <Route path="/clubs" element={<Clubs />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/create_host_profile" element={<Create_Host_Profile />} />
-          <Route path="/signup" element={<SignUp />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/profile/edit" element={<Profile_edit />} />
-          <Route path="/profile/favourite" element={<Profile_favourites />} />
-          <Route path="/profile/previous" element={<Profile_previous />} />
-          <Route path="/profile/upcoming" element={<Profile_upcoming />} />
-          <Route path="/host_profile/:hid/*" element={<HostProfileRoutes />} />
+          <Route path="/" exact Component={Home} />
+          <Route path="/events" exact Component={Events} />
+          <Route path="/clubs" exact Component={Clubs} />
+          <Route path="/login" exact Component={Login} />
+          <Route path="/404" exact Component={Not_Found} />
+          <Route
+            path="/create_host_profile"
+            exact
+            Component={Create_Host_Profile}
+          />
+          <Route path="/signup" exact Component={SignUp} />
+          <Route path="/profile/" exact Component={Profile} />
+          <Route path="/profile/edit" exact Component={Profile_edit} />
+          <Route
+            path="/profile/favourite"
+            exact
+            Component={Profile_favourites}
+          />
+          <Route path="/profile/previous" exact Component={Profile_previous} />
+          <Route path="/profile/upcoming" exact Component={Profile_upcoming} />
+          <Route path="/host_profile" exact Component={Host_profile} />
+          <Route path="/host_profile/edit" exact Component={Host_edit} />
           <Route path="/my-clubs" exact Component={UserClubs} />
+          <Route
+            path="/host_profile/create_event"
+            exact
+            Component={Create_Event}
+          />
+          <Route
+            path="/host_profile/previous"
+            exact
+            Component={Host_previous}
+          />
+          <Route
+            path="/host_profile/upcoming"
+            exact
+            Component={Host_upcoming}
+          />
+
         </Routes>
       </Router>
     </>

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../../css/components/App.css";
 import "../../css/pages/Create_Host_Profile.css";
+// import { useNavigate } from "react-router-dom";
 
 function CreateHostProfile() {
   const [club_name, setClubName] = useState("");
@@ -9,7 +10,7 @@ function CreateHostProfile() {
   const [bio, setBio] = useState("");
   const [profilePhoto, setProfilePhoto] = useState(null);
   const [errorMessage, setErrorMessage] = useState("");
-  const navigate = useNavigate();
+  const navigate = useNavigate;
 
   const handleProfilePhotoChange = (e) => {
     const file = e.target.files[0];
@@ -73,10 +74,10 @@ function CreateHostProfile() {
                 const update_account = {
                   name: data2.name,
                   email: data2.email,
-                  password: data2.password,
                   events: data2.events,
                   fav_events: data2.fav_events,
                   orgs: data2.orgs.concat(data.hid),
+                  msgids: data2.msgids,
                 };
 
                 // Update the orgs of the current account
