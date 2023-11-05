@@ -10,6 +10,7 @@ function Navbar() {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [button, setButton] = useState(true);
   const [buttonText, setButtonText] = useState("Login");
+  const [userClubs, setUserClubs] = useState([]);
 
   const handleClick = () => setClick(!click);
   const toggleDropdown = () => setDropdownOpen(!dropdownOpen);
@@ -101,6 +102,29 @@ function Navbar() {
                   My Profile
                 </Link>
               </li>
+              {
+                userClubs.length >= 0 && (
+                  <li>
+                    <Link to="/my-clubs" className="dropdown-nav-links" onClick={closeMobileMenu}>
+                      My Clubs
+                    </Link>
+                    <ul>
+                      {userClubs.map((club) => (
+                        <li key={club.id}>
+                          <Link
+                            to={`/club/${club.id}`} // Uncomment this if you want individual club links
+                            className="dropdown-nav-links"
+                            onClick={closeMobileMenu}
+                          >
+                            {club.name}
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  </li>
+                )
+              }
+
               <li>
                 <Link
                   to="/create_host_profile"

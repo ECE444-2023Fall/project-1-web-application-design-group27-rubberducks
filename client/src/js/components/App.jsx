@@ -19,8 +19,8 @@ import Host_edit from "../pages/host_profile/Host_edit";
 import Host_previous from "../pages/host_profile/Host_previous";
 import Host_upcoming from "../pages/host_profile/Host_upcoming";
 import Create_Event from "../pages/host_profile/Create_Event";
+import UserClubs from "../pages/user_profile/User_Clubs";
 import Not_Found from "../../js/pages/Not_Found";
-
 
 function App() {
   const [loginEvent, setLoginEvent] = useState(false);
@@ -42,7 +42,6 @@ function App() {
         <Navbar key={loginEvent} />{" "}
         {/* Add key to force Navbar to re-render on loginEvent change */}
         <Routes>
-          
           <Route path="/" exact Component={Home} />
           <Route path="/events" exact Component={Events} />
           <Route path="/clubs" exact Component={Clubs} />
@@ -65,6 +64,7 @@ function App() {
           <Route path="/profile/upcoming" exact Component={Profile_upcoming} />
           <Route path="/host_profile" exact Component={Host_profile} />
           <Route path="/host_profile/edit" exact Component={Host_edit} />
+          <Route path="/my-clubs" exact Component={UserClubs} />
           <Route
             path="/host_profile/create_event"
             exact
