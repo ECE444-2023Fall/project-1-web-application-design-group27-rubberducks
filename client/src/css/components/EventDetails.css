@@ -217,6 +217,28 @@ h1 {
   font-size: 18px;
   line-height: 24px;
 }
+
+/* Define a CSS class for the blue button style */
+.register-button {
+  background-color: #002452; /* Set the background color to blue */
+  color: white; /* Set the text color to white for contrast */
+  border: 2px solid white; /* Set a white border with a 2px width */
+  padding: 10px 20px; /* Add padding for spacing inside the button */
+  text-decoration: none; /* Remove underline on hover for links */
+  display: inline-block; /* Ensure the button behaves as an inline-block element */
+  text-align: center; /* Center the text horizontally */
+  font-size: 16px; /* Set the font size */
+  cursor: pointer; /* Change cursor to pointer on hover for a button-like feel */
+  border-radius: 5px; /* Add rounded corners for a softer look */
+  transition: background-color 0.2s, color 0.2s; /* Add a smooth transition effect */
+}
+
+/* Style for button hover state */
+.register-button:hover {
+  background-color: white; /* Change the background color to white on hover */
+  color: #002452; /* Change the text color to blue on hover */
+}
+
   
 @media only screen and (min-width: 1200px) {
   .content--blog--container {
