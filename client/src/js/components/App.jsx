@@ -1,8 +1,13 @@
 import React, { useState, useEffect } from "react";
 import "../../css/components/App.css";
 import Navbar from "./Navbar";
-import Footer from "./Footer";
-import { BrowserRouter as Router, Routes, Route, Outlet, useParams } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Outlet,
+  useParams,
+} from "react-router-dom";
 import Home from "../pages/Home";
 import Events from "../pages/Events";
 import Clubs from "../pages/Clubs";
@@ -20,7 +25,6 @@ import Host_previous from "../pages/host_profile/Host_previous";
 import Host_upcoming from "../pages/host_profile/Host_upcoming";
 import Create_Event from "../pages/host_profile/Create_Event";
 import Not_Found from "../../js/pages/Not_Found";
-
 
 function App() {
   const [loginEvent, setLoginEvent] = useState(false);
@@ -42,7 +46,6 @@ function App() {
         <Navbar key={loginEvent} />{" "}
         {/* Add key to force Navbar to re-render on loginEvent change */}
         <Routes>
-          
           <Route path="/" exact Component={Home} />
           <Route path="/events" exact Component={Events} />
           <Route path="/clubs" exact Component={Clubs} />
@@ -80,7 +83,6 @@ function App() {
             exact
             Component={Host_upcoming}
           />
-
         </Routes>
       </Router>
     </>

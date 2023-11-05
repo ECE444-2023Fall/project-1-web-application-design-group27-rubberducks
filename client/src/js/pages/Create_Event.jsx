@@ -1,12 +1,12 @@
 // CreateEvent.jsx
-import React, { useState , useEffect } from "react";
-import "../../../css/pages/host_profile/Create_Event.css";
-import TagSelect from "./Tag_Select";
+import React, { useState, useEffect } from "react";
+import "../../css/pages/host_profile/Create_Event.css";
+import TagSelect from "./host_profile/Tag_Select";
 import TimePicker from "react-bootstrap-time-picker";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
-export default function Create_Event({hid}) {
+export default function Create_Event({ hid }) {
   const [name, setEventName] = useState("");
   const [date, setDate] = useState(new Date());
   const [time, setTime] = useState(0);
@@ -19,7 +19,7 @@ export default function Create_Event({hid}) {
   const [hostname, setHostName] = useState("");
   const [email, setEmail] = useState("");
   const [bio, setBio] = useState("");
-  
+
   const handleTagChange = (tags) => {
     setSelectedTags(tags);
   };
@@ -69,24 +69,6 @@ export default function Create_Event({hid}) {
 
   return (
     <>
-      <link
-        rel="stylesheet"
-        href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
-      />
-      <div className="sidebar">
-        <img src="../../../images/placeholder.png" alt="Profile Picture" />
-        <div className="host--name">{hostname}</div>
-        <div className="host--email">{email}</div>
-        <div className="host--bio">
-          <h2 className="sidebar--heading">Bio</h2>
-          <p className="sidebar--paragraph">
-            {bio}
-          </p>
-        </div>
-        <div className="host--tags">
-          <h2 className="sidebar--heading">Tags</h2>
-        </div>
-      </div>
       <div className="form_block_event">
         <h1>Create Event</h1>
         <form onSubmit={handleSubmit}>
