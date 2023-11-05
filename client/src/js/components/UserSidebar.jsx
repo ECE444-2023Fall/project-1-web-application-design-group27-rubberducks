@@ -20,7 +20,6 @@ function UserSidebar(props) {
         </div>
         <div className="sidebar--user--email">{props.email}</div>
       </div>
-      
       {/* <div className="user--orgs">
         <div className="org--title">Org</div>
         {props.orgNames.map((orgName, index) => (
