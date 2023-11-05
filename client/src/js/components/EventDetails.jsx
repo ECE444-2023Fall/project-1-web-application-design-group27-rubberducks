@@ -72,7 +72,7 @@ function EventDetails() {
                 <div className="event--two-columns-left-offset">
                   <div className="event--register">
                     {button && (
-                    <Button to="/events" buttonStyle="blue-button" buttonSize="btn--large">
+                    <Button to="/events" buttonStyle="register-button" buttonSize="btn--large">
                         Register
                     </Button>
                     )}
