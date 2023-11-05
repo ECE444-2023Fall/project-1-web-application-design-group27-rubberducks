@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { MdDeleteForever } from "react-icons/md";
 import { Link, useNavigate } from "react-router-dom";
 import "../../css/pages/Inbox.css";
 
@@ -6,6 +7,7 @@ function InboxPage() {
   const [messages, setMessages] = useState([]);
 
   const navigate = useNavigate();
+  const curr_account = JSON.parse(localStorage.getItem("user"));
 
   const changeMsgType = (id, new_type) => {
     const updateTypeUrl = `/api/messages/${id}`;
@@ -83,25 +85,68 @@ function InboxPage() {
 
   const handleDelete = (id) => {
     // Send a DELETE request to remove the message
-    fetch(`/api/messages/${id}`, {
-      method: 'DELETE',
+    fetch(`/api/accounts/${curr_account.id}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
     })
-      .then((response) => {
-        if (response.ok) {
-          console.log('Message deleted successfully.');
-          // Remove the deleted message from the state
-          setMessages((prevMessages) => prevMessages.filter((message) => message.msgid !== id));
-        } else {
-          console.error('Failed to delete the message.');
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error(`HTTP error! Status: ${res.status}`);
         }
+        return res.json();
       })
-      .catch((error) => {
-        console.error('Error while deleting the message:', error);
-      });
+      .then((curr_account_data) => {
+        console.log("successfully fetched account of the logged-in user");
+        
+        const updatedMsgids = curr_account_data.msgids.filter((msgid) => msgid !== parseInt(id, 10));
+        const update_account = {
+          name: curr_account_data.name,
+          email: curr_account_data.email,
+          events: curr_account_data.events,
+          fav_events: curr_account_data.fav_events,
+          orgs: curr_account_data.orgs,
+          msgids:updatedMsgids,
+        };
+        fetch(`/api/accounts/${curr_account.id}`, {
+          method: "PUT", // Use PUT to update the account
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(update_account), // Update orgs field
+        })
+          .then((res2) => {
+            if (!res2.ok) {
+              throw new Error(`HTTP error! Status: ${res2.status}`);
+            }
+            return res2.json();
+          })
+          .then((data3) => {
+            console.log("successfully updated account orgs");
+            console.log(data3);
+
+            fetch(`/api/messages/${id}`, {
+              method: 'DELETE',
+            })
+              .then((response) => {
+                if (response.ok) {
+                  console.log('Message deleted successfully.');
+                  // Remove the deleted message from the state
+                  setMessages((prevMessages) => prevMessages.filter((message) => message.msgid !== id));
+                } else {
+                  console.error('Failed to delete the message.');
+                }
+              })
+              .catch((error) => {
+                console.error('Error while deleting the message:', error);
+              });
+          })
+          .catch((error) => {
+            console.error('Error while fetching current account:', error);
+          });
+        });
   };
-  
-  // Must be logged in
-  const curr_account = JSON.parse(localStorage.getItem("user"));
 
   // Simulate fetching messages from an API
   useEffect(() => {
@@ -126,7 +171,11 @@ function InboxPage() {
               <div className="message-date">Date: {message.created_at}</div>
               {message.read && (
                 <div className="message-actions">
-                  <button onClick={() => handleDelete(message.msgid)}>Delete</button>
+                  <button className="delete--button--icon"
+                          onClick={() => handleDelete(message.msgid)}
+                          >
+                    <MdDeleteForever />
+                  </button>
                 </div>
               )}
             </div>
@@ -140,9 +189,3 @@ function InboxPage() {
 }
 
 export default InboxPage;
-
-
-
-
-
-
