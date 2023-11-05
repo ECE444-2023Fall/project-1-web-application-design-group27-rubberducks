@@ -3,7 +3,6 @@ import { FaMapMarkerAlt,  FaCalendar, FaClock } from "react-icons/fa";
 import "../../css/components/EventDetails.css";
 import { Button } from "./Button";
 import "../../css/components/Button.css";
-import HostSidebar from "./HostSidebar";
 import "../../css/pages/host_profile/Host_Profile.css";
 
 
@@ -22,7 +21,7 @@ function EventDetails() {
   return (
     <>
       <div className="event">
-        <div className="sidebar">
+        <div className="event--sidebar" style={{ flex: '0 0 30%' }}>
           <img src="../../../../images/placeholder.png" alt="Profile Picture" />
           {/* <div className="host--name">{hostname}</div> */}
           <div className="host--name">{"Placeholder Club"}</div>
@@ -46,46 +45,48 @@ function EventDetails() {
               <ul className="event--subtitle">{"Placeholder Club"}</ul>
             </div>
           </div>
-          <div className="event--container">
-            <div className="event--column-wrapper">
-              <div className="event--two-columns-left-offset">
-                <div className="event--column-left">
-                  <ul className="event--item-center">
-                    <FaCalendar className="event--icon" />
-                    <span>{"placeholder date"}</span>
-                  </ul>
-                  <ul className="event--item-center">
-                    <FaClock className="event--icon" />
-                    <span>{"placeholder time"}</span>
-                  </ul>
-                  <ul className="event--item-center">
-                    <FaMapMarkerAlt className="event--icon" />
-                    <span>{"placeholder location"}</span>
-                  </ul>
-                </div>
-                <div className="event--column-right">
-                <ul>
-                  <span>{"placeholder description: Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."}</span>
-                </ul>
-                </div>
-              </div>
-              <div className="event--two-columns-left-offset">
-                <div className="event--register">
-                  {button && (
-                  <Button to="/events" buttonStyle="blue-button" buttonSize="btn--large">
-                      Register
-                  </Button>
-                  )}
-                </div>
-                <div className="event--additional-info">
-                  <div className="event--item">
-                    <span>{"tag list"}</span>
+          <div className="event--main">
+            <div className="event--container">
+              <div className="event--column-wrapper">
+                <div className="event--two-columns-left-offset">
+                  <div className="event--column-left">
+                    <ul className="event--item-center">
+                      <FaCalendar className="event--icon" />
+                      <span>{"placeholder date"}</span>
+                    </ul>
+                    <ul className="event--item-center">
+                      <FaClock className="event--icon" />
+                      <span>{"placeholder time"}</span>
+                    </ul>
+                    <ul className="event--item-center">
+                      <FaMapMarkerAlt className="event--icon" />
+                      <span>{"placeholder location"}</span>
+                    </ul>
                   </div>
-                  <div className="event--item-right-justified">
-                    <span>{"reoccuring event: weekly on Tuesdays"}</span>
+                  <div className="event--column-right">
+                  <ul>
+                    <span>{"placeholder description: Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."}</span>
+                  </ul>
                   </div>
-                  <div className="event--item-right-justified">
-                    <span>{"capacity: value"}</span>
+                </div>
+                <div className="event--two-columns-left-offset">
+                  <div className="event--register">
+                    {button && (
+                    <Button to="/events" buttonStyle="blue-button" buttonSize="btn--large">
+                        Register
+                    </Button>
+                    )}
+                  </div>
+                  <div className="event--additional-info">
+                    <div className="event--item">
+                      <span>{"tag list"}</span>
+                    </div>
+                    <div className="event--item-right-justified">
+                      <span>{"reoccuring event: weekly on Tuesdays"}</span>
+                    </div>
+                    <div className="event--item-right-justified">
+                      <span>{"capacity: value"}</span>
+                    </div>
                   </div>
                 </div>
               </div>
