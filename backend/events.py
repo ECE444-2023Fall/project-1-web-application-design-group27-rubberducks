@@ -67,87 +67,87 @@ class Events(Resource):
         event.save()
         return event, 201
     
-@events_ns.route("/")
-class Events(Resource):
-    @events_ns.marshal_list_with(event_model)
-    def get(self):
-        # Infinite scroll
-        page = int(request.args.get('page', 1))
-        limit = int(request.args.get('limit', 20))
-        offset = (page - 1) * limit
+# @events_ns.route("/")
+# class Events(Resource):
+#     @events_ns.marshal_list_with(event_model)
+#     def get(self):
+#         # Infinite scroll
+#         page = int(request.args.get('page', 1))
+#         limit = int(request.args.get('limit', 20))
+#         offset = (page - 1) * limit
 
-        """
-        # Search filtering
-        order = str(request.args.get('ord', 0)) # order
-        name = str(request.args.get('name')) # name
-        location = str(request.args.get('loc')) # location
-        time_start = str(request.args.get('ts')) # start time
-        time_end = str(request.args.get('te')) # end time
-        date_start = str(request.args.get('ds')) # start date
-        date_end = str(request.args.get('de')) # end date
-        capacity = str(request.args.get('cap')) # capacity
-        cap_r = str(request.args.get('cap_r')) # capacity reached, 1 to limit
-        reoccuring = str(request.args.get('re')) # reoccuring
-        uid = str(request.args.get('uid')) # user_id, TODO: implement auth checks for this
-        """
-        tags_filter = str(request.args.get('tags')) # tags
+#         """
+#         # Search filtering
+#         order = str(request.args.get('ord', 0)) # order
+#         name = str(request.args.get('name')) # name
+#         location = str(request.args.get('loc')) # location
+#         time_start = str(request.args.get('ts')) # start time
+#         time_end = str(request.args.get('te')) # end time
+#         date_start = str(request.args.get('ds')) # start date
+#         date_end = str(request.args.get('de')) # end date
+#         capacity = str(request.args.get('cap')) # capacity
+#         cap_r = str(request.args.get('cap_r')) # capacity reached, 1 to limit
+#         reoccuring = str(request.args.get('re')) # reoccuring
+#         uid = str(request.args.get('uid')) # user_id, TODO: implement auth checks for this
+#         """
+#         tags_filter = str(request.args.get('tags')) # tags
         
         
-        #Query config
-        query = Event.query
+#         #Query config
+#         query = Event.query
 
-        """
-        #name
-        if name:
-            query = query.filter(Event.name.ilike(f"%{name}%"))
+#         """
+#         #name
+#         if name:
+#             query = query.filter(Event.name.ilike(f"%{name}%"))
         
-        #location
-        if location:
-            query = query.filter(Event.location.ilike(f"%{location}"))
+#         #location
+#         if location:
+#             query = query.filter(Event.location.ilike(f"%{location}"))
         
-        """
+#         """
 
-        """
-        if time_start: # compare time_start < Event.time
-            #TODO
-            if time_end: # compare time_end > Event.end
-                #TODO
-        if date_start: # compare date_start < Event.date
+#         """
+#         if time_start: # compare time_start < Event.time
+#             #TODO
+#             if time_end: # compare time_end > Event.end
+#                 #TODO
+#         if date_start: # compare date_start < Event.date
 
-        if date_end: # compare date_end > Event.date
+#         if date_end: # compare date_end > Event.date
 
-        if capacity: # compare capacity > Event.capacity
+#         if capacity: # compare capacity > Event.capacity
 
-        if cap_r: # compare Event.attendees.length < Event.capacity
+#         if cap_r: # compare Event.attendees.length < Event.capacity
 
-        if reoccuring: #compare Event.reoccuring == reoccuring
-            """ 
+#         if reoccuring: #compare Event.reoccuring == reoccuring
+#             """ 
 
 
-        #tags
-        if tags_filter:
-            print(tags_filter)
-            tags_filter = [int(tag) for tag in tags_filter.split(',')]
-            query = query.filter(cast(Event.tags, ARRAY(Integer)).contains(tags_filter))
+#         #tags
+#         if tags_filter:
+#             print(tags_filter)
+#             tags_filter = [int(tag) for tag in tags_filter.split(',')]
+#             query = query.filter(cast(Event.tags, ARRAY(Integer)).contains(tags_filter))
 
-        """
-        # order
-        if order == 0:
-            query = query.order_by(Event.date.asc()) # Date ascending
-        elif order == 1:
-            query = query.order_by(Event.date.dsc()) # Date descending
-        elif order == 2:
-            query = query.order_by(Event.date_created.dsc()) # Creation date ascending
-        elif order == 3:
-            query = query.order_by(Event.date_created.dsc()) # Creation date descending
-        elif order == 4:
-            query = query.order_by(Event.date.dsc()) # Attendees ascending
-        elif order == 5:
-            query = query.order_by(Event.date.dsc()) # Attendees descending
-        """
+#         """
+#         # order
+#         if order == 0:
+#             query = query.order_by(Event.date.asc()) # Date ascending
+#         elif order == 1:
+#             query = query.order_by(Event.date.dsc()) # Date descending
+#         elif order == 2:
+#             query = query.order_by(Event.date_created.dsc()) # Creation date ascending
+#         elif order == 3:
+#             query = query.order_by(Event.date_created.dsc()) # Creation date descending
+#         elif order == 4:
+#             query = query.order_by(Event.date.dsc()) # Attendees ascending
+#         elif order == 5:
+#             query = query.order_by(Event.date.dsc()) # Attendees descending
+#         """
 
-        events = query.order_by(Event.date.asc()).offset(offset).limit(limit).all()
-        return events, 200
+#         events = query.order_by(Event.date.asc()).offset(offset).limit(limit).all()
+#         return events, 200
 
 
 @events_ns.route("/<int:eid>")
