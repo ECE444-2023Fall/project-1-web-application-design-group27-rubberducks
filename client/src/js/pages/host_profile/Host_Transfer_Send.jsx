@@ -46,7 +46,7 @@ function Host_transfer_send({ hid }) {
       .then((recieving_account) => {
         if (recieving_account.uid == user.id){
           throw new Error(`Cannot transfer account to yourself`);
-        }
+        };
         const request_host_transfer = {
           account_id: recieving_account.uid,
           message: `[Club Transfer Request]: ${name} is requesting to transfer ownership to you. id: ${hid}`,

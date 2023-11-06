@@ -65,6 +65,7 @@ function InboxPage() {
         return '/inbox';
       case 3: // transfer request
         // make message unclickable
+        console.log("Handling transfer request")
         changeMsgType(message.msgid, -1)
         return `/transfer_recieve/${message.message.split(/\s+(?=\S*$)/)[1]}`;
       default:
@@ -153,12 +154,15 @@ function InboxPage() {
     fetch(`/api/messages/account/${curr_account.id}`)
       .then((response) => response.json())
       .then((data) => {
+        // Sort messages by "created_at" in descending order
+        data.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
         setMessages(data);
       })
       .catch((error) => {
         console.error('Error fetching messages:', error);
       });
   }, []);
+  
 
   return (
     <div>
