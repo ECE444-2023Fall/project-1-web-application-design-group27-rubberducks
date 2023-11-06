@@ -51,6 +51,10 @@
   max-width: 20%;
 }
 
+.button_event input {
+  display: none;
+}
+
 .cancel-button {
   background: red;
   color: #fff;

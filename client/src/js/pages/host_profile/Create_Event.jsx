@@ -15,6 +15,7 @@ function convertTimetoString(hour, minute){
 
 export default function Create_Event({hid}) {
   const [name, setEventName] = useState("");
+  const currentDate = new Date();
   const [date, setDate] = useState(new Date());
   const [hour1, setHour1] = useState(0);
   const [minute1, setMinute1] = useState(0);
@@ -32,6 +33,7 @@ export default function Create_Event({hid}) {
   const [owner, setOwner] = useState(-1);
   const [events, setEvents] = useState([]);
   const navigate = useNavigate();
+  const [error, setError] = useState('');
   
   const handleTagChange = (tags) => {
     setSelectedTags(tags);
@@ -41,6 +43,7 @@ export default function Create_Event({hid}) {
     setEventPhoto(file);
   };
   const handleDateChange = (newDate) => {
+    const currentDate = new Date();
     setDate(newDate);
   };
   const handleSelectReocurring = (event) => {
@@ -61,8 +64,12 @@ export default function Create_Event({hid}) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const currentDate = new Date();
     const dateCreated = currentDate.toISOString();
+    const startTime = new Date(0, 0, 0, hour1, minute1);
+    const endTime = new Date(0, 0, 0, hour2, minute2);
+    if (startTime > endTime) {
+      setError('End time must be after start time');
+    } else {
     const event = {
       name: name,
       description: description,
@@ -135,6 +142,7 @@ export default function Create_Event({hid}) {
         console.log("error:", err);
         setErrorMessage(err.message);
       });
+    }
   };
 
   const handleCancel = () => {
@@ -167,6 +175,7 @@ export default function Create_Event({hid}) {
             <DatePicker
               selected={date}
               onChange={handleDateChange}
+              minDate={currentDate}
               className="form-control"
               required
             />
@@ -218,6 +227,8 @@ export default function Create_Event({hid}) {
             </div>
           </div>
 
+          {error && <p className="error-message">{error}</p>}
+
           <div className="form-group">
             <label htmlFor="location">Location:</label>
             <input
@@ -250,6 +261,7 @@ export default function Create_Event({hid}) {
               id="capacity"
               name="capacity"
               value={capacity}
+              min="0"
               onChange={(e) => setCapacity(e.target.value)}
               required
             />
@@ -278,8 +290,8 @@ export default function Create_Event({hid}) {
           </div>
 
           <div className="form-group">
-            <label htmlFor="eventPhoto" className="col-form-label">
-              Event Photo
+            <label htmlFor="eventPhoto" className="button_event">
+              Upload Photo
             </label>
             <div className="d-flex align-items-start">
               <input
@@ -288,7 +300,7 @@ export default function Create_Event({hid}) {
                 accept="image/*"
                 onChange={handleEventPhotoChange}
               />
-
+              <br></br>
               {eventPhoto && (
                 <img
                   src={URL.createObjectURL(eventPhoto)}
