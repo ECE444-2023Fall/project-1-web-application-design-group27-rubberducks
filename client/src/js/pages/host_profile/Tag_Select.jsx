@@ -1,13 +1,23 @@
 // TagSelect.jsx
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Select from "react-select";
 
 const TagSelect = ({ selectedTags, onTagChange }) => {
-  const tagOptions = [
-    { value: "tag1", label: "Tag 1" },
-    { value: "tag2", label: "Tag 2" },
-    { value: "tag3", label: "Tag 3" },
-  ];
+  const [tagOptions, setTagOptions] = useState([]);
+  useEffect(() => {
+    fetch(`/api/events/tags`, {method: "GET"})
+    .then((res) => res.json())
+    .then((data) => {
+      const options = data.map((tag) => ({
+        value: tag.etid,
+        label: tag.name,
+      }));
+      setTagOptions(options);
+    })
+    .catch((error) => {
+      console.error('Error fetching tags:', error);
+    });
+  }, []);
 
   const handleChange = (selectedOptions) => {
     onTagChange(selectedOptions.map((tag) => tag.value));
