@@ -23,8 +23,10 @@ function Navbar() {
 
   const showButton = () => {
     if (window.innerWidth <= 960) {
+      setButton(false);
       setButtonText("Login"); // Change to "Login" when the button should be shown
     } else {
+      setButton(true);
       const user = JSON.parse(localStorage.getItem("user"));
       if (user) {
         setButtonText("Logout");
