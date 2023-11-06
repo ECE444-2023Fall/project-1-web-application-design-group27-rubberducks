@@ -26,7 +26,8 @@ event_model = events_ns.model(
         "description": fields.String,
         "location": fields.String,
         "date": fields.String,
-        "time": fields.String,
+        "start_time": fields.String,
+        "end_time": fields.String,
         "capacity": fields.Integer,
         "reoccuring": fields.Integer,
         "date_created": fields.String,
@@ -59,13 +60,12 @@ class Events(Resource):
     def get(self):
         return Event.query.all(), 200
 
-
-    """@events_ns.expect(event_model)
+    @events_ns.expect(event_model)
     @events_ns.marshal_with(event_model)
     def post(self):
         event = Event(**events_ns.payload)
         event.save()
-        return event, 201"""
+        return event, 201
     
 @events_ns.route("/")
 class Events(Resource):
@@ -175,12 +175,31 @@ class Event_tags(Resource):
     def get(self):
         return Event_tag.query.all(), 200
 
-    """@events_ns.expect(tags_model)
+    @events_ns.expect(tags_model)
     @events_ns.marshal_with(tags_model)
     def post(self):
         tag = Event_tag(**events_ns.payload)
         tag.save()
-        return tag, 201"""
+        return tag, 201
+
+@events_ns.route("/tags/<int:etid>")
+class EventTagId(Resource):
+    @events_ns.marshal_with(tags_model)
+    def get(self, etid):
+        event_tag = Event_tag.query.get_or_404(etid)
+        return event_tag, 200
+
+    @events_ns.expect(tags_model)
+    @events_ns.marshal_with(tags_model)
+    def put(self, etid):
+        event_tag = Event.query.get_or_404(etid)
+        event_tag.update(**events_ns.payload)
+        return event_tag, 200
+
+    def delete(self, etid):
+        event_tag = Event_tag.query.get_or_404(etid)
+        event_tag.delete()
+        return {"message": "event tag deleted"}, 200
 
 """@events_ns.route("/filtered")
 class FilteredEvents(Resource):
