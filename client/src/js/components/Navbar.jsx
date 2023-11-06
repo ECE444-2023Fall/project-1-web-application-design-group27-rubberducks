@@ -127,7 +127,7 @@ function Navbar() {
 
                 <li>
                   <Link
-                    to="/create_host_profile"
+                    to="/profile/create_host"
                     className="dropdown-nav-links"
                     onClick={(closeMobileMenu, toggleDropdown)}
                   >
