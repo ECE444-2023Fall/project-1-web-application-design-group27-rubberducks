@@ -4,7 +4,7 @@ import Cards from "../components/Cards";
 import { MdEdit } from "react-icons/md";
 import HostSidebar from "../components/HostSidebar";
 import EventCategory from "../components/EventCategory";
-import { Form, Button } from "react-bootstrap";
+import { Form, Button, Modal } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import {
   Link,
@@ -15,6 +15,7 @@ import {
 } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import { useGetHostInfo } from "../useGetHostInfo";
+import { confirmPassword } from "../confirmPassword";
 
 export default function Host_root() {
   const { hostId = "" } = useParams();
@@ -108,6 +109,9 @@ export function Host_previous() {
 
 export function Host_edit() {
   const [hostInfo] = useOutletContext();
+  const ownerInfo = fetch(`/api/accounts/${hostInfo.owner}`).then((res) =>
+    res.json()
+  );
 
   const navigate = useNavigate();
   const {
@@ -117,21 +121,70 @@ export function Host_edit() {
     handleSubmit,
   } = useForm();
 
-  const submitForm = (data) => {
-    if (data.password === data.confirmPassword) {
-      const body = {};
+  const [showDelete, setShowDelete] = useState(false);
+  const handleCloseDelete = () => setShowDelete(false);
+  const handleShowDelete = () => setShowDelete(true);
+  const handleProfileDelete = async () => {
+    const body = {
+      name: ownerInfo.username,
+      email: ownerInfo.email,
+      events: userInfo.events,
+      fav_events: userInfo.fav_events,
+      orgs: userInfo.orgs,
+      msgids: userInfo.msgids,
+    };
+    const requestOptions = {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+    };
 
+    for (let event of hsotInfo.orgs) {
+      const orgInfo = await fetch(`/api/hosts/${org}`).then((res) =>
+        res.json()
+      );
+
+      for (let event of orgInfo.events) {
+        const eventRes = await fetch(`/api/events/${event}`, {
+          method: "DELETE",
+        });
+
+        if (!eventRes.ok) {
+          throw new Error("Failed to delete event");
+        }
+      }
+      const orgRes = await fetch(`/api/hosts/${org}`, {
+        method: "DELETE",
+      });
+
+      if (!orgRes.ok) {
+        throw new Error("Failed to delete org");
+      }
+    }
+    const accountRes = await fetch(`/api/accounts/${userInfo.uid}`, {
+      method: "DELETE",
+    });
+  };
+
+  const submitForm = (data) => {
+    if (
+      data.password === data.confirmPassword &&
+      confirmPassword(ownerInfo.email, data.oldPassword)
+    ) {
+      const body = {
+        name: hostInfo.name,
+        email: data.email,
+        bio: data.bio,
+        events: hostInfo.events,
+        owner: hostInfo.owner,
+      };
       const requestOptions = {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
       };
 
-      // have to be logged into to get to this page
-      const user = localStorage.getItem("user");
-      const id = user.id;
-
-      fetch(`/api/accounts/${id}`, requestOptions)
+      fetch(`/api/hosts/${hostInfo.hid}`, requestOptions)
         .then((res) => {
           if (!res.ok) {
             console.log("error:", err);
@@ -147,8 +200,10 @@ export function Host_edit() {
           );
         });
       reset();
-    } else {
+    } else if (data.password !== data.confirmPassword) {
       alert("Passwords do not match");
+    } else {
+      alert("Previous password incorrect");
     }
   };
 
@@ -204,49 +259,39 @@ export function Host_edit() {
           </Form.Group>
           <br />
           <Form.Group>
-            <Form.Label>New Password</Form.Label>
-            <Form.Control
-              type="password"
-              placeholder="New Password"
-              {...register("password", {
-                minLength: 8,
-              })}
-            />
-            {errors.password?.type === "minLength" && (
-              <p style={{ color: "red" }}>
-                <small>Password must be at least 8 characters</small>
-              </p>
-            )}
-          </Form.Group>
-          <br />
-          <Form.Group>
-            <Form.Label>Confirm New Password</Form.Label>
-            <Form.Control
-              type="password"
-              placeholder="Confirm New Password"
-              {...register("confirmPassword", {
-                minLength: 8,
-              })}
-            />
-            {errors.confirmPassword?.type === "minLength" && (
-              <p style={{ color: "red" }}>
-                <small>Password must be at least 8 characters</small>
-              </p>
-            )}
-          </Form.Group>
-          <br />
-          <Form.Group>
             <Button variant="primary" onClick={handleSubmit(submitForm)}>
               Submit
             </Button>
             {"  "}
-            <Link to={`/hosts/${hid}`}>
+            <Link to={`/hosts/${hostInfo.hid}`}>
               <Button variant="primary">Cancel</Button>
             </Link>
           </Form.Group>
           <br />
           <Form.Group>
-            <Button variant="danger">Delete Profile</Button>
+            <Button variant="danger" onClick={handleShowDelete}>
+              Delete Profile
+            </Button>
+            <Modal show={showDelete} onHide={handleCloseDelete}>
+              <Modal.Header closeButton>
+                <Modal.Title>Confirm Delete</Modal.Title>
+              </Modal.Header>
+              <br />
+              <Modal.Body>
+                Are you sure you want to delete your account? All of your data
+                will be lost.
+              </Modal.Body>
+              <br />
+              <Modal.Footer>
+                <Button variant="danger" onClick={handleProfileDelete}>
+                  Delete
+                </Button>{" "}
+                {"  "}
+                <Button variant="secondary" onClick={handleCloseDelete}>
+                  Close
+                </Button>
+              </Modal.Footer>
+            </Modal>
           </Form.Group>
         </Form>
       </div>
