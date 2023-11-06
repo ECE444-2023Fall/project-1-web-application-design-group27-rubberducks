@@ -17,15 +17,17 @@ function Navbar() {
   const closeMobileMenu = () => setClick(false);
 
   const updateButtonText = () => {
-    const user = JSON.parse(localStorage.getItem('user'));
+    const user = JSON.parse(localStorage.getItem("user"));
     setButtonText(user ? "Logout" : "Login");
   };
 
   const showButton = () => {
     if (window.innerWidth <= 960) {
+      setButton(false);
       setButtonText("Login"); // Change to "Login" when the button should be shown
     } else {
-      const user = JSON.parse(localStorage.getItem('user'));
+      setButton(true);
+      const user = JSON.parse(localStorage.getItem("user"));
       if (user) {
         setButtonText("Logout");
       } else {
@@ -34,16 +36,15 @@ function Navbar() {
     }
   };
 
-  const showDropdown = () =>{
-    const user = JSON.parse(localStorage.getItem('user'));
-      if (user) {
-        setDropdownShow(true);
-        closeMobileMenu();
-      }
-      else{
-        setDropdownShow(false);
-      }
-  }
+  const showDropdown = () => {
+    const user = JSON.parse(localStorage.getItem("user"));
+    if (user) {
+      setDropdownShow(true);
+      closeMobileMenu();
+    } else {
+      setDropdownShow(false);
+    }
+  };
 
   useEffect(() => {
     showButton();
@@ -53,12 +54,11 @@ function Navbar() {
   window.addEventListener("resize", showButton);
 
   const handleLogout = () => {
-    localStorage.removeItem('access_token');
-    localStorage.removeItem('refresh_token');
-    localStorage.removeItem('user');
+    localStorage.removeItem("access_token");
+    localStorage.removeItem("refresh_token");
+    localStorage.removeItem("user");
     setButtonText("Login");
     setDropdownShow(false);
-    
   };
 
   return (
@@ -88,24 +88,27 @@ function Navbar() {
             </Link>
           </li>
           {dropdownShow && (
-          <li className={`nav-item ${dropdownOpen ? "active" : ""}`}>
-            <div className="nav-links" onClick={toggleDropdown}>
-              Account <RiArrowDropDownFill />
-            </div>
-            <ul className={`dropdown-menu ${dropdownOpen ? "active" : ""}`}>
-              <li>
-                <Link
-                  to="/profile"
-                  className="dropdown-nav-links"
-                  onClick={(closeMobileMenu, toggleDropdown)}
-                >
-                  My Profile
-                </Link>
-              </li>
-              {
-                userClubs.length >= 0 && (
+            <li className={`nav-item ${dropdownOpen ? "active" : ""}`}>
+              <div className="nav-links" onClick={toggleDropdown}>
+                Account <RiArrowDropDownFill />
+              </div>
+              <ul className={`dropdown-menu ${dropdownOpen ? "active" : ""}`}>
+                <li>
+                  <Link
+                    to="/profile"
+                    className="dropdown-nav-links"
+                    onClick={(closeMobileMenu, toggleDropdown)}
+                  >
+                    My Profile
+                  </Link>
+                </li>
+                {userClubs.length >= 0 && (
                   <li>
-                    <Link to="/my-clubs" className="dropdown-nav-links" onClick={closeMobileMenu}>
+                    <Link
+                      to="/profile/clubs"
+                      className="dropdown-nav-links"
+                      onClick={closeMobileMenu}
+                    >
                       My Clubs
                     </Link>
                     <ul>
@@ -122,20 +125,19 @@ function Navbar() {
                       ))}
                     </ul>
                   </li>
-                )
-              }
+                )}
 
-              <li>
-                <Link
-                  to="/create_host_profile"
-                  className="dropdown-nav-links"
-                  onClick={(closeMobileMenu, toggleDropdown)}
-                >
-                  + Create Profile
-                </Link>
-              </li>
-            </ul>
-          </li>
+                <li>
+                  <Link
+                    to="/profile/create_host"
+                    className="dropdown-nav-links"
+                    onClick={(closeMobileMenu, toggleDropdown)}
+                  >
+                    + Create Profile
+                  </Link>
+                </li>
+              </ul>
+            </li>
           )}
           <li className="nav-item">
             <Link
@@ -148,7 +150,11 @@ function Navbar() {
           </li>
         </ul>
         {button && (
-          <Button to="/login" buttonStyle="btn--outline" onClick={buttonText === "Logout" ? handleLogout : null}>
+          <Button
+            to="/login"
+            buttonStyle="btn--outline"
+            onClick={buttonText === "Logout" ? handleLogout : null}
+          >
             {buttonText}
           </Button>
         )}

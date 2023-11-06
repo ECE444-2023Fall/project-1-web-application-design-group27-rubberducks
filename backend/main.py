@@ -8,6 +8,7 @@ from events import events_ns
 from accounts import accounts_ns
 from hosts import hosts_ns
 from auth import auth_ns, principal 
+from s3 import s3_ns
 
 from config import DevConfig
 from auth import login_manager
@@ -25,6 +26,7 @@ def create_app(config=DevConfig):
     api.add_namespace(accounts_ns)
     api.add_namespace(hosts_ns)
     api.add_namespace(auth_ns)
+    api.add_namespace(s3_ns)
 
     app.config['JWT_SECRET_KEY'] = 'secret_key_here'  # Change this to a secure secret key
     app.config['JWT_TOKEN_LOCATION'] = ['headers']
