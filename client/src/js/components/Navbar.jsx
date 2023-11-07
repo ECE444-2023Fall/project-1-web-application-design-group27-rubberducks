@@ -6,7 +6,7 @@ import "../../css/components/Navbar.css";
 
 function Navbar() {
   const [click, setClick] = useState(false);
-  const [dropdownShow, setDropdownShow] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [button, setButton] = useState(true);
   const [buttonText, setButtonText] = useState("Login");
@@ -17,15 +17,17 @@ function Navbar() {
   const closeMobileMenu = () => setClick(false);
 
   const updateButtonText = () => {
-    const user = JSON.parse(localStorage.getItem('user'));
+    const user = JSON.parse(localStorage.getItem("user"));
     setButtonText(user ? "Logout" : "Login");
   };
 
   const showButton = () => {
     if (window.innerWidth <= 960) {
+      setButton(false);
       setButtonText("Login"); // Change to "Login" when the button should be shown
     } else {
-      const user = JSON.parse(localStorage.getItem('user'));
+      setButton(true);
+      const user = JSON.parse(localStorage.getItem("user"));
       if (user) {
         setButtonText("Logout");
       } else {
@@ -34,30 +36,30 @@ function Navbar() {
     }
   };
 
-  const showDropdown = () =>{
+  const loggedIn = () =>{
     const user = JSON.parse(localStorage.getItem('user'));
       if (user) {
-        setDropdownShow(true);
+        setIsLoggedIn(true);
         closeMobileMenu();
       }
       else{
-        setDropdownShow(false);
+        setIsLoggedIn(false);
       }
   }
 
   useEffect(() => {
     showButton();
-    showDropdown();
+    loggedIn();
   }, []);
 
   window.addEventListener("resize", showButton);
 
   const handleLogout = () => {
-    localStorage.removeItem('access_token');
-    localStorage.removeItem('refresh_token');
-    localStorage.removeItem('user');
+    localStorage.removeItem("access_token");
+    localStorage.removeItem("refresh_token");
+    localStorage.removeItem("user");
     setButtonText("Login");
-    setDropdownShow(false);
+    setIsLoggedIn(false);
     
   };
 
@@ -87,7 +89,7 @@ function Navbar() {
               Clubs
             </Link>
           </li>
-          {dropdownShow && (
+          {isLoggedIn && (
           <li className={`nav-item ${dropdownOpen ? "active" : ""}`}>
             <div className="nav-links" onClick={toggleDropdown}>
               Account <RiArrowDropDownFill />
@@ -102,10 +104,13 @@ function Navbar() {
                   My Profile
                 </Link>
               </li>
-              {
-                userClubs.length >= 0 && (
+              {userClubs.length >= 0 && (
                   <li>
-                    <Link to="/my-clubs" className="dropdown-nav-links" onClick={closeMobileMenu}>
+                    <Link
+                      to="/profile/clubs"
+                      className="dropdown-nav-links"
+                      onClick={closeMobileMenu}
+                    >
                       My Clubs
                     </Link>
                     <ul>
@@ -122,12 +127,10 @@ function Navbar() {
                       ))}
                     </ul>
                   </li>
-                )
-              }
-
+                )}
               <li>
                 <Link
-                  to="/create_host_profile"
+                  to="/profile/create_host"
                   className="dropdown-nav-links"
                   onClick={(closeMobileMenu, toggleDropdown)}
                 >
@@ -135,6 +138,13 @@ function Navbar() {
                 </Link>
               </li>
             </ul>
+          </li>
+          )}
+          {isLoggedIn && (
+          <li className="nav-item">
+            <Link to="/inbox" className="nav-links" onClick={closeMobileMenu}>
+              Inbox
+            </Link>
           </li>
           )}
           <li className="nav-item">
@@ -148,7 +158,11 @@ function Navbar() {
           </li>
         </ul>
         {button && (
-          <Button to="/login" buttonStyle="btn--outline" onClick={buttonText === "Logout" ? handleLogout : null}>
+          <Button
+            to="/login"
+            buttonStyle="btn--outline"
+            onClick={buttonText === "Logout" ? handleLogout : null}
+          >
             {buttonText}
           </Button>
         )}

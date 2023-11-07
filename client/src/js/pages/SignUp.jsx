@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "../../css/pages/Login.css";
 import { useNavigate } from "react-router-dom";
+import Navbar from "../components/Navbar";
 
 function SignUp() {
   const [name, setName] = useState("");
@@ -67,90 +68,97 @@ function SignUp() {
   };
 
   return (
-    <div className="login-container">
-      <div className="login-card">
-        <h2>Create Account</h2>
-        <form onSubmit={submitSignUpForm}>
-          <div className="input-group">
-            <i className="fas fa-user"></i>
-            <input
-              type="text"
-              placeholder="Name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              required
-            />
-          </div>
-          <div className="input-group">
-            <i className="fas fa-envelope"></i>
-            <input
-              type="email"
-              placeholder="Email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
-          </div>
-          <div className="input-group">
-            <i className="fas fa-envelope"></i>
-            <input
-              type="email"
-              placeholder="Confirm Email"
-              value={confirmEmail}
-              onChange={(e) => setConfirmEmail(e.target.value)}
-              required
-            />
-          </div>
-          <div className="input-group">
-            <i className="fas fa-lock"></i>
-            <input
-              type={showPassword ? "text" : "password"}
-              placeholder="Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-            <span
-              className="toggle-password"
-              onClick={() => setShowPassword(!showPassword)}
-            >
-              {showPassword ? (
-                <i className="fas fa-eye-slash"></i>
-              ) : (
-                <i className="fas fa-eye"></i>
-              )}
-            </span>
-          </div>
-          <div className="input-group">
-            <i className="fas fa-lock"></i>
-            <input
-              type={showPassword ? "text" : "password"}
-              placeholder="Confirm Password"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              required
-            />
-          </div>
-          <div className="additional-options">
-            <label>
-              <input type="checkbox" />
-              Remember me
-            </label>
-          </div>
-          {errorMessage && <div className="error-message">{errorMessage}</div>}
-          {signupSuccess && (
-            <p className="success-message" style={{ textAlign: "center" }}>
-              Signup successful!
-            </p>
-          )}
-          <button type="submit" class="btn--login">Sign Up</button>
-          <div className="signup-option">
-            <span>or</span>
-            <a href="/login">Log In</a>
-          </div>
-        </form>
+    <>
+      <Navbar />
+      <div className="login-container">
+        <div className="login-card">
+          <h2>Create Account</h2>
+          <form onSubmit={submitSignUpForm}>
+            <div className="input-group">
+              <i className="fas fa-user"></i>
+              <input
+                type="text"
+                placeholder="Name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                required
+              />
+            </div>
+            <div className="input-group">
+              <i className="fas fa-envelope"></i>
+              <input
+                type="email"
+                placeholder="Email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+            </div>
+            <div className="input-group">
+              <i className="fas fa-envelope"></i>
+              <input
+                type="email"
+                placeholder="Confirm Email"
+                value={confirmEmail}
+                onChange={(e) => setConfirmEmail(e.target.value)}
+                required
+              />
+            </div>
+            <div className="input-group">
+              <i className="fas fa-lock"></i>
+              <input
+                type={showPassword ? "text" : "password"}
+                placeholder="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+              <span
+                className="toggle-password"
+                onClick={() => setShowPassword(!showPassword)}
+              >
+                {showPassword ? (
+                  <i className="fas fa-eye-slash"></i>
+                ) : (
+                  <i className="fas fa-eye"></i>
+                )}
+              </span>
+            </div>
+            <div className="input-group">
+              <i className="fas fa-lock"></i>
+              <input
+                type={showPassword ? "text" : "password"}
+                placeholder="Confirm Password"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                required
+              />
+            </div>
+            <div className="additional-options">
+              <label>
+                <input type="checkbox" />
+                Remember me
+              </label>
+            </div>
+            {errorMessage && (
+              <div className="error-message">{errorMessage}</div>
+            )}
+            {signupSuccess && (
+              <p className="success-message" style={{ textAlign: "center" }}>
+                Signup successful!
+              </p>
+            )}
+            <button type="submit" className="btn--login">
+              Sign Up
+            </button>
+            <div className="signup-option">
+              <span>or</span>
+              <a href="/login">Log In</a>
+            </div>
+          </form>
+        </div>
       </div>
-    </div>
+    </>
   );
 }
 

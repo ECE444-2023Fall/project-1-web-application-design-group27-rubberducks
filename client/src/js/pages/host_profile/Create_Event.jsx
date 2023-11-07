@@ -1,19 +1,22 @@
 // CreateEvent.jsx
-import React, { useState , useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import "../../../css/pages/host_profile/Create_Event.css";
 import TagSelect from "./Tag_Select";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import HostSidebar from "../../components/HostSidebar";
 import { useNavigate } from "react-router-dom";
+import { useParams } from 'react-router-dom';
 
-function convertTimetoString(hour, minute){
-  const formattedHour = `${hour}`.padStart(2, '0');
-  const formattedMinute = `${minute}`.padStart(2, '0');
+function convertTimetoString(hour, minute) {
+  const formattedHour = `${hour}`.padStart(2, "0");
+  const formattedMinute = `${minute}`.padStart(2, "0");
   return `${formattedHour}:${formattedMinute}`;
 }
 
-export default function Create_Event({hid}) {
+export default function Create_Event() {
+  const { hostId } = useParams();
+
   const [name, setEventName] = useState("");
   const currentDate = new Date();
   const [date, setDate] = useState(new Date());
@@ -33,8 +36,8 @@ export default function Create_Event({hid}) {
   const [owner, setOwner] = useState(-1);
   const [events, setEvents] = useState([]);
   const navigate = useNavigate();
-  const [error, setError] = useState('');
-  
+  const [error, setError] = useState("");
+
   const handleTagChange = (tags) => {
     setSelectedTags(tags);
   };
@@ -51,7 +54,7 @@ export default function Create_Event({hid}) {
   };
 
   useEffect(() => {
-    fetch(`/api/hosts/${hid}`)
+    fetch(`/api/hosts/${hostId}`)
       .then((res) => res.json())
       .then((data) => {
         setHostName(data.name);
@@ -60,7 +63,7 @@ export default function Create_Event({hid}) {
         setOwner(data.owner);
         setEvents(data.events);
       });
-  }, [hid]);
+  }, [hostId]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -68,90 +71,88 @@ export default function Create_Event({hid}) {
     const startTime = new Date(0, 0, 0, hour1, minute1);
     const endTime = new Date(0, 0, 0, hour2, minute2);
     if (startTime > endTime) {
-      setError('End time must be after start time');
+      setError("End time must be after start time");
     } else {
-    const event = {
-      name: name,
-      description: description,
-      location: location,
-      date: date,
-      start_time: convertTimetoString(hour1, minute1),
-      end_time: convertTimetoString(hour2, minute2),
-      capacity: capacity,
-      reoccuring: reoccuring,
-      date_created: dateCreated,
-      attendees: [],
-      owner: owner,
-      tags: tags,
-      //eventPhoto, //event photo not in models yet
-    };
-    console.log("Event Data:", event);
+      const event = {
+        name: name,
+        description: description,
+        location: location,
+        date: date,
+        start_time: convertTimetoString(hour1, minute1),
+        end_time: convertTimetoString(hour2, minute2),
+        capacity: capacity,
+        reoccuring: reoccuring,
+        date_created: dateCreated,
+        attendees: [],
+        owner: owner,
+        tags: tags,
+        //eventPhoto, //event photo not in models yet
+      };
+      console.log("Event Data:", event);
 
-    //create new event
-    fetch("/api/events/all", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(event),
-    })
-      .then((res) => {
-        if (!res.ok) {
-          throw new Error(`HTTP error! Status: ${res.status}`);
-        }
-        return res.json();
+      //create new event
+      fetch("/api/events/all", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(event),
       })
-      .then((data) => {
-        console.log(events);
-        const new_events = {
-          events: [...events, data.eid],
-          name: hostname,
-          email: email,
-          bio: bio,
-          owner: owner,
-        };
-        console.log(new_events);
-        if (data && data.eid) {
-          // Update host data
-          fetch(`/api/hosts/${hid}`, {
-            method: "PUT",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(new_events),
-          })
-            .then((res2) => {
-              if (!res2.ok) {
-                throw new Error(`HTTP error! Status: ${res2.status}`);
-              }
-              return res2.json();
+        .then((res) => {
+          if (!res.ok) {
+            throw new Error(`HTTP error! Status: ${res.status}`);
+          }
+          return res.json();
+        })
+        .then((data) => {
+          console.log(events);
+          const new_events = {
+            events: [...events, data.eid],
+            name: hostname,
+            email: email,
+            bio: bio,
+            owner: owner,
+          };
+          console.log(new_events);
+          if (data && data.eid) {
+            // Update host data
+            fetch(`/api/hosts/${hostId}`, {
+              method: "PUT",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(new_events),
             })
-            .then(() => {
-              console.log(
-                "successfully updated host events"
-              );
-              navigate(`/events/${data.eid}`);
-            })
-            .catch((err) => {
-              console.log("error:", err);
-              setErrorMessage(err.message);
-            });
-        }
-      })
-      .catch((err) => {
-        console.log("error:", err);
-        setErrorMessage(err.message);
-      });
+              .then((res2) => {
+                if (!res2.ok) {
+                  throw new Error(`HTTP error! Status: ${res2.status}`);
+                }
+                return res2.json();
+              })
+              .then(() => {
+                console.log("successfully updated host events");
+                navigate(`/events/${data.eid}`);
+              })
+              .catch((err) => {
+                console.log("error:", err);
+                setErrorMessage(err.message);
+              });
+          }
+        })
+        .catch((err) => {
+          console.log("error:", err);
+          setErrorMessage(err.message);
+        });
     }
   };
 
   const handleCancel = () => {
-    navigate(`/host_profile/${hid}`);
-  }
+    navigate(`/hosts/${hostId}`);
+  };
 
   return (
     <>
-    <HostSidebar hid={hid} name={hostname} email={email} bio={bio} />
+      <HostSidebar hostId={hostId} name={hostname} email={email} bio={bio} />
       <div className="form_block_event">
         <h1>Create Event</h1>
         <form onSubmit={handleSubmit}>
@@ -184,46 +185,46 @@ export default function Create_Event({hid}) {
           <div className="form-group">
             <label htmlFor="start_time">Start Time:</label>
             <div className="time-input-container">
-            <input
-              type="number"
-              className="time-input"
-              min="0"
-              max="23"
-              value={hour1}
-              onChange={(e) => setHour1(e.target.value)}
-            />
-            <span>:</span>
-            <input
-              type="number"
-              className="time-input"
-              min="0"
-              max="59"
-              value={minute1}
-              onChange={(e) => setMinute1(e.target.value)}
-            />
+              <input
+                type="number"
+                className="time-input"
+                min="0"
+                max="23"
+                value={hour1}
+                onChange={(e) => setHour1(e.target.value)}
+              />
+              <span>:</span>
+              <input
+                type="number"
+                className="time-input"
+                min="0"
+                max="59"
+                value={minute1}
+                onChange={(e) => setMinute1(e.target.value)}
+              />
             </div>
           </div>
 
           <div className="form-group">
             <label htmlFor="end_time">End Time:</label>
             <div className="time-input-container">
-            <input
-              type="number"
-              className="time-input"
-              min="0"
-              max="23"
-              value={hour2}
-              onChange={(e) => setHour2(e.target.value)}
-            />
-            <span>:</span>
-            <input
-              type="number"
-              className="time-input"
-              min="0"
-              max="59"
-              value={minute2}
-              onChange={(e) => setMinute2(e.target.value)}
-            />
+              <input
+                type="number"
+                className="time-input"
+                min="0"
+                max="23"
+                value={hour2}
+                onChange={(e) => setHour2(e.target.value)}
+              />
+              <span>:</span>
+              <input
+                type="number"
+                className="time-input"
+                min="0"
+                max="59"
+                value={minute2}
+                onChange={(e) => setMinute2(e.target.value)}
+              />
             </div>
           </div>
 
