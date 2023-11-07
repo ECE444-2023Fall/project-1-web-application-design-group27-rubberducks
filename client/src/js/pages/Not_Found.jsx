@@ -10,7 +10,7 @@ const NotFound = () => {
       <>
         <Navbar />
         <div className="error-container">
-          <p>Login Necessary to Access Resource</p>
+          <p>Please Login to Access Resource</p>
           <br />
           <Link to="/login">
             <Button type="primary">Login</Button>

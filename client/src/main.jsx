@@ -37,14 +37,14 @@ import ResourceError from "./js/pages/ResourceError.jsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
-    <Route path="/" errorElement={<NotFound />}>
+    <Route path="/" errorElement={<ResourceError />}>
       <Route element={<Home />} index />
       <Route path="login" element={<Login />} />
       <Route path="signup" element={<Signup />} />
       <Route
         path="profile"
         element={<Profile_root />}
-        errorElement={<NotFound />}
+        errorElement={<ResourceError />}
       >
         <Route element={<Profile />} index />
         <Route path="upcoming" element={<Profile_upcoming />} />
@@ -55,8 +55,12 @@ const router = createBrowserRouter(
         <Route path="clubs" element={<My_Clubs />} />
       </Route>
       <Route path="clubs" element={<Clubs />} />
-      <Route path="hosts" element={<Host_root />} errorElement={<NotFound />}>
-        <Route path=":hostId" errorElement={<NotFound />}>
+      <Route
+        path="hosts"
+        element={<Host_root />}
+        errorElement={<ResourceError />}
+      >
+        <Route path=":hostId" errorElement={<ResourceError />}>
           <Route index element={<Host_profile />} />
           <Route path="upcoming" element={<Host_upcoming />} />
           <Route path="previous" element={<Host_previous />} />
@@ -66,7 +70,7 @@ const router = createBrowserRouter(
           <Route path="transfer_receive" element={<Host_transfer_Recieve />} />
         </Route>
       </Route>
-      <Route path="events" errorElement={<NotFound />}>
+      <Route path="events" errorElement={<ResourceError />}>
         <Route element={<Events />} index />
         <Route path=":eventId" element={<Events />} />
         <Route path="eventdetails" element={<EventDetailsPage />} />
