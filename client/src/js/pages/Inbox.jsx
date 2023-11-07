@@ -172,7 +172,7 @@ function InboxPage() {
           messages.map((message) => (
             <div key={message.msgid} onClick={() => handleMessageClick(message)} className={`message ${message.read ? 'normal-message' : 'highlighted-message'}`}>
               <div className="message-content">{message.message}</div>
-              <div className="message-date">Date: {message.created_at}</div>
+              <div className="message-date">Date: {message.created_at.split(':').slice(0,-1).join(':')}</div>
               {message.read && (
                 <div className="message-actions">
                   <button className="delete--button--icon"
