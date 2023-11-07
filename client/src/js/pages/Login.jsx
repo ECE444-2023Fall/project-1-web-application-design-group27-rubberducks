@@ -14,7 +14,10 @@ function Login() {
 
   const submitLoginForm = (e) => {
     e.preventDefault();
-
+    if (password.length < 8) {
+      setErrorMessage("Password must be at least 8 characters long.");
+      return;
+    }
     fetch("/api/auth/login", {
       method: "POST",
       headers: {

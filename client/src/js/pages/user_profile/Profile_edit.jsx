@@ -4,12 +4,12 @@ import Sidebar from "../../components/UserSidebar";
 import { Form, Button, Modal } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
+import "../../../css/components/ErrorPopup.css";
 
 function Profile_edit() {
   const [showDelete, setShowDelete] = useState(false);
   const handleCloseDelete = () => setShowDelete(false);
   const handleShowDelete = () => setShowDelete(true);
-
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [orgs, setOrgs] = useState([]);
@@ -18,7 +18,18 @@ function Profile_edit() {
   const [upcomingEvents, setUpcomingEvents] = useState([]);
   const [previousEvents, setPreviousEvents] = useState([]);
   const [events, setEvents] = useState([]);
+  const [errorPopupVisible, setErrorPopupVisible] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const redirectToLoginPage = () => {
+    // Use navigate function to navigate to the /login page
+    navigate("/login");
+  };
 
+  const showErrorPopup = (message) => {
+    setErrorMessage(message);
+    setErrorPopupVisible(true);
+  };
+  
   useEffect(() => {
     const accessToken = localStorage.getItem("access_token");
     console.log("Access Token:", accessToken);
@@ -122,7 +133,7 @@ function Profile_edit() {
         });
       reset();
     } else {
-      alert("Passwords do not match");
+      showErrorPopup("Passwords do not match");
     }
   };
 
@@ -132,6 +143,15 @@ function Profile_edit() {
       <div className="form">
         <h1 className="edit_header">Edit Profile</h1>
         <br />
+        {errorPopupVisible && (
+          <div className="error-popup">
+            <div className="error-popup-content">
+              <span className="close-button" onClick={() => setErrorPopupVisible(false)}>&times;</span>
+              <p>{errorMessage}</p>
+              <button onClick={() => redirectToLoginPage()} className="btn--login">Login</button>
+            </div>
+          </div>
+        )}
         <Form>
           <Form.Group>
             <Form.Label>New Name</Form.Label>

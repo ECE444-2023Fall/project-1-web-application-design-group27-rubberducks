@@ -15,7 +15,10 @@ function SignUp() {
 
   const submitSignUpForm = (e) => {
     e.preventDefault();
-
+    if (password.length < 8) {
+      setErrorMessage("Password must be at least 8 characters long.");
+      return;
+    }
     if (email !== confirmEmail) {
       setErrorMessage("Emails do not match.");
       return;
