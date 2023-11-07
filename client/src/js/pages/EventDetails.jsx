@@ -1,9 +1,15 @@
 import React from "react";
+import Navbar from "../components/Navbar";
 import EventDetails from "../components/EventDetails";
 
 function EventDetailsPage() {
 
-  return <EventDetails/>;
+  return (
+    <>
+      <Navbar />
+      <EventDetails />
+    </>
+  );
 
 }
 

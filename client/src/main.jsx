@@ -24,12 +24,12 @@ import Create_Host_Profile from "./js/pages/Create_Host_Profile.jsx";
 import Create_Event from "./js/pages/host_profile/Create_Event.jsx";
 import Clubs from "./js/pages/Clubs.jsx";
 import Events from "./js/pages/Events.jsx";
-import EventDetails from "./js/pages/EventDetails.jsx";
 import Home from "./js/pages/Home.jsx";
 import Login from "./js/pages/Login.jsx";
 import Signup from "./js/pages/Signup.jsx";
 import NotFound from "./js/pages/Not_Found.jsx";
 import My_Clubs from "./js/pages/user_profile/User_Clubs.jsx";
+import EventDetailsPage from "./js/pages/EventDetails.jsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -63,7 +63,7 @@ const router = createBrowserRouter(
       <Route path="events" errorElement={<NotFound />}>
         <Route element={<Events />} index />
         <Route path=":eventId" element={<Events />} />
-        <Route path="eventdetails" element={<EventDetails />} />
+        <Route path="eventdetails" element={<EventDetailsPage />} />
       </Route>
     </Route>
   )
