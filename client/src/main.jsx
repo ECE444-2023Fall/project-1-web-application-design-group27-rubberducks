@@ -64,7 +64,6 @@ const router = createBrowserRouter(
       <Route path="events" errorElement={<NotFound />}>
         <Route element={<Events />} index />
         <Route path=":eventId" element={<EventDetailsPage />} />
-        {/* <Route path="eventdetails" element={<EventDetailsPage />} /> */}
       </Route>
     </Route>
   )
