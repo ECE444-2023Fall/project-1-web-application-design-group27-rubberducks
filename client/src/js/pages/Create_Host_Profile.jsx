@@ -10,7 +10,7 @@ function CreateHostProfile() {
   const [bio, setBio] = useState("");
   const [profilePhoto, setProfilePhoto] = useState(null);
   const [errorMessage, setErrorMessage] = useState("");
-  const navigate = useNavigate;
+  const navigate = useNavigate();
 
   const handleProfilePhotoChange = (e) => {
     const file = e.target.files[0];
@@ -99,7 +99,7 @@ function CreateHostProfile() {
                     console.log("successfully updated account orgs");
                     console.log(data3);
                     // Redirect to the created page or handle as needed
-                    navigate(`/host_profile/${data.hid}`);
+                    navigate(`/hosts/${data.hid}`);
 
                     setEmail("");
                     setBio("");

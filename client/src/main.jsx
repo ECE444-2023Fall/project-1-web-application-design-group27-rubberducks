@@ -22,6 +22,7 @@ import Host_root, {
 } from "./js/pages/Host_Profile.jsx";
 import Create_Host_Profile from "./js/pages/Create_Host_Profile.jsx";
 import Create_Event from "./js/pages/host_profile/Create_Event.jsx";
+import InboxPage from "./js/pages/Inbox.jsx";
 import Clubs from "./js/pages/Clubs.jsx";
 import Events from "./js/pages/Events.jsx";
 import Home from "./js/pages/Home.jsx";
@@ -29,6 +30,8 @@ import Login from "./js/pages/Login.jsx";
 import Signup from "./js/pages/Signup.jsx";
 import NotFound from "./js/pages/Not_Found.jsx";
 import My_Clubs from "./js/pages/user_profile/User_Clubs.jsx";
+import Host_transfer_send from "./js/pages/host_profile/Host_Transfer_Send.jsx";
+import Host_transfer_Recieve from "./js/pages/host_profile/Host_Transfer_Recieve.jsx";
 import EventDetailsPage from "./js/pages/EventDetails.jsx";
 
 const router = createBrowserRouter(
@@ -58,6 +61,8 @@ const router = createBrowserRouter(
           <Route path="previous" element={<Host_previous />} />
           <Route path="edit" element={<Host_edit />} />
           <Route path="create_event" element={<Create_Event />} />
+          <Route path="transfer" element={<Host_transfer_send/>} />
+          <Route path="transfer_receive" element={<Host_transfer_Recieve/>}/>
         </Route>
       </Route>
       <Route path="events" errorElement={<NotFound />}>
@@ -65,6 +70,7 @@ const router = createBrowserRouter(
         <Route path=":eventId" element={<Events />} />
         <Route path="eventdetails" element={<EventDetailsPage />} />
       </Route>
+      <Route path="inbox" element={<InboxPage />} />
     </Route>
   )
 );

@@ -6,7 +6,7 @@ import "../../css/components/Navbar.css";
 
 function Navbar() {
   const [click, setClick] = useState(false);
-  const [dropdownShow, setDropdownShow] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [button, setButton] = useState(true);
   const [buttonText, setButtonText] = useState("Login");
@@ -36,19 +36,20 @@ function Navbar() {
     }
   };
 
-  const showDropdown = () => {
-    const user = JSON.parse(localStorage.getItem("user"));
-    if (user) {
-      setDropdownShow(true);
-      closeMobileMenu();
-    } else {
-      setDropdownShow(false);
-    }
-  };
+  const loggedIn = () =>{
+    const user = JSON.parse(localStorage.getItem('user'));
+      if (user) {
+        setIsLoggedIn(true);
+        closeMobileMenu();
+      }
+      else{
+        setIsLoggedIn(false);
+      }
+  }
 
   useEffect(() => {
     showButton();
-    showDropdown();
+    loggedIn();
   }, []);
 
   window.addEventListener("resize", showButton);
@@ -58,7 +59,8 @@ function Navbar() {
     localStorage.removeItem("refresh_token");
     localStorage.removeItem("user");
     setButtonText("Login");
-    setDropdownShow(false);
+    setIsLoggedIn(false);
+    
   };
 
   return (
@@ -87,22 +89,22 @@ function Navbar() {
               Clubs
             </Link>
           </li>
-          {dropdownShow && (
-            <li className={`nav-item ${dropdownOpen ? "active" : ""}`}>
-              <div className="nav-links" onClick={toggleDropdown}>
-                Account <RiArrowDropDownFill />
-              </div>
-              <ul className={`dropdown-menu ${dropdownOpen ? "active" : ""}`}>
-                <li>
-                  <Link
-                    to="/profile"
-                    className="dropdown-nav-links"
-                    onClick={(closeMobileMenu, toggleDropdown)}
-                  >
-                    My Profile
-                  </Link>
-                </li>
-                {userClubs.length >= 0 && (
+          {isLoggedIn && (
+          <li className={`nav-item ${dropdownOpen ? "active" : ""}`}>
+            <div className="nav-links" onClick={toggleDropdown}>
+              Account <RiArrowDropDownFill />
+            </div>
+            <ul className={`dropdown-menu ${dropdownOpen ? "active" : ""}`}>
+              <li>
+                <Link
+                  to="/profile"
+                  className="dropdown-nav-links"
+                  onClick={(closeMobileMenu, toggleDropdown)}
+                >
+                  My Profile
+                </Link>
+              </li>
+              {userClubs.length >= 0 && (
                   <li>
                     <Link
                       to="/profile/clubs"
@@ -126,18 +128,24 @@ function Navbar() {
                     </ul>
                   </li>
                 )}
-
-                <li>
-                  <Link
-                    to="/profile/create_host"
-                    className="dropdown-nav-links"
-                    onClick={(closeMobileMenu, toggleDropdown)}
-                  >
-                    + Create Profile
-                  </Link>
-                </li>
-              </ul>
-            </li>
+              <li>
+                <Link
+                  to="/profile/create_host"
+                  className="dropdown-nav-links"
+                  onClick={(closeMobileMenu, toggleDropdown)}
+                >
+                  + Create Profile
+                </Link>
+              </li>
+            </ul>
+          </li>
+          )}
+          {isLoggedIn && (
+          <li className="nav-item">
+            <Link to="/inbox" className="nav-links" onClick={closeMobileMenu}>
+              Inbox
+            </Link>
+          </li>
           )}
           <li className="nav-item">
             <Link
