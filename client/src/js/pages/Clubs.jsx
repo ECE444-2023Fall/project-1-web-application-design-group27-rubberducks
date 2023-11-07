@@ -1,7 +1,11 @@
 import React from "react";
+import Navbar from "../components/Navbar";
 
-function Clubs() {
-  return <div>Clubs</div>;
+export default function Clubs() {
+  return (
+    <>
+      <Navbar />
+      <div>Clubs</div>
+    </>
+  );
 }
-
-export default Clubs;
