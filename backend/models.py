@@ -1,6 +1,7 @@
 from exts import db
 from sqlalchemy.dialects.postgresql import JSON
 from flask_login import UserMixin
+from datetime import datetime
 
 """
 class Account:
@@ -23,17 +24,20 @@ class Account(UserMixin, db.Model):
     events = db.Column(db.ARRAY(db.Integer))
     fav_events = db.Column(db.ARRAY(db.Integer))
     orgs = db.Column(db.ARRAY(db.Integer))
+    msgids = db.Column(db.ARRAY(db.Integer))
 
-    def __init__(self, name, email, password, events, fav_events, orgs):
+    def __init__(self, name, email, password, events, fav_events, orgs, msgids):
         self.name = name
         self.email = email
         self.password = password
         self.events = events
         self.fav_events = fav_events
         self.orgs = orgs
+        self.msgids = msgids
+
 
     def __repr__(self):
-        return f"<Account {self.uid} {self.name} {self.email} {self.password} {self.events} {self.fav_events} {self.orgs}>"
+        return f"<Account {self.uid} {self.name} {self.email} {self.password} {self.events} {self.fav_events} {self.orgs} {self.msgids}>"
 
     def save(self):
         db.session.add(self)
@@ -43,13 +47,15 @@ class Account(UserMixin, db.Model):
         db.session.delete(self)
         db.session.commit()
 
-    def update(self, name, email, password, events, fav_events, orgs):
+    def update(self, name, email, events, fav_events, orgs, msgids, password=None):
         self.name = name
         self.email = email
-        self.password = password
+        if password is not None:
+            self.password = password
         self.events = events
         self.fav_events = fav_events
         self.orgs = orgs
+        self.msgids = msgids
         db.session.commit()
     
     @property
@@ -69,7 +75,44 @@ class Host:
     events: list of Event
     owner: Account
 """
+class Message(db.Model):
+    __tablename__ = "messages"
+    msgid = db.Column(db.Integer, primary_key=True)
+    account_id = db.Column(db.Integer, db.ForeignKey("account.uid"), nullable=False)
+    message = db.Column(db.String(255), nullable=False)
+    created_at = db.Column(db.Date, nullable=False)
+    read = db.Column(db.Boolean, default=False, nullable=False)
+    msg_type =  db.Column(db.Integer, nullable=False)
 
+    def __init__(self, account_id, message, msg_type, created_at=None, read=False):
+        self.account_id = account_id
+        self.message = message
+        self.msg_type = msg_type
+        if created_at is None:
+            self.created_at = datetime.now()
+        else: 
+            self.created_at = created_at
+        self.read = read  # Initialize the read field
+
+    def __repr__(self):
+        return f"<Message {self.msgid} {self.account_id} {self.message} {self.created_at} {self.read} {self.msg_type}>"
+
+    def save(self):
+        db.session.add(self)
+        db.session.commit()
+
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
+
+    def update(self, account_id, message, created_at, read, msg_type):
+        self.account_id = account_id
+        self.message = message
+        self.created_at = created_at
+        self.read = read  # Update the read field
+        self.msg_type = msg_type
+
+        db.session.commit()
 
 class Host(db.Model):
     __tablename__ = "host"
@@ -113,16 +156,16 @@ class Event:
     name: str
     location: str
     description: str
-    time: time
+    start_time: time
+    end_time
     date: date
     capacity: int
     attendees: list of Account
     tags: list of str
-    reoccuring: bool
+    reoccuring: int
     date created : date
     owner: Host
 """
-
 
 class Event(db.Model):
     __tablename__ = "event"
@@ -131,29 +174,31 @@ class Event(db.Model):
     location = db.Column(db.String(50), nullable=False)
     description = db.Column(db.String(50), nullable=False)
     date = db.Column(db.Date, nullable=False)
-    time = db.Column(db.Time, nullable=False)
+    start_time = db.Column(db.Time, nullable=False)
+    end_time = db.Column(db.Time, nullable=False)
     capacity = db.Column(db.Integer, nullable=False)
     attendees = db.Column(db.ARRAY(db.Integer))
-    tags = db.Column(db.ARRAY(db.String(50)))
-    reoccuring = db.Column(db.Boolean, nullable=False)
+    reoccuring = db.Column(db.Integer, nullable=False)
     date_created = db.Column(db.Date, nullable=False)
     owner = db.Column(db.Integer, db.ForeignKey("host.hid"), nullable=False)
+    tags = db.Column(db.ARRAY(db.Integer))
 
-    def __init__(self, name, location, description, date, time, capacity, attendees, tags, reoccuring, date_created, owner):
+    def __init__(self, name, location, description, date, start_time, end_time, capacity, attendees, reoccuring, date_created, owner, tags):
         self.name = name
         self.location = location
         self.description = description
         self.date = date
-        self.time = time
+        self.start_time = start_time
+        self.end_time = end_time
         self.capacity = capacity
         self.attendees = attendees
-        self.tags = tags
         self.reoccuring = reoccuring
         self.date_created = date_created
         self.owner = owner
+        self.tags = tags
 
     def __repr__(self):
-        return f"<Event {self.eid} {self.name} {self.location} {self.description} {self.date} {self.time} {self.capacity} {self.attendees} {self.tags} {self.reoccuring} {self.date_created} {self.owner}>"
+        return f"<Event {self.eid} {self.name} {self.location} {self.description} {self.date} {self.start_time} {self.end_time} {self.capacity} {self.attendees} {self.reoccuring} {self.date_created} {self.owner} {self.tags}>"
 
     def save(self):
         db.session.add(self)
@@ -163,38 +208,59 @@ class Event(db.Model):
         db.session.delete(self)
         db.session.commit()
 
-    def update(self, name, location, description, date, time, capacity, attendees, tags, reoccuring, date_created, owner):
+    def update(self, name, location, description, date, start_time, end_time, capacity, attendees, reoccuring, date_created, owner, tags):
         self.name = name
 
         self.location = location
         self.description = description
         self.date = date
-        self.time = time
+        self.start_time = start_time
+        self.end_time = end_time
         self.capacity = capacity
         self.attendees = attendees
-        self.tags = tags
         self.reoccuring = reoccuring
         self.date_created = date_created
         self.owner = owner
+        self.tags = tags
         db.session.commit()
 
+    def serialize(self):
+        return {
+            "eid": self.eid,
+            "name": self.name,
+            "description": self.description,
+            "location": self.location,
+            "date": self.date,
+            "start_time": self.start_time,
+            "end_time": self.end_time,
+            "capacity": self.capacity,
+            "reoccuring": self.reoccuring,
+            "date_created": self.date_created,
+            "attendees": self.attendees,
+            "owner": self.owner,
+            "tags": self.tags
+        }
+
 """
-class Tag:
-    tag: str primary key
+class Event_tags:
+    etid: int primary key
+    name: str
     description: str
 """
 
-"""class Tag(db.Model):
-    __tablename__ = "tags"
-    tag = db.Column(db.String(50), primary_key=True, nullable=False)
-    description = db.Column(db.String(255), nullable=False)
+class Event_tag(db.Model):
+    __tablename__ = "event_tags"
+    etid = db.Column(db.Integer, primary_key=True, nullable=False)
+    name = db.Column(db.String(50), nullable=False)
+    description = db.Column(db.String(255))
 
-    def __init__(self, tag, description):
-        self.tag = tag
+    def __init__(self, etid, name, description):
+        self.etid = etid
+        self.name = name
         self.description = description
 
     def __repr__(self):
-        return f"<Tag {self.tag} {self.description}>"
+        return f"<Event tag {self.etid} {self.name} {self.description}>"
 
     def save(self):
         db.session.add(self)
@@ -204,7 +270,8 @@ class Tag:
         db.session.delete(self)
         db.session.commit()
 
-    def update(self, tag, description):
-        self.tag = tag
+    def update(self, etid, name, description):
+        self.etid = etid
+        self.name = name
         self.description = description
-        db.session.commit()"""
+        db.session.commit()

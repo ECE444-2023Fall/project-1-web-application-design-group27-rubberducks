@@ -11,7 +11,7 @@ function HostSidebar(props) {
         <div className="sidebar--user--header">
           <div className="sidebar--user--name">{props.name}</div>
           <div className="edit--button">
-            <Link to="/host_profile/edit">
+            <Link to={`/hosts/${props.hid}/edit`}>
               <button className="edit--button--icon">
                 <MdEdit />
               </button>

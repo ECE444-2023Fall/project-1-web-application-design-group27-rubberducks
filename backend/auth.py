@@ -10,6 +10,8 @@ from flask_jwt_extended import (
     get_jwt_identity,
 )
 from flask_login import LoginManager, login_user, UserMixin, current_user, login_required
+from flask_principal import Principal, Identity, Permission
+
 
 
 login_manager = LoginManager()
@@ -17,6 +19,8 @@ login_manager = LoginManager()
 
 auth_ns = Namespace("auth", description="Authentication operations")
 
+principal = Principal()
+auth_permission = Permission()
 
 signup_model = auth_ns.model(
     "SignUp",
@@ -54,6 +58,7 @@ class SignUp(Resource):
             events=[],
             fav_events=[],
             orgs=[],
+            msgids=[],
         )
         new_account.save()
         return {"message": f"user with email {email} created"}, 201
@@ -61,6 +66,8 @@ class SignUp(Resource):
 @login_manager.user_loader
 def load_user(user_id):
     return Account.query.get(user_id)
+
+# from flask_jwt_extended import create_access_token, create_refresh_token
 
 @auth_ns.route("/login")
 class Login(Resource):
@@ -98,6 +105,14 @@ class Refresh(Resource):
         current_user = get_jwt_identity()
         access_token = create_access_token(identity=current_user)
         return {"access_token": access_token}, 200
+
+# @auth_ns.route('/protected')
+# class Protected(Resource):
+#     @auth_permission.require(http_exception=403)
+#     def get(self):
+#         # This route can only be accessed by authenticated users
+#         return {"message": "This is a protected route"}, 200
+
 
 # @auth_ns.route('/check_login_status')
 # class CheckLoginStatus(Resource):
