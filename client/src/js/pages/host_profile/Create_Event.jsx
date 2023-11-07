@@ -6,6 +6,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import HostSidebar from "../../components/HostSidebar";
 import { useNavigate } from "react-router-dom";
+import { useParams } from 'react-router-dom';
 
 function convertTimetoString(hour, minute) {
   const formattedHour = `${hour}`.padStart(2, "0");
@@ -13,7 +14,9 @@ function convertTimetoString(hour, minute) {
   return `${formattedHour}:${formattedMinute}`;
 }
 
-export default function Create_Event({ hid }) {
+export default function Create_Event() {
+  const { hostId } = useParams();
+
   const [name, setEventName] = useState("");
   const currentDate = new Date();
   const [date, setDate] = useState(new Date());
@@ -51,7 +54,7 @@ export default function Create_Event({ hid }) {
   };
 
   useEffect(() => {
-    fetch(`/api/hosts/${hid}`)
+    fetch(`/api/hosts/${hostId}`)
       .then((res) => res.json())
       .then((data) => {
         setHostName(data.name);
@@ -60,7 +63,7 @@ export default function Create_Event({ hid }) {
         setOwner(data.owner);
         setEvents(data.events);
       });
-  }, [hid]);
+  }, [hostId]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -113,7 +116,7 @@ export default function Create_Event({ hid }) {
           console.log(new_events);
           if (data && data.eid) {
             // Update host data
-            fetch(`/api/hosts/${hid}`, {
+            fetch(`/api/hosts/${hostId}`, {
               method: "PUT",
               headers: {
                 "Content-Type": "application/json",
@@ -144,12 +147,12 @@ export default function Create_Event({ hid }) {
   };
 
   const handleCancel = () => {
-    navigate(`/host_profile/${hid}`);
+    navigate(`/hosts/${hostId}`);
   };
 
   return (
     <>
-      <HostSidebar hid={hid} name={hostname} email={email} bio={bio} />
+      <HostSidebar hostId={hostId} name={hostname} email={email} bio={bio} />
       <div className="form_block_event">
         <h1>Create Event</h1>
         <form onSubmit={handleSubmit}>

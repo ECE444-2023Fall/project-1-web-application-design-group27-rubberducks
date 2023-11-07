@@ -15,7 +15,7 @@ function UserCards({org,onCardClick}) {
             // label={org.category || "placeholder"} // assuming 'org' has a 'category' property
             // date={org.date || "placeholder date"} // assuming 'org' has a 'date' property
             // location={org.location || "placeholder location"} // assuming 'org' has a 'location' property
-            path={`/host_profile/${org.hid}`}
+            path={`/hosts/${org.hid}`}
             onClick={() => onCardClick(org)}
             />
           </ul>

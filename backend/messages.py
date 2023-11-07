@@ -15,7 +15,7 @@ messages_model = messages_ns.model(
         "read": fields.Boolean,
         # 1: event-notifcation
         # 2: club-notification
-        # 3: transfer-host-profile
+        # 3: transfer-club
         "msg_type": fields.Integer 
     },
 )
@@ -59,7 +59,7 @@ class MessagesById(Resource):
 class MessagesByAccount(Resource):
     @messages_ns.marshal_list_with(messages_model)
     def get(self, account_id):
-        messages = Message.query.filter_by(account_id=account_id).all()
+        messages = Message.query.filter_by(account_id=account_id).order_by(Message.created_at.desc()).all()
         if not messages: 
             abort(404)
         return messages, 200
