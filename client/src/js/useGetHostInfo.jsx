@@ -9,10 +9,12 @@ export const useGetHostInfo = (hostId) => {
 
     if (response.status === 404) {
       window.location.href = "/404";
-    } else {
+    } else if (response.ok) {
       const data = await response.json();
       setHostInfo(data);
       setLoading(false);
+    } else {
+      console.log(response.status);
     }
   }, []);
 
