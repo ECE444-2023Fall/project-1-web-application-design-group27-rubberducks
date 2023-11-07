@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { MdDeleteForever } from "react-icons/md";
 import { Link, useNavigate } from "react-router-dom";
 import "../../css/pages/Inbox.css";
+import Navbar from "../components/Navbar";
 
 function InboxPage() {
   const [messages, setMessages] = useState([]);
@@ -67,7 +68,7 @@ function InboxPage() {
         // make message unclickable
         console.log("Handling transfer request")
         changeMsgType(message.msgid, -1)
-        return `/transfer_recieve/${message.message.split(/\s+(?=\S*$)/)[1]}`;
+        return `/hosts/${message.message.split(/\s+(?=\S*$)/)[1]}/transfer_receive`;
       default:
         return '/inbox' //reload inbox by default
     }
@@ -155,8 +156,13 @@ function InboxPage() {
       .then((response) => response.json())
       .then((data) => {
         // Sort messages by "created_at" in descending order
-        data.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
-        setMessages(data);
+        if (Array.isArray(data)) {
+          // Check if data is an array
+          data.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+          setMessages(data);
+        } else {
+          console.error('Data is not an array');
+        }
       })
       .catch((error) => {
         console.error('Error fetching messages:', error);
@@ -166,6 +172,7 @@ function InboxPage() {
 
   return (
     <div>
+      <Navbar/>
       <h1>Inbox</h1>
       <div className="message-list">
         {messages.length > 0 ? (

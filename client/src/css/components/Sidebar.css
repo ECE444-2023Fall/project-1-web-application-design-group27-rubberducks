@@ -60,12 +60,11 @@
   margin-right: 60px;
 }
 
-/* Add this to your CSS file */
-.transfer-button {
-  display: inline-block;
+.host--transfer--button {
+  display: flex;
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
   margin-top: 15px;
-  font-weight: normal;
-  text-align: center;
   white-space: nowrap;
   vertical-align: middle;
   -ms-touch-action: manipulation;

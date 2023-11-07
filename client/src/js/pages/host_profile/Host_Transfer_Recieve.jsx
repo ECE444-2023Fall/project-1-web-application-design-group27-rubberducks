@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 function HostTransferRecieve (){
-    const { hid } = useParams();
+    const { hostId } = useParams();
     const [content, setContent] = useState("");
     const [sending_uid, setSendingAccount] = useState(-1);
     const [hostName, setHostName] = useState("");
@@ -11,10 +11,10 @@ function HostTransferRecieve (){
     const [hostEvent, setHostEvent] = useState([]);
 
     useEffect(() => {
-      fetch(`/api/hosts/${hid}`)
+      fetch(`/api/hosts/${hostId}`)
         .then((res) => res.json())
         .then((data) => {
-          setContent(`Club Transfer Request: ${data.name} is requesting to transfer ownership to you. id: ${hid}`);
+          setContent(`Club Transfer Request: ${data.name} is requesting to transfer ownership to you. id: ${hostId}`);
           setSendingAccount(data.owner)
           setHostName(data.name)
           setHostEmail(data.email)
@@ -49,7 +49,7 @@ function HostTransferRecieve (){
               email: curr_account_data.email,
               events: curr_account_data.events,
               fav_events: curr_account_data.fav_events,
-              orgs: curr_account_data.orgs.concat(hid),
+              orgs: curr_account_data.orgs.concat(hostId),
               msgids: curr_account_data.msgids,
             };
       
@@ -86,7 +86,7 @@ function HostTransferRecieve (){
                   .then((sending_account_data) => {
                     console.log("successfully fetched account of the logged-in user");
                     
-                    const updatedOrgs = sending_account_data.orgs.filter((orgId) => orgId !== parseInt(hid, 10));
+                    const updatedOrgs = sending_account_data.orgs.filter((orgId) => orgId !== parseInt(hostId, 10));
 
                     const update_account = {
                       name: sending_account_data.name,
@@ -113,7 +113,7 @@ function HostTransferRecieve (){
                     .then((data3) => {
                       console.log("successfully updated account orgs");
                       console.log(data3);
-                      fetch(`/api/hosts/${hid}`, {
+                      fetch(`/api/hosts/${hostId}`, {
                         method: "PUT", // Use PUT to update the account
                         headers: {
                           "Content-Type": "application/json",
@@ -154,12 +154,12 @@ function HostTransferRecieve (){
     };
 
     return (
-    <div className="container">
+    <div className="container" style={{ display: "flex", justifyContent: "space-between" }}>
         <div className="message-content">
         <p>{content}</p>
         </div>
         <div className="button-group">
-        <button className="btn btn-success" onClick={handleApprove}>
+        <button className="btn btn-success" onClick={handleApprove} style={{ marginRight: "10px" }}>
             Approve
         </button>
         <button className="btn btn-danger" onClick={handleReject}>

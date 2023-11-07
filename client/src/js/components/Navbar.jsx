@@ -104,9 +104,33 @@ function Navbar() {
                   My Profile
                 </Link>
               </li>
+              {userClubs.length >= 0 && (
+                  <li>
+                    <Link
+                      to="/profile/clubs"
+                      className="dropdown-nav-links"
+                      onClick={closeMobileMenu}
+                    >
+                      My Clubs
+                    </Link>
+                    <ul>
+                      {userClubs.map((club) => (
+                        <li key={club.id}>
+                          <Link
+                            to={`/club/${club.id}`} // Uncomment this if you want individual club links
+                            className="dropdown-nav-links"
+                            onClick={closeMobileMenu}
+                          >
+                            {club.name}
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  </li>
+                )}
               <li>
                 <Link
-                  to="/create_host_profile"
+                  to="/profile/create_host"
                   className="dropdown-nav-links"
                   onClick={(closeMobileMenu, toggleDropdown)}
                 >

@@ -4,8 +4,10 @@ import HostSidebar from "../../components/HostSidebar";
 import { Form, Button } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
+import { useParams } from 'react-router-dom';
 
-function Host_transfer_send({ hid }) {
+function Host_transfer_send() {
+  const { hostId } = useParams();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [bio, setBio] = useState("");
@@ -15,7 +17,7 @@ function Host_transfer_send({ hid }) {
   const user = JSON.parse(localStorage.getItem('user'));
 
   useEffect(() => {
-    fetch(`/api/hosts/${hid}`)
+    fetch(`/api/hosts/${hostId}`)
       .then((res) => res.json())
       .then((data) => {
         setName(data.name);
@@ -49,7 +51,7 @@ function Host_transfer_send({ hid }) {
         };
         const request_host_transfer = {
           account_id: recieving_account.uid,
-          message: `[Club Transfer Request]: ${name} is requesting to transfer ownership to you. id: ${hid}`,
+          message: `[Club Transfer Request]: ${name} is requesting to transfer ownership to you. id: ${hostId}`,
           msg_type: 3,
         };
 
@@ -136,7 +138,7 @@ function Host_transfer_send({ hid }) {
             <Button variant="primary" onClick={handleSubmit(submitForm)}>
               Send Transfer Request
             </Button>{" "}
-            <Link to={`/host_profile/${hid}`}>
+            <Link to={`/hosts/${hostId}`}>
               <Button variant="primary">Cancel</Button>
             </Link>
           </Form.Group>
