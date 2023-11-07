@@ -10,21 +10,24 @@ function Navbar() {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [button, setButton] = useState(true);
   const [buttonText, setButtonText] = useState("Login");
+  const [userClubs, setUserClubs] = useState([]);
 
   const handleClick = () => setClick(!click);
   const toggleDropdown = () => setDropdownOpen(!dropdownOpen);
   const closeMobileMenu = () => setClick(false);
 
   const updateButtonText = () => {
-    const user = JSON.parse(localStorage.getItem('user'));
+    const user = JSON.parse(localStorage.getItem("user"));
     setButtonText(user ? "Logout" : "Login");
   };
 
   const showButton = () => {
     if (window.innerWidth <= 960) {
+      setButton(false);
       setButtonText("Login"); // Change to "Login" when the button should be shown
     } else {
-      const user = JSON.parse(localStorage.getItem('user'));
+      setButton(true);
+      const user = JSON.parse(localStorage.getItem("user"));
       if (user) {
         setButtonText("Logout");
       } else {
@@ -52,9 +55,9 @@ function Navbar() {
   window.addEventListener("resize", showButton);
 
   const handleLogout = () => {
-    localStorage.removeItem('access_token');
-    localStorage.removeItem('refresh_token');
-    localStorage.removeItem('user');
+    localStorage.removeItem("access_token");
+    localStorage.removeItem("refresh_token");
+    localStorage.removeItem("user");
     setButtonText("Login");
     setIsLoggedIn(false);
     
@@ -131,7 +134,11 @@ function Navbar() {
           </li>
         </ul>
         {button && (
-          <Button to="/login" buttonStyle="btn--outline" onClick={buttonText === "Logout" ? handleLogout : null}>
+          <Button
+            to="/login"
+            buttonStyle="btn--outline"
+            onClick={buttonText === "Logout" ? handleLogout : null}
+          >
             {buttonText}
           </Button>
         )}

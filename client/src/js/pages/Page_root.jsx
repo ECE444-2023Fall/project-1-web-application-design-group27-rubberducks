@@ -1,13 +1,10 @@
 import React from "react";
 import Navbar from "../components/Navbar";
 
-function Events() {
+export default function Page_root() {
   return (
     <>
       <Navbar />
     </>
   );
-  <div>Events</div>;
 }
-
-export default Events;

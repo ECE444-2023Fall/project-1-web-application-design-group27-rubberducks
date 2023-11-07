@@ -162,16 +162,16 @@ class Event:
     name: str
     location: str
     description: str
-    time: time
+    start_time: time
+    end_time
     date: date
     capacity: int
     attendees: list of Account
     tags: list of str
-    reoccuring: bool
+    reoccuring: int
     date created : date
     owner: Host
 """
-
 
 class Event(db.Model):
     __tablename__ = "event"
@@ -180,29 +180,31 @@ class Event(db.Model):
     location = db.Column(db.String(50), nullable=False)
     description = db.Column(db.String(50), nullable=False)
     date = db.Column(db.Date, nullable=False)
-    time = db.Column(db.Time, nullable=False)
+    start_time = db.Column(db.Time, nullable=False)
+    end_time = db.Column(db.Time, nullable=False)
     capacity = db.Column(db.Integer, nullable=False)
     attendees = db.Column(db.ARRAY(db.Integer))
-    tags = db.Column(db.ARRAY(db.String(50)))
-    reoccuring = db.Column(db.Boolean, nullable=False)
+    reoccuring = db.Column(db.Integer, nullable=False)
     date_created = db.Column(db.Date, nullable=False)
     owner = db.Column(db.Integer, db.ForeignKey("host.hid"), nullable=False)
+    tags = db.Column(db.ARRAY(db.Integer))
 
-    def __init__(self, name, location, description, date, time, capacity, attendees, tags, reoccuring, date_created, owner):
+    def __init__(self, name, location, description, date, start_time, end_time, capacity, attendees, reoccuring, date_created, owner, tags):
         self.name = name
         self.location = location
         self.description = description
         self.date = date
-        self.time = time
+        self.start_time = start_time
+        self.end_time = end_time
         self.capacity = capacity
         self.attendees = attendees
-        self.tags = tags
         self.reoccuring = reoccuring
         self.date_created = date_created
         self.owner = owner
+        self.tags = tags
 
     def __repr__(self):
-        return f"<Event {self.eid} {self.name} {self.location} {self.description} {self.date} {self.time} {self.capacity} {self.attendees} {self.tags} {self.reoccuring} {self.date_created} {self.owner}>"
+        return f"<Event {self.eid} {self.name} {self.location} {self.description} {self.date} {self.start_time} {self.end_time} {self.capacity} {self.attendees} {self.reoccuring} {self.date_created} {self.owner} {self.tags}>"
 
     def save(self):
         db.session.add(self)
@@ -212,38 +214,59 @@ class Event(db.Model):
         db.session.delete(self)
         db.session.commit()
 
-    def update(self, name, location, description, date, time, capacity, attendees, tags, reoccuring, date_created, owner):
+    def update(self, name, location, description, date, start_time, end_time, capacity, attendees, reoccuring, date_created, owner, tags):
         self.name = name
 
         self.location = location
         self.description = description
         self.date = date
-        self.time = time
+        self.start_time = start_time
+        self.end_time = end_time
         self.capacity = capacity
         self.attendees = attendees
-        self.tags = tags
         self.reoccuring = reoccuring
         self.date_created = date_created
         self.owner = owner
+        self.tags = tags
         db.session.commit()
 
+    def serialize(self):
+        return {
+            "eid": self.eid,
+            "name": self.name,
+            "description": self.description,
+            "location": self.location,
+            "date": self.date,
+            "start_time": self.start_time,
+            "end_time": self.end_time,
+            "capacity": self.capacity,
+            "reoccuring": self.reoccuring,
+            "date_created": self.date_created,
+            "attendees": self.attendees,
+            "owner": self.owner,
+            "tags": self.tags
+        }
+
 """
-class Tag:
-    tag: str primary key
+class Event_tags:
+    etid: int primary key
+    name: str
     description: str
 """
 
-"""class Tag(db.Model):
-    __tablename__ = "tags"
-    tag = db.Column(db.String(50), primary_key=True, nullable=False)
-    description = db.Column(db.String(255), nullable=False)
+class Event_tag(db.Model):
+    __tablename__ = "event_tags"
+    etid = db.Column(db.Integer, primary_key=True, nullable=False)
+    name = db.Column(db.String(50), nullable=False)
+    description = db.Column(db.String(255))
 
-    def __init__(self, tag, description):
-        self.tag = tag
+    def __init__(self, etid, name, description):
+        self.etid = etid
+        self.name = name
         self.description = description
 
     def __repr__(self):
-        return f"<Tag {self.tag} {self.description}>"
+        return f"<Event tag {self.etid} {self.name} {self.description}>"
 
     def save(self):
         db.session.add(self)
@@ -253,7 +276,8 @@ class Tag:
         db.session.delete(self)
         db.session.commit()
 
-    def update(self, tag, description):
-        self.tag = tag
+    def update(self, etid, name, description):
+        self.etid = etid
+        self.name = name
         self.description = description
-        db.session.commit()"""
+        db.session.commit()
