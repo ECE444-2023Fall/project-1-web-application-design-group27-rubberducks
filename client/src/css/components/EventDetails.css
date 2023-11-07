@@ -1,12 +1,80 @@
 
 .event {
-    padding: 2rem;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start; 
     background: #fff;
   }
+
+.event--base {
+  /* flex: 1;
+  position: sticky; */
+  margin-left: 300px;
+  background: #fff;
+}
+
+.event--sidebar {
+  /* flex: 0 0 30%; */
+  display: inline-block;
+  max-width: 300px;
+  width: 300px;
+  position: fixed;
+  background-color: #f1f1f1;
+  align-items: flex-start;
+  height: 100%;
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  overflow: auto;
+}
+
+.event--main {
+  padding: 2rem;
+  background: #fff;
+}
+
+.event--sidebar img {
+  display: block;
+  margin: 20px auto;
+  width: 80%;
+  max-width: 200px;
+  border-radius: 50%;
+}
+
+.event--sidebar .host--name {
+  text-align: center;
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+.event--sidebar .host--email {
+  text-align: center;
+  font-size: 1rem;
+  margin-top: 5px;
+  color: #666;
+}
+
+/* .event--sidebar .host--bio {
+  margin-top: 20px;
+  padding: 10px;
+  background-color: transparent;
+  border-radius: 5px;
+}
+
+.event--sidebar .host--tags {
+  font-size: 12px;
+  margin-top: 30px;
+  margin-left: 30px;
+  padding: 10px;
+  border-radius: 5px;
+  width: 100%;
+  box-sizing: border-box;
+} */
+
   
-  h1 {
-    text-align: center;
-  }
+h1 {
+  text-align: center;
+}
   
 
 .event--header-bar {
@@ -149,6 +217,28 @@
   font-size: 18px;
   line-height: 24px;
 }
+
+/* Define a CSS class for the blue button style */
+.register-button {
+  background-color: #002452; /* Set the background color to blue */
+  color: white; /* Set the text color to white for contrast */
+  border: 2px solid white; /* Set a white border with a 2px width */
+  padding: 10px 20px; /* Add padding for spacing inside the button */
+  text-decoration: none; /* Remove underline on hover for links */
+  display: inline-block; /* Ensure the button behaves as an inline-block element */
+  text-align: center; /* Center the text horizontally */
+  font-size: 16px; /* Set the font size */
+  cursor: pointer; /* Change cursor to pointer on hover for a button-like feel */
+  border-radius: 5px; /* Add rounded corners for a softer look */
+  transition: background-color 0.2s, color 0.2s; /* Add a smooth transition effect */
+}
+
+/* Style for button hover state */
+.register-button:hover {
+  background-color: white; /* Change the background color to white on hover */
+  color: #002452; /* Change the text color to blue on hover */
+}
+
   
 @media only screen and (min-width: 1200px) {
   .content--blog--container {
@@ -157,34 +247,29 @@
 }
   
 @media only screen and (min-width: 1024px) {
-  /* .event--header-pic {
-    background-size: 100% auto;
-    background-position: center center;
-    background-repeat: no-repeat;
-    background-image: url('/client/public/images/placeholder.png');
-    height: 100px;
-    overflow: hidden;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-flow: column;
-  }
-  
-  .event--header-text {
-    color: #252e48;
-    font-size: 30px;
-  } */
 
 }
   
 @media only screen and (max-width: 1024px) {
-  /* .event--item {
-    margin-bottom: 2rem;
-  } */
+  .event--base {
+    margin-left: 30%;
+  }
+  
+  .event--sidebar {
+    width: 30%
+  }
 }
 
 @media only screen and (max-width: 512px) {
     .event--two-columns-left-offset {
         grid-template-columns: 1fr;
+    }
+
+    .event--base {
+      margin-left: 30%;
+    }
+    
+    .event--sidebar {
+      width: 30%
     }
   }

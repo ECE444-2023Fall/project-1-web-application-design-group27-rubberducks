@@ -29,6 +29,7 @@ import Login from "./js/pages/Login.jsx";
 import Signup from "./js/pages/Signup.jsx";
 import NotFound from "./js/pages/Not_Found.jsx";
 import My_Clubs from "./js/pages/user_profile/User_Clubs.jsx";
+import EventDetailsPage from "./js/pages/EventDetails.jsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -61,7 +62,8 @@ const router = createBrowserRouter(
       </Route>
       <Route path="events" errorElement={<NotFound />}>
         <Route element={<Events />} index />
-        <Route path=":eventId" element={<Event />} />
+        <Route path=":eventId" element={<Events />} />
+        <Route path="eventdetails" element={<EventDetailsPage />} />
       </Route>
     </Route>
   )
