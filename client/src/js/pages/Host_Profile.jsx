@@ -19,31 +19,35 @@ import { confirmPassword } from "../confirmPassword";
 
 export default function Host_root() {
   const { hostId = "" } = useParams();
-  const { hostInfo, loading } = useGetHostInfo(hostId);
+  const { hostInfo, ownerLoggedIn, loading } = useGetHostInfo(hostId);
+
   return (
     <>
       <Navbar />
       <HostSidebar
+        ownerLoggedIn={ownerLoggedIn}
         hid={hostInfo.hid}
         name={hostInfo.name}
         email={hostInfo.email}
         bio={hostInfo.bio}
       />
-      <Outlet context={[hostInfo]} />
+      <Outlet context={[hostInfo, ownerLoggedIn]} />
     </>
   );
 }
 
 export function Host_profile() {
-  const [hostInfo] = useOutletContext();
+  const [hostInfo, ownerLoggedIn] = useOutletContext();
   return (
     <>
       <div>
-        <div className="createEventBtnContainer">
-          <Link to={`/hosts/${hostInfo.hid}/create_event`}>
-            <Button variant="primary">Create Event</Button>
-          </Link>
-        </div>
+        {ownerLoggedIn ? (
+          <div className="createEventBtnContainer">
+            <Link to={`/hosts/${hostInfo.hid}/create_event`}>
+              <Button variant="primary">Create Event</Button>
+            </Link>
+          </div>
+        ) : null}
 
         <div className="host--events">
           <EventCategory
@@ -65,7 +69,7 @@ export function Host_profile() {
 }
 
 export function Host_upcoming() {
-  const [hostInfo] = useOutletContext();
+  const [hostInfo, ownerLoggedIn] = useOutletContext();
   return (
     <>
       <div className="user--events">
@@ -87,7 +91,7 @@ export function Host_upcoming() {
 }
 
 export function Host_previous() {
-  const [hostInfo] = useOutletContext();
+  const [hostInfo, ownerLoggedIn] = useOutletContext();
   return (
     <>
       <div className="user--events">
@@ -108,7 +112,7 @@ export function Host_previous() {
 }
 
 export function Host_edit() {
-  const [hostInfo] = useOutletContext();
+  const [hostInfo, ownerLoggedIn] = useOutletContext();
   const ownerInfo = fetch(`/api/accounts/${hostInfo.owner}`).then((res) =>
     res.json()
   );
