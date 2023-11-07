@@ -61,8 +61,8 @@ const router = createBrowserRouter(
           <Route path="previous" element={<Host_previous />} />
           <Route path="edit" element={<Host_edit />} />
           <Route path="create_event" element={<Create_Event />} />
-          <Route path="transfer" element={<Host_transfer_send/>} />
-          <Route path="transfer_receive" element={<Host_transfer_Recieve/>}/>
+          <Route path="transfer" element={<Host_transfer_send />} />
+          <Route path="transfer_receive" element={<Host_transfer_Recieve />} />
         </Route>
       </Route>
       <Route path="events" errorElement={<NotFound />}>
@@ -71,6 +71,7 @@ const router = createBrowserRouter(
         <Route path="eventdetails" element={<EventDetailsPage />} />
       </Route>
       <Route path="inbox" element={<InboxPage />} />
+      <Route path="404" element={<NotFound />} />
     </Route>
   )
 );
