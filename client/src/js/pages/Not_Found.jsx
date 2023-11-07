@@ -1,11 +1,23 @@
 import React, { useState } from "react";
+import Navbar from "../components/Navbar";
+import "../../css/ResourceError.css";
+import { Button } from "react-bootstrap";
+import { Link } from "react-router-dom";
 
 const NotFound = () => {
   return (
-    <div>
-      <h1>404 - Restricted Access</h1>
-      <p>Sorry, you have to be logged in to access this page.</p>
-    </div>
+    <>
+      <>
+        <Navbar />
+        <div className="error-container">
+          <p>Please Login to Access Resource</p>
+          <br />
+          <Link to="/login">
+            <Button type="primary">Login</Button>
+          </Link>
+        </div>
+      </>
+    </>
   );
 };
 
