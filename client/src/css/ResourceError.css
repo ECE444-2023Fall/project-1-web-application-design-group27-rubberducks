@@ -1,0 +1,16 @@
+.error-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 80vh;
+}
+
+.error-container h1 {
+  font-size: 3em;
+  color: #002452;
+}
+
+.error-container p {
+  font-size: 1.5em;
+}
