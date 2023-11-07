@@ -144,6 +144,18 @@ h1 {
   flex: 1;
   margin: 0.5rem 1rem;
   border-radius: 10px;
+  align-items: center;
+}
+
+.event--item .label {
+  padding-right: 10px;
+  font-size: 1.2rem;
+  color: #002452;
+  text-align: center;
+}
+
+.event--item .text {
+  text-align: center;
 }
 
 .event--item-center {
@@ -181,8 +193,7 @@ h1 {
 }
 
 .event--register {
-  display: flex;
-  align-items: center;
+  min-height: fit-content;
   justify-content: center;
   padding: 20px;
 }
@@ -190,8 +201,15 @@ h1 {
 .event--additional-info {
   padding: 20px;
   min-height: fit-content;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
+.event--button {
+  margin: 0.5rem 1rem;
+  border-radius: 10px;
+}
   
 .event--link {
   display: flex;
