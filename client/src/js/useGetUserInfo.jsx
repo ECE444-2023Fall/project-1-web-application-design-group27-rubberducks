@@ -4,16 +4,20 @@ export const useGetUserInfo = () => {
   const [loading, setLoading] = useState(true);
   const [userInfo, setUserInfo] = useState({});
   const user = JSON.parse(localStorage.getItem("user"));
-  const id = user.id;
+  const id = user ? user.id : null;
 
   const loadUserInfo = useCallback(async () => {
-    setUserInfo(
-      await fetch("/api/accounts/" + id)
-        .then((res) => res.json())
-        .then((data) => data)
-    );
-    setLoading(false);
-  }, []);
+    if (id) {
+      setUserInfo(
+        await fetch("/api/accounts/" + id)
+          .then((res) => res.json())
+          .then((data) => data)
+      );
+      setLoading(false);
+    } else {
+      window.location.href = "/login-error";
+    }
+  }, [id]);
 
   useEffect(() => {
     loadUserInfo();

@@ -77,6 +77,7 @@ const router = createBrowserRouter(
       </Route>
       <Route path="inbox" element={<InboxPage />} />
       <Route path="404" element={<ResourceError />} />
+      <Route path="login-error" element={<NotFound />} />
     </Route>
   )
 );
