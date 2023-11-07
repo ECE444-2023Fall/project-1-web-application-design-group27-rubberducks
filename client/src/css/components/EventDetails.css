@@ -1,8 +1,5 @@
 
 .event {
-    display: flex;
-    justify-content: flex-start;
-    align-items: flex-start; 
     background: #fff;
   }
 
@@ -151,6 +148,7 @@ h1 {
 
 .event--item-center {
   display: flex;
+  justify-content: space-evenly;
   flex: 1;
   margin: 0.5rem 1rem;
   border-radius: 10px;
