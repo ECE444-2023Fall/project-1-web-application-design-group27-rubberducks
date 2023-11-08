@@ -5,7 +5,7 @@
   justify-content: center;
   align-items: center;
   font-size: 1.2rem;
-  position: sticky !important; 
+  position: sticky !important;
   top: 0;
   z-index: 999;
 }
@@ -87,6 +87,8 @@
   }
 
   .nav-menu {
+    justify-content: start;
+    margin-top: 20px;
     display: flex;
     flex-direction: column;
     width: 100%;

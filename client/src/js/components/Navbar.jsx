@@ -16,18 +16,17 @@ function Navbar() {
   const toggleDropdown = () => setDropdownOpen(!dropdownOpen);
   const closeMobileMenu = () => setClick(false);
 
-  const updateButtonText = () => {
-    const user = JSON.parse(localStorage.getItem("user"));
-    setButtonText(user ? "Logout" : "Login");
-  };
-
   const showButton = () => {
+    const user = JSON.parse(localStorage.getItem("user"));
     if (window.innerWidth <= 960) {
       setButton(false);
-      setButtonText("Login"); // Change to "Login" when the button should be shown
+      if (user) {
+        setButtonText("Logout");
+      } else {
+        setButtonText("Login");
+      } // Change to "Login" when the button should be shown
     } else {
       setButton(true);
-      const user = JSON.parse(localStorage.getItem("user"));
       if (user) {
         setButtonText("Logout");
       } else {
@@ -36,16 +35,15 @@ function Navbar() {
     }
   };
 
-  const loggedIn = () =>{
-    const user = JSON.parse(localStorage.getItem('user'));
-      if (user) {
-        setIsLoggedIn(true);
-        closeMobileMenu();
-      }
-      else{
-        setIsLoggedIn(false);
-      }
-  }
+  const loggedIn = () => {
+    const user = JSON.parse(localStorage.getItem("user"));
+    if (user) {
+      setIsLoggedIn(true);
+      closeMobileMenu();
+    } else {
+      setIsLoggedIn(false);
+    }
+  };
 
   useEffect(() => {
     showButton();
@@ -60,7 +58,6 @@ function Navbar() {
     localStorage.removeItem("user");
     setButtonText("Login");
     setIsLoggedIn(false);
-    
   };
 
   return (
@@ -90,21 +87,21 @@ function Navbar() {
             </Link>
           </li>
           {isLoggedIn && (
-          <li className={`nav-item ${dropdownOpen ? "active" : ""}`}>
-            <div className="nav-links" onClick={toggleDropdown}>
-              Account <RiArrowDropDownFill />
-            </div>
-            <ul className={`dropdown-menu ${dropdownOpen ? "active" : ""}`}>
-              <li>
-                <Link
-                  to="/profile"
-                  className="dropdown-nav-links"
-                  onClick={(closeMobileMenu, toggleDropdown)}
-                >
-                  My Profile
-                </Link>
-              </li>
-              {userClubs.length >= 0 && (
+            <li className={`nav-item ${dropdownOpen ? "active" : ""}`}>
+              <div className="nav-links" onClick={toggleDropdown}>
+                Account <RiArrowDropDownFill />
+              </div>
+              <ul className={`dropdown-menu ${dropdownOpen ? "active" : ""}`}>
+                <li>
+                  <Link
+                    to="/profile"
+                    className="dropdown-nav-links"
+                    onClick={(closeMobileMenu, toggleDropdown)}
+                  >
+                    My Profile
+                  </Link>
+                </li>
+                {userClubs.length >= 0 && (
                   <li>
                     <Link
                       to="/profile/clubs"
@@ -128,24 +125,24 @@ function Navbar() {
                     </ul>
                   </li>
                 )}
-              <li>
-                <Link
-                  to="/profile/create_host"
-                  className="dropdown-nav-links"
-                  onClick={(closeMobileMenu, toggleDropdown)}
-                >
-                  + Create Profile
-                </Link>
-              </li>
-            </ul>
-          </li>
+                <li>
+                  <Link
+                    to="/profile/create_host"
+                    className="dropdown-nav-links"
+                    onClick={(closeMobileMenu, toggleDropdown)}
+                  >
+                    + Create Profile
+                  </Link>
+                </li>
+              </ul>
+            </li>
           )}
           {isLoggedIn && (
-          <li className="nav-item">
-            <Link to="/inbox" className="nav-links" onClick={closeMobileMenu}>
-              Inbox
-            </Link>
-          </li>
+            <li className="nav-item">
+              <Link to="/inbox" className="nav-links" onClick={closeMobileMenu}>
+                Inbox
+              </Link>
+            </li>
           )}
           <li className="nav-item">
             <Link
@@ -153,7 +150,7 @@ function Navbar() {
               className="nav-links-mobile"
               onClick={buttonText === "Logout" ? handleLogout : closeMobileMenu}
             >
-              Login
+              {isLoggedIn ? "Logout" : "Login"}
             </Link>
           </li>
         </ul>
