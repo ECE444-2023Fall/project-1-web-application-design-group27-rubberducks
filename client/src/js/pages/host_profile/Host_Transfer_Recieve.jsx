@@ -1,133 +1,143 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useOutletContext } from "react-router-dom";
 
-function HostTransferRecieve (){
-    const { hostId } = useParams();
-    const [content, setContent] = useState("");
-    const [sending_uid, setSendingAccount] = useState(-1);
-    const [hostName, setHostName] = useState("");
-    const [hostEmail, setHostEmail] = useState("");
-    const [hostBio, setHostBio] = useState("");
-    const [hostEvent, setHostEvent] = useState([]);
+function HostTransferRecieve() {
+  const navigate = useNavigate();
+  const [hostInfo, ownerLoggedIn] = useOutletContext();
 
-    useEffect(() => {
-      fetch(`/api/hosts/${hostId}`)
-        .then((res) => res.json())
-        .then((data) => {
-          setContent(`Club Transfer Request: ${data.name} is requesting to transfer ownership to you. id: ${hostId}`);
-          setSendingAccount(data.owner)
-          setHostName(data.name)
-          setHostEmail(data.email)
-          setHostBio(data.bio)
-          setHostEvent(data.events)
-        });
-    }, []);
+  useEffect(() => {
+    if (!ownerLoggedIn) {
+      navigate("/login-error");
+    }
+  }, [ownerLoggedIn]);
+  const { hostId } = useParams();
+  const [content, setContent] = useState("");
+  const [sending_uid, setSendingAccount] = useState(-1);
+  const [hostName, setHostName] = useState("");
+  const [hostEmail, setHostEmail] = useState("");
+  const [hostBio, setHostBio] = useState("");
+  const [hostEvent, setHostEvent] = useState([]);
 
-    const curr_account = JSON.parse(localStorage.getItem("user"));
+  useEffect(() => {
+    fetch(`/api/hosts/${hostId}`)
+      .then((res) => res.json())
+      .then((data) => {
+        setContent(
+          `Club Transfer Request: ${data.name} is requesting to transfer ownership to you. id: ${hostId}`
+        );
+        setSendingAccount(data.owner);
+        setHostName(data.name);
+        setHostEmail(data.email);
+        setHostBio(data.bio);
+        setHostEvent(data.events);
+      });
+  }, []);
 
-    const navigate = useNavigate();
+  const curr_account = JSON.parse(localStorage.getItem("user"));
 
-    const handleApprove = () => {
-        // Handle message approval logic
+  const handleApprove = () => {
+    // Handle message approval logic
+    fetch(`/api/accounts/${curr_account.id}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error(`HTTP error! Status: ${res.status}`);
+        }
+        return res.json();
+      })
+      .then((curr_account_data) => {
+        console.log("successfully fetched account of the logged-in user");
+
+        const update_account = {
+          name: curr_account_data.name,
+          email: curr_account_data.email,
+          events: curr_account_data.events,
+          fav_events: curr_account_data.fav_events,
+          orgs: curr_account_data.orgs.concat(hostId),
+          msgids: curr_account_data.msgids,
+        };
+
         fetch(`/api/accounts/${curr_account.id}`, {
-          method: "GET",
+          method: "PUT", // Use PUT to update the account
           headers: {
             "Content-Type": "application/json",
           },
+          body: JSON.stringify(update_account), // Update orgs field
         })
-          .then((res) => {
-            if (!res.ok) {
-              throw new Error(`HTTP error! Status: ${res.status}`);
+          .then((res2) => {
+            if (!res2.ok) {
+              throw new Error(`HTTP error! Status: ${res2.status}`);
             }
-            return res.json();
+            return res2.json();
           })
-          .then((curr_account_data) => {
-            console.log("successfully fetched account of the logged-in user");
-      
-            const update_account = {
-              name: curr_account_data.name,
-              email: curr_account_data.email,
-              events: curr_account_data.events,
-              fav_events: curr_account_data.fav_events,
-              orgs: curr_account_data.orgs.concat(hostId),
-              msgids: curr_account_data.msgids,
-            };
-      
-            fetch(`/api/accounts/${curr_account.id}`, {
-              method: "PUT", // Use PUT to update the account
+          .then((data3) => {
+            console.log("successfully updated account orgs");
+            console.log(data3);
+
+            // Update orgs field of sending account
+            fetch(`/api/accounts/${sending_uid}`, {
+              method: "GET",
               headers: {
                 "Content-Type": "application/json",
               },
-              body: JSON.stringify(update_account), // Update orgs field
             })
-              .then((res2) => {
-                if (!res2.ok) {
-                  throw new Error(`HTTP error! Status: ${res2.status}`);
+              .then((res) => {
+                if (!res.ok) {
+                  throw new Error(`HTTP error! Status: ${res.status}`);
                 }
-                return res2.json();
+                return res.json();
               })
-              .then((data3) => {
-                console.log("successfully updated account orgs");
-                console.log(data3);
-                
-                // Update orgs field of sending account
+              .then((sending_account_data) => {
+                console.log(
+                  "successfully fetched account of the logged-in user"
+                );
+
+                const updatedOrgs = sending_account_data.orgs.filter(
+                  (orgId) => orgId !== parseInt(hostId, 10)
+                );
+
+                const update_account = {
+                  name: sending_account_data.name,
+                  email: sending_account_data.email,
+                  events: sending_account_data.events,
+                  fav_events: sending_account_data.fav_events,
+                  orgs: updatedOrgs,
+                  msgids: sending_account_data.msgids,
+                };
+
                 fetch(`/api/accounts/${sending_uid}`, {
-                  method: "GET",
+                  method: "PUT", // Use PUT to update the account
                   headers: {
                     "Content-Type": "application/json",
                   },
+                  body: JSON.stringify(update_account), // Update orgs field
                 })
-                  .then((res) => {
-                    if (!res.ok) {
-                      throw new Error(`HTTP error! Status: ${res.status}`);
+                  .then((res2) => {
+                    if (!res2.ok) {
+                      throw Error(`HTTP error! Status: ${res2.status}`);
                     }
-                    return res.json();
+                    return res2.json();
                   })
-                  .then((sending_account_data) => {
-                    console.log("successfully fetched account of the logged-in user");
-                    
-                    const updatedOrgs = sending_account_data.orgs.filter((orgId) => orgId !== parseInt(hostId, 10));
-
-                    const update_account = {
-                      name: sending_account_data.name,
-                      email: sending_account_data.email,
-                      events: sending_account_data.events,
-                      fav_events: sending_account_data.fav_events,
-                      orgs: updatedOrgs,
-                      msgids: sending_account_data.msgids,
-                    };
-      
-                    fetch(`/api/accounts/${sending_uid}`, {
+                  .then((data3) => {
+                    console.log("successfully updated account orgs");
+                    console.log(data3);
+                    fetch(`/api/hosts/${hostId}`, {
                       method: "PUT", // Use PUT to update the account
                       headers: {
                         "Content-Type": "application/json",
                       },
-                      body: JSON.stringify(update_account), // Update orgs field
+                      body: JSON.stringify({
+                        name: hostName,
+                        email: hostEmail,
+                        bio: hostBio,
+                        events: hostEvent,
+                        owner: curr_account.id,
+                      }), // Update orgs field
                     })
-                    .then((res2) => {
-                      if (!res2.ok) {
-                        throw Error(`HTTP error! Status: ${res2.status}`);
-                      }
-                      return res2.json();
-                    })
-                    .then((data3) => {
-                      console.log("successfully updated account orgs");
-                      console.log(data3);
-                      fetch(`/api/hosts/${hostId}`, {
-                        method: "PUT", // Use PUT to update the account
-                        headers: {
-                          "Content-Type": "application/json",
-                        },
-                        body: JSON.stringify(
-                            {
-                                "name": hostName,
-                                "email": hostEmail,
-                                "bio": hostBio,
-                                "events": hostEvent,
-                                "owner": curr_account.id
-                            }
-                        ), // Update orgs field
-                      })
                       .then((res2) => {
                         if (!res2.ok) {
                           throw Error(`HTTP error! Status: ${res2.status}`);
@@ -138,36 +148,42 @@ function HostTransferRecieve (){
                         console.log("successfully host owner");
                         console.log(host_data);
                       });
-                    });
                   });
               });
           });
-      
-        navigate("/inbox"); // Example: Navigate to the inbox after approval
-      };
-      
+      });
 
-    const handleReject = () => {
+    navigate("/inbox"); // Example: Navigate to the inbox after approval
+  };
+
+  const handleReject = () => {
     // Handle message rejection logic
-    
-    navigate("/inbox"); // Example: Navigate to the inbox after rejection
-    };
 
-    return (
-    <div className="container" style={{ display: "flex", justifyContent: "space-between" }}>
-        <div className="message-content">
+    navigate("/inbox"); // Example: Navigate to the inbox after rejection
+  };
+
+  return (
+    <div
+      className="container"
+      style={{ display: "flex", justifyContent: "space-between" }}
+    >
+      <div className="message-content">
         <p>{content}</p>
-        </div>
-        <div className="button-group">
-        <button className="btn btn-success" onClick={handleApprove} style={{ marginRight: "10px" }}>
-            Approve
+      </div>
+      <div className="button-group">
+        <button
+          className="btn btn-success"
+          onClick={handleApprove}
+          style={{ marginRight: "10px" }}
+        >
+          Approve
         </button>
         <button className="btn btn-danger" onClick={handleReject}>
-            Reject
+          Reject
         </button>
-        </div>
+      </div>
     </div>
-    );
+  );
 }
-    
+
 export default HostTransferRecieve;

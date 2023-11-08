@@ -3,10 +3,18 @@ import "../../../css/pages/user_profile/Profile_edit.css";
 import HostSidebar from "../../components/HostSidebar";
 import { Form, Button } from "react-bootstrap";
 import { useForm } from "react-hook-form";
-import { Link, useNavigate } from "react-router-dom";
-import { useParams } from 'react-router-dom';
+import { Link, useNavigate, useOutletContext } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 function Host_transfer_send() {
+  const navigate = useNavigate();
+  const [hostInfo, ownerLoggedIn] = useOutletContext();
+
+  useEffect(() => {
+    if (!ownerLoggedIn) {
+      navigate("/login-error");
+    }
+  }, [ownerLoggedIn]);
   const { hostId } = useParams();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -14,7 +22,7 @@ function Host_transfer_send() {
   const [events, setEvents] = useState([]);
   const [owner, setOwner] = useState(-1);
 
-  const user = JSON.parse(localStorage.getItem('user'));
+  const user = JSON.parse(localStorage.getItem("user"));
 
   useEffect(() => {
     fetch(`/api/hosts/${hostId}`)
@@ -28,7 +36,6 @@ function Host_transfer_send() {
       });
   }, []);
 
-  const navigate = useNavigate();
   const {
     register,
     watch,
@@ -46,9 +53,9 @@ function Host_transfer_send() {
         return res.json();
       })
       .then((recieving_account) => {
-        if (recieving_account.uid == user.id){
+        if (recieving_account.uid == user.id) {
           throw new Error(`Cannot transfer account to yourself`);
-        };
+        }
         const request_host_transfer = {
           account_id: recieving_account.uid,
           message: `[Club Transfer Request]: ${name} is requesting to transfer ownership to you. id: ${hostId}`,
@@ -89,24 +96,27 @@ function Host_transfer_send() {
               },
               body: JSON.stringify(update_account), // Update msgids field
             })
-            .then((res3) => {
-              if (!res3.ok) {
-                throw new Error(`HTTP error! Status: ${res3.status}`);
-              }
-              return res3.json();
-            })
-            .then((data3) => {
-              console.log("successfully updated account msgids");
-              console.log(data3);
-              // Redirect to the created page or handle as needed
-              navigate(-1);
-            })
-            .catch((err) => {
-              console.error("error:", err);
-            });
+              .then((res3) => {
+                if (!res3.ok) {
+                  throw new Error(`HTTP error! Status: ${res3.status}`);
+                }
+                return res3.json();
+              })
+              .then((data3) => {
+                console.log("successfully updated account msgids");
+                console.log(data3);
+                // Redirect to the created page or handle as needed
+                navigate(-1);
+              })
+              .catch((err) => {
+                console.error("error:", err);
+              });
           })
           .catch((error) => {
-            console.error("There has been a problem with your put operation:", error);
+            console.error(
+              "There has been a problem with your put operation:",
+              error
+            );
           });
       });
     reset();

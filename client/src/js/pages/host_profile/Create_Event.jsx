@@ -5,8 +5,8 @@ import TagSelect from "./Tag_Select";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import HostSidebar from "../../components/HostSidebar";
-import { useNavigate } from "react-router-dom";
-import { useParams } from 'react-router-dom';
+import { useNavigate, useOutletContext } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 function convertTimetoString(hour, minute) {
   const formattedHour = `${hour}`.padStart(2, "0");
@@ -15,6 +15,15 @@ function convertTimetoString(hour, minute) {
 }
 
 export default function Create_Event() {
+  const navigate = useNavigate();
+  const [hostInfo, ownerLoggedIn] = useOutletContext();
+
+  useEffect(() => {
+    if (!ownerLoggedIn) {
+      navigate("/login-error");
+    }
+  }, [ownerLoggedIn]);
+
   const { hostId } = useParams();
 
   const [name, setEventName] = useState("");
@@ -35,7 +44,6 @@ export default function Create_Event() {
   const [bio, setBio] = useState("");
   const [owner, setOwner] = useState(-1);
   const [events, setEvents] = useState([]);
-  const navigate = useNavigate();
   const [error, setError] = useState("");
 
   const handleTagChange = (tags) => {
