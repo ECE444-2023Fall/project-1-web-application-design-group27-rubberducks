@@ -1,8 +1,5 @@
 
 .event {
-    display: flex;
-    justify-content: flex-start;
-    align-items: flex-start; 
     background: #fff;
   }
 
@@ -79,13 +76,12 @@ h1 {
 
 .event--header-bar {
   display: flex;
-  align-items: center;
+  /* align-items: center; */
   flex-flow: column;
   max-width: 1120px;
   width: 90%;
   margin: 0 auto;
   height: 100px;
-  justify-content: center;
 }
 
 .event--header-pic {
@@ -104,16 +100,13 @@ h1 {
 .event--header-text {
   color: #252e48;
   font-size: 50px;
+  justify-self: center;
   /* line-height: 24px; */
 }
 
-/* .event--subtitle {
-  display: flex;
-  align-items: center;
-  font-size: 10px;
-  color: #999;
-  margin-top: 5px;
-} */
+.event-subtitle {
+  text-align: center;
+}
   
 .event--icon {
   margin-right: 7px;
@@ -147,10 +140,23 @@ h1 {
   flex: 1;
   margin: 0.5rem 1rem;
   border-radius: 10px;
+  align-items: center;
+}
+
+.event--item .label {
+  padding-right: 10px;
+  font-size: 1.2rem;
+  color: #002452;
+  text-align: center;
+}
+
+.event--item .text {
+  text-align: center;
 }
 
 .event--item-center {
   display: flex;
+  justify-content: space-evenly;
   flex: 1;
   margin: 0.5rem 1rem;
   border-radius: 10px;
@@ -183,8 +189,7 @@ h1 {
 }
 
 .event--register {
-  display: flex;
-  align-items: center;
+  min-height: fit-content;
   justify-content: center;
   padding: 20px;
 }
@@ -192,8 +197,15 @@ h1 {
 .event--additional-info {
   padding: 20px;
   min-height: fit-content;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
+.event--button {
+  margin: 0.5rem 1rem;
+  border-radius: 10px;
+}
   
 .event--link {
   display: flex;
@@ -217,6 +229,31 @@ h1 {
   font-size: 18px;
   line-height: 24px;
 }
+
+
+.event-tag {
+  display: inline-flex;
+  padding: 6px 10px;
+  border-radius: 12px;
+  border: 2px solid #999;
+  color: #999;
+  margin: 7px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;
+  font-weight: normal;
+  transform-origin: center;
+}
+
+.top-corner-button {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+
 
 /* Define a CSS class for the blue button style */
 .register-button {
@@ -247,7 +284,6 @@ h1 {
 }
   
 @media only screen and (min-width: 1024px) {
-
 
 }
   
