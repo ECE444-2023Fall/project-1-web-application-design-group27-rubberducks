@@ -10,30 +10,6 @@ function InboxPage() {
   const navigate = useNavigate();
   const curr_account = JSON.parse(localStorage.getItem("user"));
 
-  const changeMsgType = (id, new_type) => {
-    const updateTypeUrl = `/api/messages/${id}`;
-
-    // Send a PUT request to mark the message as read
-    fetch(updateTypeUrl, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ msg_type: new_type }), // Assuming you want to mark it as read
-    })
-      .then((response) => {
-        if (response.ok) {
-          console.log('Message tyoe changed successfully.');
-          // Continue with displaying the message or any other logic.
-        } else {
-          console.error('Failed to change message type.');
-        }
-      })
-      .catch((error) => {
-        console.error('Error while changing message type:', error);
-      });
-  };
-
   const markAsRead = (id) => {
     const updateReadUrl = `/api/messages/${id}`;
 
@@ -67,7 +43,7 @@ function InboxPage() {
       case 3: // transfer request
         // make message unclickable
         console.log("Handling transfer request")
-        changeMsgType(message.msgid, -1)
+        
         return `/hosts/${message.message.split(/\s+(?=\S*$)/)[1]}/transfer_receive/${message.msgid}`;
       default:
         return '/inbox' //reload inbox by default
