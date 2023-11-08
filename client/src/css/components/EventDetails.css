@@ -76,13 +76,12 @@ h1 {
 
 .event--header-bar {
   display: flex;
-  align-items: center;
+  /* align-items: center; */
   flex-flow: column;
   max-width: 1120px;
   width: 90%;
   margin: 0 auto;
   height: 100px;
-  justify-content: center;
 }
 
 .event--header-pic {
@@ -101,16 +100,13 @@ h1 {
 .event--header-text {
   color: #252e48;
   font-size: 50px;
+  justify-self: center;
   /* line-height: 24px; */
 }
 
-/* .event--subtitle {
-  display: flex;
-  align-items: center;
-  font-size: 10px;
-  color: #999;
-  margin-top: 5px;
-} */
+.event-subtitle {
+  text-align: center;
+}
   
 .event--icon {
   margin-right: 7px;
@@ -249,6 +245,12 @@ h1 {
   background-color: transparent;
   font-weight: normal;
   transform-origin: center;
+}
+
+.top-corner-button {
+  position: absolute;
+  top: 0;
+  right: 0;
 }
 
 

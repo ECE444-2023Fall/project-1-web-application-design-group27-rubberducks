@@ -153,9 +153,12 @@ export default function EventDetailsPage() {
           {/* <div className="event--header-pic" style={{ backgroundImage: 'url("images/placeholder.png")' }}> */}
             <div className="event--header-bar">
               <h1 className="event--header-text">{eventInfo.name}</h1>
-              { error ? <ul className="event--subtitle">Error: {error}</ul> : (
-                <ul className="event--subtitle">{hostInfo.name}</ul>
+              { error ? <ul className="event-subtitle">Error: {error}</ul> : (
+                <ul className="event-subtitle">{hostInfo.name}</ul>
               )}
+              < Button to="/events" buttonStyle=".btn--grey" buttonSize="btn--large">
+                Edit Event
+              </Button>
             </div>
           </div>
           <div className="event--main">
@@ -195,7 +198,7 @@ export default function EventDetailsPage() {
                     </div>
                     <div className="event--button">
                       {button && (
-                      <Button to="/events" buttonStyle="btn--grey" buttonSize="btn--large">
+                      <Button to="/events" buttonStyle="btn--register" buttonSize="btn--large">
                           Attendee Info
                       </Button>
                       )}

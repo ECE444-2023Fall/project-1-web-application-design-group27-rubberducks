@@ -101,6 +101,7 @@
   border: 1px solid #002452;
 }
 
+
 .btn--grey {
   display: block;
   /* width: 50%; */
@@ -120,3 +121,24 @@
   color: #002452;
   border: 1px solid #002452;
 }
+
+.btn--grey--right {
+  display: block;
+  /* width: 50%; */
+  margin: 10px auto;
+  padding: 12px 20px;
+  background-color: #c6c6c6;
+  color: #002452;
+  border: 1px solid #c6c6c6;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.btn--grey--right:hover {
+  background-color: white;
+  color: #002452;
+  border: 1px solid #002452;
+}
+
