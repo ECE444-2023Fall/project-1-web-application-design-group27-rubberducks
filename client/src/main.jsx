@@ -67,7 +67,7 @@ const router = createBrowserRouter(
           <Route path="edit" element={<Host_edit />} />
           <Route path="create_event" element={<Create_Event />} />
           <Route path="transfer" element={<Host_transfer_send />} />
-          <Route path="transfer_receive" element={<Host_transfer_Recieve />} />
+          <Route path="transfer_receive/:msgid" element={<Host_transfer_Recieve />} />
         </Route>
       </Route>
       <Route path="events" errorElement={<ResourceError />}>
