@@ -16,34 +16,58 @@ import {
 import Navbar from "../components/Navbar";
 import { useGetHostInfo } from "../useGetHostInfo";
 import { confirmPassword } from "../confirmPassword";
+import { bouncy } from "ldrs";
 
 export default function Host_root() {
   const { hostId = "" } = useParams();
-  const { hostInfo, loading } = useGetHostInfo(hostId);
+  const { hostInfo, ownerLoggedIn, loading } = useGetHostInfo(hostId);
+  bouncy.register();
+
+  if (loading) {
+    return (
+      <>
+        <Navbar />
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "100vh",
+          }}
+        >
+          <l-bouncy size="45" speed="1.75" color="#002452"></l-bouncy>
+        </div>
+      </>
+    );
+  }
+
   return (
     <>
       <Navbar />
       <HostSidebar
+        ownerLoggedIn={ownerLoggedIn}
         hid={hostInfo.hid}
         name={hostInfo.name}
         email={hostInfo.email}
         bio={hostInfo.bio}
       />
-      <Outlet context={[hostInfo]} />
+      <Outlet context={[hostInfo, ownerLoggedIn]} />
     </>
   );
 }
 
 export function Host_profile() {
-  const [hostInfo] = useOutletContext();
+  const [hostInfo, ownerLoggedIn] = useOutletContext();
   return (
     <>
       <div>
-        <div className="createEventBtnContainer">
-          <Link to={`/hosts/${hostInfo.hid}/create_event`}>
-            <Button variant="primary">Create Event</Button>
-          </Link>
-        </div>
+        {ownerLoggedIn ? (
+          <div className="createEventBtnContainer">
+            <Link to={`/hosts/${hostInfo.hid}/create_event`}>
+              <Button variant="primary">Create Event</Button>
+            </Link>
+          </div>
+        ) : null}
 
         <div className="host--events">
           <EventCategory
@@ -65,7 +89,7 @@ export function Host_profile() {
 }
 
 export function Host_upcoming() {
-  const [hostInfo] = useOutletContext();
+  const [hostInfo, ownerLoggedIn] = useOutletContext();
   return (
     <>
       <div className="user--events">
@@ -76,7 +100,6 @@ export function Host_upcoming() {
               <a href={`/hosts/${hostInfo.hid}`}>Return to Profile</a>
             </span>
           </div>
-          <div>{hostInfo.bio}</div>
           <Cards />
           <Cards />
           <Cards />
@@ -87,7 +110,7 @@ export function Host_upcoming() {
 }
 
 export function Host_previous() {
-  const [hostInfo] = useOutletContext();
+  const [hostInfo, ownerLoggedIn] = useOutletContext();
   return (
     <>
       <div className="user--events">
@@ -108,11 +131,6 @@ export function Host_previous() {
 }
 
 export function Host_edit() {
-  const [hostInfo] = useOutletContext();
-  const ownerInfo = fetch(`/api/accounts/${hostInfo.owner}`).then((res) =>
-    res.json()
-  );
-
   const navigate = useNavigate();
   const {
     register,
@@ -120,6 +138,17 @@ export function Host_edit() {
     formState: { errors },
     handleSubmit,
   } = useForm();
+  const [hostInfo, ownerLoggedIn] = useOutletContext();
+
+  useEffect(() => {
+    if (!ownerLoggedIn) {
+      navigate("/login-error");
+    }
+  }, [ownerLoggedIn]);
+
+  const ownerInfo = fetch(`/api/accounts/${hostInfo.owner}`).then((res) =>
+    res.json()
+  );
 
   const [showDelete, setShowDelete] = useState(false);
   const handleCloseDelete = () => setShowDelete(false);
