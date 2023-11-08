@@ -5,12 +5,17 @@ export const useGetEventInfo = (eventId) => {
   const [eventInfo, setEventInfo] = useState({});
 
   const loadEventInfo = useCallback(async () => {
-    setEventInfo(
-      await fetch("/api/events/" + eventId)
-        .then((res) => res.json())
-        .then((data) => data)
-    );
-    setLoading(false);
+    const response = await fetch("/api/events/" + eventId);
+
+    if (response.status === 404) {
+      window.location.href = "/404";
+    } else if (response.ok) {
+      const data = await response.json();
+      setEventInfo(data);
+      setLoading(false);
+    } else {
+      console.log(response.status);
+    }
   }, []);
 
   useEffect(() => {

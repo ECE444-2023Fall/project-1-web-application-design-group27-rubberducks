@@ -4,12 +4,13 @@ import { FaMapMarkerAlt,  FaCalendar, FaClock } from "react-icons/fa";
 import { useParams } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import EventHostSidebar from "../components/EventHostSideBar";
-import { useGetHostInfo } from "../useGetHostInfo";
+// import { useGetHostInfo } from "../useGetHostInfo";
 import { useGetEventInfo } from "../useGetEventInfo";
 // import { Map } from './Map';
 import { Button } from "../components/Button";
 import "../../css/components/EventDetails.css";
 import "../../css/components/Button.css";
+// import TagSelect from "./host_profile/Tag_Select";
 
 
 function formatTime(timeString) {
@@ -54,18 +55,77 @@ function processReoccuring(reoccuring) {
   }
 }
 
+// function translateTags(tags) {
+
+//   const tagNames = [
+//     "Zero", "One", "Two", "Three", "Four",
+//     "Five", "Six", "Seven", "Eight", "Nine"
+//   ];
+
+//   const result = tags.map((num) => {
+//     if (num >= 0 && num < tagNames.length) {
+//       return tagNames[num];
+//     }
+//     return "";
+//   });
+
+//   return result;
+// }
+
 
 export default function EventDetailsPage() {
   const { eventId = "" } = useParams();
-  const { eventInfo, loadingEvent } = useGetEventInfo(eventId);
-  const hostId = eventInfo.owner;
-  const { hostInfo, loadingHost } = useGetHostInfo(hostId);
+  const [loading, setLoading] = useState(true);
+  const [eventInfo, setEventInfo] = useState({});
+  const [hostInfo, setHostInfo] = useState({});
+  const [error, setError] = useState(null);
+
+
+  useEffect(() => {
+    const loadEventInfo = async () => {
+      try {
+        const eventResponse = await fetch("/api/events/" + eventId);
+
+        if (eventResponse.status === 404) {
+          setError("Event not found");
+        } else if (eventResponse.ok) {
+          const eventData = await eventResponse.json();
+          setEventInfo(eventData);
+
+          const hostId = eventData.owner;
+
+          const hostResponse = await fetch("/api/hosts/" + hostId);
+
+          if (hostResponse.status === 404) {
+            setError("Host not found");
+          } else if (hostResponse.ok) {
+            const hostData = await hostResponse.json();
+            setHostInfo(hostData);
+          } else {
+            setError("Error fetching host information");
+            console.log(hostResponse.status);
+          }
+        } else {
+          setError("Error fetching event information");
+          console.log(eventResponse.status);
+        }
+      } catch (err) {
+        setError("Network error");
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadEventInfo();
+  }, [eventId]);
+
 
   const formattedDate = formatDate(eventInfo.date);
   const formattedStartTime = formatTime(eventInfo.start_time);
   const formattedEndTime = formatTime(eventInfo.end_time);
   const reoccurrence = processReoccuring(eventInfo.reoccuring);
-
+  // const tagArray = translateTags(eventInfo.tags);
 
   const [button, setButton] = useState(true);
 
@@ -93,7 +153,9 @@ export default function EventDetailsPage() {
           {/* <div className="event--header-pic" style={{ backgroundImage: 'url("images/placeholder.png")' }}> */}
             <div className="event--header-bar">
               <h1 className="event--header-text">{eventInfo.name}</h1>
-              <ul className="event--subtitle">{hostInfo.name}</ul>
+              { error ? <ul className="event--subtitle">Error: {error}</ul> : (
+                <ul className="event--subtitle">{hostInfo.name}</ul>
+              )}
             </div>
           </div>
           <div className="event--main">
@@ -142,6 +204,11 @@ export default function EventDetailsPage() {
                   <div className="event--additional-info">
                     <div className="event--item">
                       <div className="label">{"Event Tags"}</div>
+                      {/* <div className="text">
+                        {tagArray.map((tag, index) => (
+                          <span key={index} className="event-tag">{tag}</span>
+                        ))}
+                      </div> */}
                       <div className="text">{eventInfo.tags}</div>
                     </div>
                     <div className="event--item">

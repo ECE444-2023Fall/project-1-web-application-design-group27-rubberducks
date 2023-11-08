@@ -234,6 +234,25 @@ h1 {
   line-height: 24px;
 }
 
+
+.event-tag {
+  display: inline-flex;
+  padding: 6px 10px;
+  border-radius: 12px;
+  border: 2px solid #999;
+  color: #999;
+  margin: 7px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;
+  font-weight: normal;
+  transform-origin: center;
+}
+
+
+
 /* Define a CSS class for the blue button style */
 .register-button {
   background-color: #002452; /* Set the background color to blue */

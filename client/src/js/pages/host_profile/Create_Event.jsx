@@ -84,7 +84,7 @@ export default function Create_Event() {
         reoccuring: reoccuring,
         date_created: dateCreated,
         attendees: [],
-        owner: owner,
+        owner: hostId,
         tags: tags,
         //eventPhoto, //event photo not in models yet
       };
