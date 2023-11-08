@@ -135,7 +135,7 @@ class Events(Resource):
             query = query.filter(Event.reoccuring==reo)
         if host and host != 'None': # Host
             #host_id = int(host)
-            query = query.filter(Host.name == host)
+            query = query.filter(Host.name.ilike(f"%{host}%"))
         if uid and uid != 'None': # Uid
             user_id = int(uid)
             query = query.filter(Event.attendees.any(user_id))
