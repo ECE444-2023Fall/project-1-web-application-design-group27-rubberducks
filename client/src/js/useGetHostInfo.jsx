@@ -12,22 +12,17 @@ export const useGetHostInfo = (hostId) => {
   useEffect(() => {
     loadUserInfo();
     fetch("/api/hosts/" + hostId)
-      .then((res) => res.json())
+      .then((res) => {
+        if (!res.ok) {
+          window.location.href = "/404";
+        }
+        return res.json();
+      })
       .then((data) => {
         setHostInfo(data);
         setLoadingHostInfo(false);
       });
   }, [hostId]);
-
-  const loadHostInfo = useCallback(async () => {
-    const response = await fetch("/api/hosts/" + hostId);
-    if (response.status === 404) {
-      window.location.href = "/404";
-    } else if (response.ok) {
-      const data = await response.json();
-      setHostInfo(data);
-    }
-  }, []);
 
   const loadUserInfo = useCallback(async () => {
     if (id) {
