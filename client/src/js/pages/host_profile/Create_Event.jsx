@@ -84,7 +84,7 @@ export default function Create_Event() {
         reoccuring: reoccuring,
         date_created: dateCreated,
         attendees: [],
-        owner: owner,
+        owner: hostId,
         tags: tags,
         //eventPhoto, //event photo not in models yet
       };
@@ -131,7 +131,7 @@ export default function Create_Event() {
               })
               .then(() => {
                 console.log("successfully updated host events");
-                navigate(`/events/${data.eid}`);
+                navigate(`/events/${data.eid}/eventdetails`);
               })
               .catch((err) => {
                 console.log("error:", err);

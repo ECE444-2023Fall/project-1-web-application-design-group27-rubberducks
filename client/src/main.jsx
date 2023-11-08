@@ -27,7 +27,7 @@ import Clubs from "./js/pages/Clubs.jsx";
 import Events from "./js/pages/Events.jsx";
 import Home from "./js/pages/Home.jsx";
 import Login from "./js/pages/Login.jsx";
-import Signup from "./js/pages/Signup.jsx";
+import SignUp from "./js/pages/SignUp.jsx";
 import NotFound from "./js/pages/Not_Found.jsx";
 import My_Clubs from "./js/pages/user_profile/User_Clubs.jsx";
 import Host_transfer_send from "./js/pages/host_profile/Host_Transfer_Send.jsx";
@@ -40,7 +40,7 @@ const router = createBrowserRouter(
     <Route path="/" errorElement={<ResourceError />}>
       <Route element={<Home />} index />
       <Route path="login" element={<Login />} />
-      <Route path="signup" element={<Signup />} />
+      <Route path="signup" element={<SignUp />} />
       <Route
         path="profile"
         element={<Profile_root />}
