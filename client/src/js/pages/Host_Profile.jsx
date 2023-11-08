@@ -17,6 +17,7 @@ import Navbar from "../components/Navbar";
 import { useGetHostInfo } from "../useGetHostInfo";
 import { confirmPassword } from "../confirmPassword";
 import { bouncy } from "ldrs";
+import Favorites from "../components/Favorite";
 
 export default function Host_root() {
   const { hostId = "" } = useParams();
@@ -89,7 +90,58 @@ export function Host_profile() {
 }
 
 export function Host_upcoming() {
-  const [hostInfo, ownerLoggedIn] = useOutletContext();
+  const [upcomingEvents, setUpcomingEvents] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const {hostId} = useParams();
+  console.log("The host ID from the URL is:", hostId);
+
+
+  // Function to fetch event details by ID
+  const fetchEventDetails = async (eid) => {
+    const response = await fetch(`/api/events/${eid}`);
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+    return response.json();
+  };
+
+  // Function to fetch the user's events
+  const fetchUserEvents = async () => {
+    setIsLoading(true);
+    try {
+      const response = await fetch(`/api/hosts/${hostId}`); //fetch the current user
+      console.log("Host ID:", hostId); // Check if the host ID is retrieved correctly
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      const eventsPromises = data.events.map(fetchEventDetails); //fetch the current user's events details
+      const eventsDetails = await Promise.all(eventsPromises);
+      // Filter for upcoming events
+      const currentDateTime = new Date();
+      const upcoming = eventsDetails.filter(event => {
+        const eventStart = new Date(`${event.date}T${event.start_time}`); //compare the event time and the current time
+        return eventStart > currentDateTime;
+      });
+
+      setUpcomingEvents(upcoming);
+    } catch (error) {
+      console.error("Error fetching user events:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchUserEvents();
+  }, []);
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <>
       <div className="user--events">
@@ -97,20 +149,77 @@ export function Host_upcoming() {
           <div className="card--header">
             <h2 className="card--heading">Upcoming Events</h2>
             <span className="card--see-all small">
-              <a href={`/hosts/${hostInfo.hid}`}>Return to Profile</a>
+              <a href="/profile">Return to Profile</a>
             </span>
           </div>
-          <Cards />
-          <Cards />
-          <Cards />
+          {upcomingEvents.length > 0 ? (
+            upcomingEvents.map((event) => (
+              <Favorites key={event.eid} event={event} /> // Using Favorites component to render each event, favorites/upcoming/previous are all the same
+            ))
+          ) : (
+            <p>You do not have any upcoming events yet.</p>
+          )}
         </div>
       </div>
     </>
   );
 }
 
+
+
 export function Host_previous() {
-  const [hostInfo, ownerLoggedIn] = useOutletContext();
+  const [previousEvents, setPreviousEvents] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const {hostId} = useParams();
+  console.log("The host ID from the URL is:", hostId);
+
+
+  // Function to fetch event details by ID
+  const fetchEventDetails = async (eid) => {
+    const response = await fetch(`/api/events/${eid}`);
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+    return response.json();
+  };
+
+  // Function to fetch the user's events
+  const fetchUserEvents = async () => {
+    setIsLoading(true);
+    try {
+      const response = await fetch(`/api/hosts/${hostId}`); //fetch the current user
+      console.log("Host ID:", hostId); // Check if the host ID is retrieved correctly
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      const eventsPromises = data.events.map(fetchEventDetails); //fetch the current user's events details
+      const eventsDetails = await Promise.all(eventsPromises);
+      // Filter for upcoming events
+      const currentDateTime = new Date();
+      const previous = eventsDetails.filter(event => {
+        const eventStart = new Date(`${event.date}T${event.start_time}`); //compare the event time and the current time
+        return eventStart < currentDateTime;
+      });
+
+      setPreviousEvents(previous);
+    } catch (error) {
+      console.error("Error fetching user events:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchUserEvents();
+  }, []);
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <>
       <div className="user--events">
@@ -118,12 +227,16 @@ export function Host_previous() {
           <div className="card--header">
             <h2 className="card--heading">Previous Events</h2>
             <span className="card--see-all small">
-              <a href={`/hosts/${hostInfo.hid}`}>Return to Profile</a>
+              <a href="/profile">Return to Profile</a>
             </span>
           </div>
-          <Cards />
-          <Cards />
-          <Cards />
+          {previousEvents.length > 0 ? (
+            previousEvents.map((event) => (
+              <Favorites key={event.eid} event={event} /> // Using Favorites component to render each event, favorites/previous/previous are all the same
+            ))
+          ) : (
+            <p>You do not have any previous events yet.</p>
+          )}
         </div>
       </div>
     </>
