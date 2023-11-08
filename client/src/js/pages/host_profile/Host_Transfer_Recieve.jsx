@@ -3,7 +3,7 @@ import { useNavigate, useParams, useOutletContext } from "react-router-dom";
 
 function HostTransferRecieve() {
 
-  const {msgid} = useParams();
+  const {hostId, msgid} = useParams();
   
   const navigate = useNavigate();
   const [hostInfo, ownerLoggedIn] = useOutletContext();
@@ -21,7 +21,7 @@ function HostTransferRecieve() {
     })
       .then((response) => {
         if (response.ok) {
-          console.log('Message tyoe changed successfully.');
+          console.log('Message type changed successfully.');
           // Continue with displaying the message or any other logic.
         } else {
           console.error('Failed to change message type.');
@@ -32,12 +32,12 @@ function HostTransferRecieve() {
       });
   };
 
-  useEffect(() => {
-    if (!ownerLoggedIn) {
-      navigate("/login-error");
-    }
-  }, [ownerLoggedIn]);
-  const { hostId } = useParams();
+  // useEffect(() => {
+  //   if (!ownerLoggedIn) {
+  //     navigate("/login-error");
+  //   }
+  // }, [ownerLoggedIn]);
+  // const { hostId } = useParams();
   const [content, setContent] = useState("");
   const [sending_uid, setSendingAccount] = useState(-1);
   const [hostName, setHostName] = useState("");
@@ -64,6 +64,9 @@ function HostTransferRecieve() {
 
   const handleApprove = () => {
     // Handle message approval logic
+    // make it so you cant open the message again
+    changeMsgType(msgid, -1);
+    
     fetch(`/api/accounts/${curr_account.id}`, {
       method: "GET",
       headers: {
@@ -174,8 +177,6 @@ function HostTransferRecieve() {
                       .then((host_data) => {
                         console.log("successfully changed host owner");
                         console.log(host_data);
-                        // make it so you cant open the message again
-                        changeMsgType(msgid, -1);
                       });
                   });
               });

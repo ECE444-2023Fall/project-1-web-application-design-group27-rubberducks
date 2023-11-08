@@ -34,20 +34,42 @@ function InboxPage() {
       });
   };
 
-  const getMessageLink = (message) => {
-    switch (message.msg_type) {
-      case 1: // event notification
-        return '/inbox';
-      case 2: // club notification
-        return '/inbox';
-      case 3: // transfer request
-        // make message unclickable
-        console.log("Handling transfer request")
-        
-        return `/hosts/${message.message.split(/\s+(?=\S*$)/)[1]}/transfer_receive/${message.msgid}`;
-      default:
-        return '/inbox' //reload inbox by default
-    }
+  const getMessageLink = (id) => {
+    // Fetch the message data
+    fetch(`/api/messages/${id}`)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then((data) => {
+        let link; // Declare the link variable here
+  
+        switch (data.msg_type) {
+          case 1: // event notification
+            link = '/inbox';
+            console.log(link);
+            navigate(link);
+            return link; // Make sure to return the link
+          case 2: // club notification
+            link = '/inbox';
+            console.log(link);
+            navigate(link);
+            return link; // Return the link
+          case 3: // transfer request
+            console.log("Handling transfer request");
+            link = `/hosts/${data.message.split(/\s+(?=\S*$)/)[1]}/transfer_receive/${data.msgid}`;
+            console.log(link);
+            navigate(link);
+            return link;
+          default:
+            link = '/inbox';
+            console.log(link);
+            navigate(link);
+            return link;
+        }
+      });
   };
 
   const handleMessageClick = (message) => {
@@ -55,10 +77,8 @@ function InboxPage() {
     markAsRead(message.msgid);
     // Handle navigation based on the message type
     console.log(message.msg_type)
-    const link = getMessageLink(message);
-    console.log(link);
-    // Perform navigation here (e.g., using React Router)
-    navigate(link);
+    getMessageLink(message.msgid);
+    
   };
 
   const handleDelete = (id) => {
@@ -144,7 +164,6 @@ function InboxPage() {
         console.error('Error fetching messages:', error);
       });
   }, []);
-  
 
   return (
     <div>
