@@ -2,6 +2,9 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, useParams, useOutletContext } from "react-router-dom";
 
 function HostTransferRecieve() {
+
+  const {msgid} = useParams();
+  
   const navigate = useNavigate();
   const [hostInfo, ownerLoggedIn] = useOutletContext();
 

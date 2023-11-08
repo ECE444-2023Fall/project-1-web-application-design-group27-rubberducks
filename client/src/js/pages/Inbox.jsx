@@ -68,7 +68,7 @@ function InboxPage() {
         // make message unclickable
         console.log("Handling transfer request")
         changeMsgType(message.msgid, -1)
-        return `/hosts/${message.message.split(/\s+(?=\S*$)/)[1]}/transfer_receive`;
+        return `/hosts/${message.message.split(/\s+(?=\S*$)/)[1]}/transfer_receive/${message.msgid}`;
       default:
         return '/inbox' //reload inbox by default
     }
