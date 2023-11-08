@@ -34,6 +34,7 @@ import My_Clubs from "./js/pages/user_profile/User_Clubs.jsx";
 import Host_transfer_send from "./js/pages/host_profile/Host_Transfer_Send.jsx";
 import Host_transfer_Recieve from "./js/pages/host_profile/Host_Transfer_Recieve.jsx";
 import ResourceError from "./js/pages/ResourceError.jsx";
+import AttendeeList from "./js/pages/host_profile/Attendee.jsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -73,6 +74,8 @@ const router = createBrowserRouter(
       <Route path="events" errorElement={<ResourceError />}>
         <Route element={<Events />} index />
         <Route path=":eventId" element={<EventDetailsPage />} />
+        <Route path=":eventId/attendees" element={<AttendeeList/>} />
+
       </Route>
       <Route path="inbox" element={<InboxPage />} />
       <Route path="404" element={<ResourceError />} />

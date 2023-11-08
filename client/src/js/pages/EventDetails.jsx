@@ -11,7 +11,7 @@ import { Button } from "../components/Button";
 import "../../css/components/EventDetails.css";
 import "../../css/components/Button.css";
 // import TagSelect from "./host_profile/Tag_Select";
-
+import AttendeeList from "./host_profile/Attendee";
 
 function formatTime(timeString) {
   // Use a regular expression to extract hours and minutes
@@ -198,8 +198,8 @@ export default function EventDetailsPage() {
                     </div>
                     <div className="event--button">
                       {button && (
-                      <Button to="/events" buttonStyle="btn--register" buttonSize="btn--large">
-                          Attendee Info
+                      <Button to={`/events/${eventId}/attendees`} buttonStyle="btn--register" buttonSize="btn--large">
+                           Attendee Info
                       </Button>
                       )}
                     </div>
