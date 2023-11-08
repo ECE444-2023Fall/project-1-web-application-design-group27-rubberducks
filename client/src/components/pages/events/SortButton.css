@@ -1,0 +1,16 @@
+.sort-button {
+    display: flex;
+    align-items: center;
+}
+  
+.sort-icon {
+    margin-right: 5px;
+}
+  
+.sort-button select {
+    padding: 5px;
+    margin-left: 5px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    background-color: white;
+}

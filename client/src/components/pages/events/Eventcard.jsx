@@ -43,7 +43,9 @@ function EventCard({event, onStarClick}) {
             <h5 className="eventName">{event.name}</h5>
             <div className="eventSubtitle">
               <FaRegUserCircle className="eventIcon" />
-              <span className="eventHost">{event.host}</span>
+              <Link className="eventHost" to={`/hosts/${event.owner}`} title={`View ${event.owner_name}`}>
+                {event.owner_name}
+              </Link>
             </div>
             <div className="eventSubtitle">
               <FaMapMarkerAlt className="eventIcon" />
@@ -55,7 +57,7 @@ function EventCard({event, onStarClick}) {
             </div>
             <div className="eventSubtitle">
               <FaClock className="eventIcon" />
-              <span className="eventTime">{event.time}</span>
+              <span className="eventTime">{event.start_time} - {event.end_time}</span>
             </div>
           </div>
         </Link>
