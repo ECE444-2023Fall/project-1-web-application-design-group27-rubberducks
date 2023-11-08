@@ -36,17 +36,17 @@ export const useGetHostInfo = (hostId) => {
         .then((data) => {
           setUserInfo(data);
           if (!loadingHostInfo) {
-            if (hostInfo.owner === userInfo.uid) {
+            if (hostInfo.owner === data.uid) {
               setOwnerLoggedIn(true);
             } else {
               setOwnerLoggedIn(false);
             }
+            setLoading(false);
           }
         });
-
-      setLoading(false);
     } else {
       setOwnerLoggedIn(false);
+      setLoading(false);
     }
   }, [id, hostInfo, loadingHostInfo]);
 

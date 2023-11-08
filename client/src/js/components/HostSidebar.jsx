@@ -23,7 +23,9 @@ function HostSidebar(props) {
                 </button>
               </Link>
             </div>
-          ) : null}
+          ) : (
+            <div style={{ width: "30px" }}></div>
+          )}
         </div>
         <div className="sidebar--user--email">{props.email}</div>
       </div>
