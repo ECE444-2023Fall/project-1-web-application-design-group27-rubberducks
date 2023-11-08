@@ -29,13 +29,13 @@ function HostSidebar(props) {
         </div>
         <div className="sidebar--user--email">{props.email}</div>
       </div>
-      {isHostTransferPage ? null : (
+      {props.ownerLoggedIn && !isHostTransferReceivePage ? (
         <div className="host--transfer--button">
           <Link to={`/hosts/${props.hid}/transfer`}>
             <button className="transfer-button btn">Transfer Ownership</button>
           </Link>
         </div>
-      )}
+      ) : null}
       <div className="host--info">
         <div className="host--bio">
           <h2 className="sidebar--heading">Bio</h2>
