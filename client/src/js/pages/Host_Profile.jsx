@@ -131,11 +131,6 @@ export function Host_previous() {
 }
 
 export function Host_edit() {
-  const [hostInfo, ownerLoggedIn] = useOutletContext();
-  const ownerInfo = fetch(`/api/accounts/${hostInfo.owner}`).then((res) =>
-    res.json()
-  );
-
   const navigate = useNavigate();
   const {
     register,
@@ -143,6 +138,17 @@ export function Host_edit() {
     formState: { errors },
     handleSubmit,
   } = useForm();
+  const [hostInfo, ownerLoggedIn] = useOutletContext();
+
+  useEffect(() => {
+    if (!ownerLoggedIn) {
+      navigate("/login-error");
+    }
+  }, [ownerLoggedIn]);
+
+  const ownerInfo = fetch(`/api/accounts/${hostInfo.owner}`).then((res) =>
+    res.json()
+  );
 
   const [showDelete, setShowDelete] = useState(false);
   const handleCloseDelete = () => setShowDelete(false);
