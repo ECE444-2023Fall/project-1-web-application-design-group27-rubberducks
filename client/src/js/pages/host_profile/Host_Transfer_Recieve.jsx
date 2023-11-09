@@ -3,17 +3,41 @@ import { useNavigate, useParams, useOutletContext } from "react-router-dom";
 
 function HostTransferRecieve() {
 
-  const {msgid} = useParams();
+  const {hostId, msgid} = useParams();
   
   const navigate = useNavigate();
   const [hostInfo, ownerLoggedIn] = useOutletContext();
 
-  useEffect(() => {
-    if (!ownerLoggedIn) {
-      navigate("/login-error");
-    }
-  }, [ownerLoggedIn]);
-  const { hostId } = useParams();
+  const changeMsgType = (id, new_type) => {
+    const updateTypeUrl = `/api/messages/${id}`;
+
+    // Send a PUT request to mark the message as read
+    fetch(updateTypeUrl, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ msg_type: new_type }), // Assuming you want to mark it as read
+    })
+      .then((response) => {
+        if (response.ok) {
+          console.log('Message type changed successfully.');
+          // Continue with displaying the message or any other logic.
+        } else {
+          console.error('Failed to change message type.');
+        }
+      })
+      .catch((error) => {
+        console.error('Error while changing message type:', error);
+      });
+  };
+
+  // useEffect(() => {
+  //   if (!ownerLoggedIn) {
+  //     navigate("/login-error");
+  //   }
+  // }, [ownerLoggedIn]);
+  // const { hostId } = useParams();
   const [content, setContent] = useState("");
   const [sending_uid, setSendingAccount] = useState(-1);
   const [hostName, setHostName] = useState("");
@@ -40,6 +64,9 @@ function HostTransferRecieve() {
 
   const handleApprove = () => {
     // Handle message approval logic
+    // make it so you cant open the message again
+    changeMsgType(msgid, -1);
+    
     fetch(`/api/accounts/${curr_account.id}`, {
       method: "GET",
       headers: {
@@ -148,7 +175,7 @@ function HostTransferRecieve() {
                         return res2.json();
                       })
                       .then((host_data) => {
-                        console.log("successfully host owner");
+                        console.log("successfully changed host owner");
                         console.log(host_data);
                       });
                   });
@@ -161,7 +188,8 @@ function HostTransferRecieve() {
 
   const handleReject = () => {
     // Handle message rejection logic
-
+    // make it so you cant open the message again
+    changeMsgType(msgid, -1);
     navigate("/inbox"); // Example: Navigate to the inbox after rejection
   };
 
