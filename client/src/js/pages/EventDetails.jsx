@@ -1,17 +1,18 @@
 import React, { useEffect, useState } from "react";
-import { FaMapMarkerAlt,  FaCalendar, FaClock } from "react-icons/fa";
+import { FaMapMarkerAlt, FaCalendar, FaClock } from "react-icons/fa";
 //import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import EventHostSidebar from "../components/EventHostSideBar";
 // import { useGetHostInfo } from "../useGetHostInfo";
 import { useGetEventInfo } from "../useGetEventInfo";
-// import { Map } from './Map';
+import Map from "../components/Map";
 import { Button } from "../components/Button";
 import "../../css/components/EventDetails.css";
 import "../../css/components/Button.css";
 // import TagSelect from "./host_profile/Tag_Select";
 import AttendeeList from "./host_profile/Attendee";
+import { Loader } from "@googlemaps/js-api-loader";
 
 function formatTime(timeString) {
   // Use a regular expression to extract hours and minutes
@@ -40,13 +41,7 @@ function formatDate(dateString) {
 }
 
 function processReoccuring(reoccuring) {
-  const label = [
-    "Not Reoccuring",
-    "Daily",
-    "Weekly",
-    "Bi-weekly",
-    "Monthly",
-  ];
+  const label = ["Not Reoccuring", "Daily", "Weekly", "Bi-weekly", "Monthly"];
 
   if (reoccuring >= 0 && reoccuring <= 4) {
     return label[reoccuring];
@@ -72,14 +67,12 @@ function processReoccuring(reoccuring) {
 //   return result;
 // }
 
-
 export default function EventDetailsPage() {
   const { eventId = "" } = useParams();
   const [loading, setLoading] = useState(true);
   const [eventInfo, setEventInfo] = useState({});
   const [hostInfo, setHostInfo] = useState({});
   const [error, setError] = useState(null);
-
 
   useEffect(() => {
     const loadEventInfo = async () => {
@@ -120,7 +113,6 @@ export default function EventDetailsPage() {
     loadEventInfo();
   }, [eventId]);
 
-
   const formattedDate = formatDate(eventInfo.date);
   const formattedStartTime = formatTime(eventInfo.start_time);
   const formattedEndTime = formatTime(eventInfo.end_time);
@@ -130,7 +122,7 @@ export default function EventDetailsPage() {
   const [button, setButton] = useState(true);
 
   const showButton = () => {
-      setButton(true);
+    setButton(true);
   };
 
   useEffect(() => {
@@ -149,14 +141,20 @@ export default function EventDetailsPage() {
       <div className="event">
         <div className="event--base">
           <div className="event--header-pic">
-          {/* <div className="event--header-pic" style={{ backgroundImage: 'url("images/placeholder.png"), linearGradient(rgba(0, 0, 0, 0.1))' }}> */}
-          {/* <div className="event--header-pic" style={{ backgroundImage: 'url("images/placeholder.png")' }}> */}
+            {/* <div className="event--header-pic" style={{ backgroundImage: 'url("images/placeholder.png"), linearGradient(rgba(0, 0, 0, 0.1))' }}> */}
+            {/* <div className="event--header-pic" style={{ backgroundImage: 'url("images/placeholder.png")' }}> */}
             <div className="event--header-bar">
               <h1 className="event--header-text">{eventInfo.name}</h1>
-              { error ? <ul className="event-subtitle">Error: {error}</ul> : (
+              {error ? (
+                <ul className="event-subtitle">Error: {error}</ul>
+              ) : (
                 <ul className="event-subtitle">{hostInfo.name}</ul>
               )}
-              < Button to="/events" buttonStyle=".btn--grey" buttonSize="btn--large">
+              <Button
+                to="/events"
+                buttonStyle=".btn--grey"
+                buttonSize="btn--large"
+              >
                 Edit Event
               </Button>
             </div>
@@ -182,25 +180,33 @@ export default function EventDetailsPage() {
                     </ul>
                   </div>
                   <div className="event--column-right">
-                  <ul>
-                    <span>{eventInfo.description}</span>
-                  </ul>
+                    <ul>
+                      <span>{eventInfo.description}</span>
+                    </ul>
                   </div>
                 </div>
                 <div className="event--two-columns-left-offset">
                   <div className="event--register">
                     <div className="event--button">
                       {button && (
-                      <Button to="/events" buttonStyle="btn--register" buttonSize="btn--large">
+                        <Button
+                          to="/events"
+                          buttonStyle="btn--register"
+                          buttonSize="btn--large"
+                        >
                           Register
-                      </Button>
+                        </Button>
                       )}
                     </div>
                     <div className="event--button">
                       {button && (
-                      <Button to={`/events/${eventId}/attendees`} buttonStyle="btn--register" buttonSize="btn--large">
-                           Attendee Info
-                      </Button>
+                        <Button
+                          to={`/events/${eventId}/attendees`}
+                          buttonStyle="btn--register"
+                          buttonSize="btn--large"
+                        >
+                          Attendee Info
+                        </Button>
                       )}
                     </div>
                   </div>
@@ -227,42 +233,35 @@ export default function EventDetailsPage() {
               </div>
             </div>
           </div>
-          <div className="event--container">
-            <div className="event--wrapper">
-              <div className="event--item">
-                <ul>
-                  <FaMapMarkerAlt className="event--icon" />
-                  <span>{"google maps location"}</span>
-                </ul>
-              </div>
-            </div>
+          <div className="map--container">
+            {eventInfo && eventInfo.coords && (
+              <Map lat={eventInfo.coords[0]} lng={eventInfo.coords[1]}></Map>
+            )}
           </div>
         </div>
       </div>
     </>
   );
-
 }
 
+// const [event, setEvent] = useState("");
 
-  // const [event, setEvent] = useState("");
+// useEffect(() => {
 
-  // useEffect(() => {
+//   fetch("/api/events/${eid}")
+//     .then((response) => response.json())
+//     .then((data) => {
+//       const jsonString = JSON.stringify(data, null, 2);
+//       setEvent(jsonString);
+//     })
+//     .catch((error) => console.error("Failed to fetch event", error));
 
-  //   fetch("/api/events/${eid}")
-  //     .then((response) => response.json())
-  //     .then((data) => {
-  //       const jsonString = JSON.stringify(data, null, 2);
-  //       setEvent(jsonString);
-  //     })
-  //     .catch((error) => console.error("Failed to fetch event", error));
+// }, [eid]);
 
-  // }, [eid]);
-
-    // return (
-  //   <div>
-  //       {events.map(event => (
-  //         <EventDetails key={eid} event={event}/>
-  //       ))}
-  //   </div>
-  // );
+// return (
+//   <div>
+//       {events.map(event => (
+//         <EventDetails key={eid} event={event}/>
+//       ))}
+//   </div>
+// );
