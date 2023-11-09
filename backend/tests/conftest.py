@@ -214,7 +214,8 @@ def host():
         'email': 'test1@example.com', 
         'bio': 'Host bio 1', 
         'events': [], 
-        'owner': 1}
+        'owner': 1,
+        'pending_transfer': False}
         )
 
 @pytest.fixture
