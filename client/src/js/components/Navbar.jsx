@@ -132,7 +132,7 @@ function Navbar() {
                     className="dropdown-nav-links"
                     onClick={(closeMobileMenu, toggleDropdown)}
                   >
-                    + Create Profile
+                    + Create Club
                   </Link>
                 </li>
               </ul>
