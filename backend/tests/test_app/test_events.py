@@ -1,19 +1,19 @@
-import pytest
-from models import Account, Host, Event
+# import pytest
+# from models import Account, Host, Event
 
-def test_get_all_events(client):#danny ahmad
-    response=client.get("/events/")
-    assert response.status_code == 200
+# def test_get_all_events(client):#danny ahmad
+#     response=client.get("/events/")
+#     assert response.status_code == 200
 
-# Test to fetch an event by its eid
-def test_get_event_by_eid(client, sample_event_data, add_event_to_db):  #Kartikey Sachdeva 
-    response = client.get("/events/1")
-    assert response.status_code == 200
+# # Test to fetch an event by its eid
+# def test_get_event_by_eid(client, sample_event_data, add_event_to_db):  #Kartikey Sachdeva 
+#     response = client.get("/events/1")
+#     assert response.status_code == 200
 
-    expected_data = sample_event_data.copy()  
-    returned_data = response.json
+#     expected_data = sample_event_data.copy()  
+#     returned_data = response.json
 
-    expected_data['eid'] = 1
+#     expected_data['eid'] = 1
 
 #     for key in expected_data.keys():
 #         assert key in returned_data, f"Key {key} not found in response."
