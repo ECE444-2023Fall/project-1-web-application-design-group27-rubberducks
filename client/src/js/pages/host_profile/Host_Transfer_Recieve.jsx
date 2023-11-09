@@ -166,6 +166,7 @@ function HostTransferRecieve() {
                         bio: hostBio,
                         events: hostEvent,
                         owner: curr_account.id,
+                        pending_transfer: false,
                       }), // Update orgs field
                     })
                       .then((res2) => {
@@ -190,7 +191,32 @@ function HostTransferRecieve() {
     // Handle message rejection logic
     // make it so you cant open the message again
     changeMsgType(msgid, -1);
-    navigate("/inbox"); // Example: Navigate to the inbox after rejection
+    fetch(`/api/hosts/${hostId}`, {
+      method: "PUT", // Use PUT to update the account
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        name: hostName,
+        email: hostEmail,
+        bio: hostBio,
+        events: hostEvent,
+        owner: curr_account.id,
+        pending_transfer: false,
+      }), // Update orgs field
+    })
+      .then((res2) => {
+        if (!res2.ok) {
+          throw Error(`HTTP error! Status: ${res2.status}`);
+        }
+        return res2.json();
+      })
+      .then((host_data) => {
+        console.log("set pending transfer to false");
+        console.log(host_data);
+        navigate("/inbox"); // Example: Navigate to the inbox after rejection
+      });
+    
   };
 
   return (

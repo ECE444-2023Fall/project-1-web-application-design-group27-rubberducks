@@ -128,16 +128,18 @@ class Host(db.Model):
     bio = db.Column(db.String(120), nullable=False)
     events = db.Column(db.ARRAY(db.Integer))
     owner = db.Column(db.Integer, db.ForeignKey("account.uid"), nullable=False)
+    pending_transfer = db.Column(db.Boolean, default=False, nullable=False)
 
-    def __init__(self, name, email, bio, events, owner):
+    def __init__(self, name, email, bio, events, owner, pending_transfer=False):
         self.name = name
         self.email = email
         self.bio = bio
         self.events = events
         self.owner = owner
+        self.pending_transfer = pending_transfer
 
     def __repr__(self):
-        return f"<Host {self.hid} {self.name} {self.email} {self.bio} {self.events} {self.owner}>"
+        return f"<Host {self.hid} {self.name} {self.email} {self.bio} {self.events} {self.owner} {self.pending_transfer}>"
 
     def save(self):
         db.session.add(self)
@@ -147,12 +149,18 @@ class Host(db.Model):
         db.session.delete(self)
         db.session.commit()
 
-    def update(self, name, email, bio, events, owner):
-        self.name = name
-        self.email = email
-        self.bio = bio
-        self.events = events
-        self.owner = owner
+    def update(self, name=None, email=None, bio=None, events=None, owner=None, pending_transfer=False):
+        if name is not None:
+            self.name = name
+        if email is not None:
+            self.email = email
+        if bio is not None:
+            self.bio = bio
+        if events is not None:
+            self.events = events
+        if owner is not None:
+            self.owner = owner
+        self.pending_transfer = pending_transfer
         db.session.commit()
 
 
