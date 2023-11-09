@@ -25,6 +25,7 @@ event_model = events_ns.model(
         "name": fields.String,
         "description": fields.String,
         "location": fields.String,
+        "coords": fields.List(fields.Float),
         "date": fields.String,
         "start_time": fields.String,
         "end_time": fields.String,

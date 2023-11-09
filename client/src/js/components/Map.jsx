@@ -1,15 +1,28 @@
-import React, { useEffect } from 'react';
-import 'leaflet/dist/leaflet.css';
-import L from 'leaflet';
+import React from "react";
+import { GoogleMap, useLoadScript, MarkerF } from "@react-google-maps/api";
 
-const Map = () => {
-  useEffect(() => {
-    const map = L.map('map').setView([43.6426, 79.3871], 13); 
+const mapContainerStyle = {
+  width: "100%",
+  height: "60vh",
+};
 
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
-  }, []);
+const Map = ({ lat, lng }) => {
+  const center = {
+    lat: lat,
+    lng: lng,
+  };
 
-  return <div id="map" style={{ height: '400px' }}></div>;
+  return (
+    <div>
+      <GoogleMap
+        mapContainerStyle={mapContainerStyle}
+        zoom={17}
+        center={center}
+      >
+        <MarkerF position={center} />
+      </GoogleMap>
+    </div>
+  );
 };
 
 export default Map;

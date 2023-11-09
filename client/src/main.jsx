@@ -68,14 +68,16 @@ const router = createBrowserRouter(
           <Route path="edit" element={<Host_edit />} />
           <Route path="create_event" element={<Create_Event />} />
           <Route path="transfer" element={<Host_transfer_send />} />
-          <Route path="transfer_receive/:msgid" element={<Host_transfer_Recieve />} />
+          <Route
+            path="transfer_receive/:msgid"
+            element={<Host_transfer_Recieve />}
+          />
         </Route>
       </Route>
       <Route path="events" errorElement={<ResourceError />}>
         <Route element={<Events />} index />
         <Route path=":eventId" element={<EventDetailsPage />} />
-        <Route path=":eventId/attendees" element={<AttendeeList/>} />
-
+        <Route path=":eventId/attendees" element={<AttendeeList />} />
       </Route>
       <Route path="inbox" element={<InboxPage />} />
       <Route path="404" element={<ResourceError />} />

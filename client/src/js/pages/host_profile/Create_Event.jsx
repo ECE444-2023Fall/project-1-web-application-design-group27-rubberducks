@@ -1,12 +1,12 @@
 // CreateEvent.jsx
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import "../../../css/pages/host_profile/Create_Event.css";
 import TagSelect from "./Tag_Select";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import HostSidebar from "../../components/HostSidebar";
 import { useNavigate, useOutletContext } from "react-router-dom";
 import { useParams } from "react-router-dom";
+import { set } from "react-hook-form";
 
 function convertTimetoString(hour, minute) {
   const formattedHour = `${hour}`.padStart(2, "0");
@@ -34,6 +34,7 @@ export default function Create_Event() {
   const [hour2, setHour2] = useState(0);
   const [minute2, setMinute2] = useState(0);
   const [location, setLocation] = useState("");
+  const [coords, setCoords] = useState([0, 0]); // [lat, lng]
   const [description, setDescription] = useState("");
   const [capacity, setCapacity] = useState(0);
   const [tags, setSelectedTags] = useState([]);
@@ -85,6 +86,7 @@ export default function Create_Event() {
         name: name,
         description: description,
         location: location,
+        coords: coords,
         date: date,
         start_time: convertTimetoString(hour1, minute1),
         end_time: convertTimetoString(hour2, minute2),
@@ -139,7 +141,7 @@ export default function Create_Event() {
               })
               .then(() => {
                 console.log("successfully updated host events");
-                navigate(`/events/${data.eid}/eventdetails`);
+                navigate(`/events/${data.eid}`);
               })
               .catch((err) => {
                 console.log("error:", err);
@@ -158,9 +160,29 @@ export default function Create_Event() {
     navigate(`/hosts/${hostId}`);
   };
 
+  //MAPS API
+  const autoCompleteRef = useRef();
+  const inputRef = useRef();
+  const options = {
+    componentRestrictions: { country: "ca" },
+    fields: ["address_components", "name", "geometry"],
+  };
+
+  useEffect(() => {
+    autoCompleteRef.current = new window.google.maps.places.Autocomplete(
+      inputRef.current,
+      options
+    );
+
+    autoCompleteRef.current.addListener("place_changed", async function () {
+      const place = await autoCompleteRef.current.getPlace();
+      setLocation(place.name);
+      setCoords([place.geometry.location.lat(), place.geometry.location.lng()]);
+    });
+  }, []);
+
   return (
     <>
-      <HostSidebar hostId={hostId} name={hostname} email={email} bio={bio} />
       <div className="form_block_event">
         <h1>Create Event</h1>
         <form onSubmit={handleSubmit}>
@@ -246,7 +268,10 @@ export default function Create_Event() {
               id="location"
               name="location"
               value={location}
-              onChange={(e) => setLocation(e.target.value)}
+              ref={inputRef}
+              onChange={(e) => {
+                setLocation(e.target.value);
+              }}
               required
             />
           </div>
