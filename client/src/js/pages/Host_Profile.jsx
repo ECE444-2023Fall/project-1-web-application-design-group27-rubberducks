@@ -19,6 +19,7 @@ import { confirmPassword } from "../confirmPassword";
 import { bouncy } from "ldrs";
 import Favorites from "../components/Favorite";
 
+
 export default function Host_root() {
   const { hostId = "" } = useParams();
   const { hostInfo, ownerLoggedIn, loading } = useGetHostInfo(hostId);
@@ -149,7 +150,7 @@ export function Host_upcoming() {
           <div className="card--header">
             <h2 className="card--heading">Upcoming Events</h2>
             <span className="card--see-all small">
-              <a href="/profile">Return to Profile</a>
+              <Link to={`/hosts/${hostId}`}>Return to Profile</Link>
             </span>
           </div>
           {upcomingEvents.length > 0 ? (
@@ -227,7 +228,7 @@ export function Host_previous() {
           <div className="card--header">
             <h2 className="card--heading">Previous Events</h2>
             <span className="card--see-all small">
-              <a href="/profile">Return to Profile</a>
+              <Link to={`/hosts/${hostId}`}>Return to Profile</Link>
             </span>
           </div>
           {previousEvents.length > 0 ? (
