@@ -16,7 +16,7 @@ import {
 import Navbar from "../components/Navbar";
 import { useGetHostInfo } from "../useGetHostInfo";
 import { confirmPassword } from "../confirmPassword";
-import { bouncy } from "ldrs";
+// import { bouncy } from "ldrs";
 
 export default function Host_root() {
   const { hostId = "" } = useParams();
