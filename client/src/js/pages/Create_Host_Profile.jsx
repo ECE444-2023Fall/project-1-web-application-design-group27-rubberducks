@@ -1,15 +1,14 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useForm } from "react-hook-form";
 import "../../css/components/App.css";
 import "../../css/pages/Create_Host_Profile.css";
 // import { useNavigate } from "react-router-dom";
 
 function CreateHostProfile() {
-  const [club_name, setClubName] = useState("");
-  const [email, setEmail] = useState("");
-  const [bio, setBio] = useState("");
-  const [profilePhoto, setProfilePhoto] = useState(null);
-  const [errorMessage, setErrorMessage] = useState("");
+  const { register, formState: { errors }, handleSubmit } = useForm();
+  const [profilePhoto, setProfilePhoto] = useState(null); 
+  const [errorMessage, setErrorMessage] = useState(""); 
   const navigate = useNavigate();
 
   const handleProfilePhotoChange = (e) => {
@@ -17,23 +16,17 @@ function CreateHostProfile() {
     setProfilePhoto(file);
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
+  const onSubmit = (data) => {
     // Get the current account from local storage
-    // CHANGE WHEN LOGIN INFO ACTUALLY STORED
     if (localStorage.getItem("user")) {
       const curr_account = JSON.parse(localStorage.getItem("user"));
-      console.log(curr_account);
 
       const profile = {
-        name: club_name,
-        email: email,
-        bio: bio,
+        name: data.club_name,
+        email: data.email,
+        bio: data.bio,
         events: [],
         owner: curr_account.id,
-        // Modify host schema to store pic
-        // profilePhoto
       };
 
       // Create the new host
@@ -51,7 +44,6 @@ function CreateHostProfile() {
           return res.json();
         })
         .then((data) => {
-          console.log(data);
           if (data && data.hid) {
             // Get all current user data
             fetch(`/api/accounts/${curr_account.id}`, {
@@ -67,10 +59,6 @@ function CreateHostProfile() {
                 return res2.json();
               })
               .then((data2) => {
-                console.log(
-                  "successfully fetched account of the logged-in user"
-                );
-
                 const update_account = {
                   name: data2.name,
                   email: data2.email,
@@ -81,13 +69,12 @@ function CreateHostProfile() {
                 };
 
                 // Update the orgs of the current account
-                console.log("created a new club");
                 fetch(`/api/accounts/${curr_account.id}`, {
-                  method: "PUT", // Use PUT to update the account
+                  method: "PUT",
                   headers: {
                     "Content-Type": "application/json",
                   },
-                  body: JSON.stringify(update_account), // Update orgs field
+                  body: JSON.stringify(update_account),
                 })
                   .then((res3) => {
                     if (!res3.ok) {
@@ -96,29 +83,21 @@ function CreateHostProfile() {
                     return res3.json();
                   })
                   .then((data3) => {
-                    console.log("successfully updated account orgs");
-                    console.log(data3);
-                    // Redirect to the created page or handle as needed
                     navigate(`/hosts/${data.hid}`);
 
-                    setEmail("");
-                    setBio("");
-                    setClubName("");
+                    // Clear form fields
                     setProfilePhoto(null);
                   })
                   .catch((err) => {
-                    console.log("error:", err);
                     setErrorMessage(err.message);
                   });
               })
               .catch((err) => {
-                console.log("error:", err);
                 setErrorMessage(err.message);
               });
           }
         })
         .catch((err) => {
-          console.log("error:", err);
           setErrorMessage(err.message);
         });
     }
@@ -134,7 +113,7 @@ function CreateHostProfile() {
       <div className="create-host-title">
         <h2>Create Host Profile</h2>
       </div>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <div className="form-group">
           <label htmlFor="club_name" id="club_name_label">
             Club Name:
@@ -144,12 +123,20 @@ function CreateHostProfile() {
             className="form-control"
             id="club_name"
             placeholder="Club Name"
-            value={club_name}
-            onChange={(e) => setClubName(e.target.value)}
-            required
+            {...register("club_name", { required: true, maxLength: 50 })}
           />
+          {errors.club_name?.type === "required" && (
+            <p style={{ color: "red" }}>
+              <small>Club name is required</small>
+            </p>
+          )}
+          {errors.club_name?.type === "maxLength" && (
+            <p style={{ color: "red" }}>
+              <small>Club name cannot exceed 50 characters</small>
+            </p>
+          )}
         </div>
-
+  
         <div className="form-group">
           <label htmlFor="club_email" id="club_email_label">
             Email:
@@ -159,12 +146,20 @@ function CreateHostProfile() {
             className="form-control"
             id="club_email"
             placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
+            {...register("email", { required: true, maxLength: 50 })}
           />
+          {errors.email?.type === "required" && (
+            <p style={{ color: "red" }}>
+              <small>Email is required</small>
+            </p>
+          )}
+          {errors.email?.type === "maxLength" && (
+            <p style={{ color: "red" }}>
+              <small>Email cannot exceed 50 characters</small>
+            </p>
+          )}
         </div>
-
+  
         <div className="form-group">
           <label htmlFor="club_bio" id="club_bio_label">
             Bio:
@@ -172,13 +167,15 @@ function CreateHostProfile() {
           <textarea
             className="form-control"
             id="club_bio"
-            value={bio}
-            onChange={(e) => setBio(e.target.value)}
-            rows="4"
-            cols="50"
+            {...register("bio", { maxLength: 50 })}
           />
+          {errors.bio?.type === "maxLength" && (
+            <p style={{ color: "red" }}>
+              <small>Bio cannot exceed 50 characters</small>
+            </p>
+          )}
         </div>
-
+  
         <div className="form-group">
           <label htmlFor="profilePhoto" id="photo_label">
             Club Photo
@@ -191,7 +188,7 @@ function CreateHostProfile() {
             onChange={handleProfilePhotoChange}
           />
         </div>
-
+  
         {profilePhoto && (
           <img
             src={URL.createObjectURL(profilePhoto)}
@@ -202,7 +199,7 @@ function CreateHostProfile() {
         {errorMessage && (
           <div className="club-error-message">{errorMessage}</div>
         )}
-
+  
         <div className="button-group">
           <button
             type="button"
@@ -218,6 +215,6 @@ function CreateHostProfile() {
       </form>
     </div>
   );
-}
+};  
 
 export default CreateHostProfile;
