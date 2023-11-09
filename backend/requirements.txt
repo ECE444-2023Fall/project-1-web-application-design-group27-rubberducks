@@ -14,7 +14,6 @@ Flask-Login==0.6.3
 flask-restx==1.2.0
 Flask-Principal==0.4.0
 Flask-SQLAlchemy==3.1.1
-functools==0.5
 importlib-resources==6.1.0
 iniconfig==2.0.0
 itsdangerous==2.1.2
