@@ -167,11 +167,11 @@ function CreateHostProfile() {
           <textarea
             className="form-control"
             id="club_bio"
-            {...register("bio", { maxLength: 400 })}
+            {...register("bio", { maxLength: 120 })}
           />
           {errors.bio?.type === "maxLength" && (
             <p style={{ color: "red" }}>
-              <small>Bio cannot exceed 400 characters</small>
+              <small>Bio cannot exceed 120 characters</small>
             </p>
           )}
         </div>
