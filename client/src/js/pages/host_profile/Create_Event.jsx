@@ -196,6 +196,7 @@ export default function Create_Event() {
               placeholder="Event Name"
               value={name}
               onChange={(e) => setEventName(e.target.value)}
+              maxLength={150}
               required
             />
           </div>
@@ -272,6 +273,7 @@ export default function Create_Event() {
               onChange={(e) => {
                 setLocation(e.target.value);
               }}
+              maxLength={450}
               required
             />
           </div>
@@ -284,6 +286,7 @@ export default function Create_Event() {
               name="description"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
+              maxLength={450}
             ></textarea>
           </div>
 
