@@ -50,31 +50,31 @@ def add_host_to_db(app):
         db.session.commit()
 
 
-@pytest.fixture
-def add_event_to_db(app, add_host_to_db): 
-    with app.app_context():
-        host = Host.query.first()
+# @pytest.fixture
+# def add_event_to_db(app, add_host_to_db): 
+#     with app.app_context():
+#         host = Host.query.first()
         
-        if not host:
-            return None
+#         if not host:
+#             return None
         
-        event1 = Event(
-            name="Sample Event",
-            location="Sample Location",
-            description="Sample Description",
-            date="2023-10-30",
-            time="12:00:00",
-            capacity=100,
-            attendees=[],
-            tags=["tag1", "tag2"],
-            reoccuring=False,
-            date_created="2023-10-29",
-            owner=host.hid  
-        )
-        db.session.add(event1)
-        db.session.commit()
+#         event1 = Event(
+#             name="Sample Event",
+#             location="Sample Location",
+#             description="Sample Description",
+#             date="2023-10-30",
+#             time="12:00:00",
+#             capacity=100,
+#             attendees=[],
+#             tags=["tag1", "tag2"],
+#             reoccuring=False,
+#             date_created="2023-10-29",
+#             owner=host.hid  
+#         )
+#         db.session.add(event1)
+#         db.session.commit()
 
-        return event1  
+#         return event1  
 
 @pytest.fixture
 def add_account_to_db(app):
@@ -230,22 +230,22 @@ def login():
     })
 
 
-@pytest.fixture
-def sample_event_data():
-    data = {
-        "name": "Sample Event",
-        "location": "Sample Location",
-        "description": "Sample Description",
-        "date": "2023-10-30", 
-        "time": "12:00:00",
-        "capacity": 100,
-        "attendees": [],
-        "tags": ["tag1", "tag2"],
-        "reoccuring": False,
-        "date_created": "2023-10-29", 
-        "owner": 1  
-    }
+# @pytest.fixture
+# def sample_event_data():
+#     data = {
+#         "name": "Sample Event",
+#         "location": "Sample Location",
+#         "description": "Sample Description",
+#         "date": "2023-10-30", 
+#         "time": "12:00:00",
+#         "capacity": 100,
+#         "attendees": [],
+#         "tags": ["tag1", "tag2"],
+#         "reoccuring": False,
+#         "date_created": "2023-10-29", 
+#         "owner": 1  
+#     }
     
-    data["owner"] = int(data["owner"])
+#     data["owner"] = int(data["owner"])
 
-    return data
+#     return data
