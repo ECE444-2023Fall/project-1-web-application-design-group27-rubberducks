@@ -10,6 +10,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@googlemaps/js-api-loader": "^1.16.2",
+    "@react-google-maps/api": "^2.19.2",
     "bootstrap": "^5.3.2",
     "ldrs": "^1.0.1",
     "mdb-react-ui-kit": "^6.3.0",

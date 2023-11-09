@@ -14,5 +14,17 @@
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
+    <script>
+      function initMap() {
+        var options = {
+          zoom: 3,
+          center: { lat: 51.541837, lng: -0.139199 },
+        };
+      }
+    </script>
+    <script
+      async
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyByAmW5IKFVZyJzx3-Ctv_gG906faiAdw8&libraries=places&callback=initMap"
+    ></script>
   </body>
 </html>
