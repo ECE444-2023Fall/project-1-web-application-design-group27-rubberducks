@@ -73,6 +73,8 @@ export default function EventDetailsPage() {
   const [eventInfo, setEventInfo] = useState({});
   const [hostInfo, setHostInfo] = useState({});
   const [error, setError] = useState(null);
+  const [user, setUser] = useState({});
+  const [message, setMessage] = useState("");
 
   useEffect(() => {
     const loadEventInfo = async () => {
@@ -109,8 +111,23 @@ export default function EventDetailsPage() {
         setLoading(false);
       }
     };
-
+    const getUserInfo = async () => {
+      const get_user = JSON.parse(localStorage.getItem("user"));
+      if (!get_user || !get_user.id) {
+        console.error("No user id found");
+        setError("User not logged in");
+      } else {
+        const userResponse = await fetch(`/api/accounts/${get_user.id}`);
+        if (userResponse.status === 404) {
+          setError("User information not found");
+        } else if (userResponse.ok) {
+          const userData = await userResponse.json();
+          setUser(userData);
+        }
+      }
+    };
     loadEventInfo();
+    getUserInfo();
   }, [eventId]);
 
   const formattedDate = formatDate(eventInfo.date);
@@ -128,6 +145,65 @@ export default function EventDetailsPage() {
   useEffect(() => {
     showButton();
   }, []);
+
+  const handleRegister = () => {
+    console.log("user", user);
+    //make sure there is still space left for the event
+    if (eventInfo.attendees.length >= eventInfo.capacity) {
+      setMessage("The event is at full capacity.");
+    } else if (eventInfo.attendees.includes(user.uid)) {
+      setMessage("You are already registered.");
+    } else {
+      fetch(`/api/events/${eventId}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: eventInfo.name,
+          description: eventInfo.description,
+          location: eventInfo.location,
+          date: eventInfo.date,
+          start_time: eventInfo.start_time,
+          end_time: eventInfo.end_time,
+          capacity: eventInfo.capacity,
+          reoccuring: eventInfo.reoccuring,
+          date_created: eventInfo.date_created,
+          owner: eventInfo.owner,
+          tags: eventInfo.tags,
+          attendees: [...eventInfo.attendees, user.uid],
+        }),
+      }).then((response) => {
+        if (response.ok) {
+          setMessage("You are successfully registered.");
+          //update registered event in user's account
+          fetch(`/api/accounts/${user.uid}`, {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              name: user.name,
+              email: user.email,
+              events: [...user.events, eventId],
+              fav_events: user.fav_events,
+              orgs: user.orgs,
+              msgids: user.msgids,
+            }),
+          }).then((response) => {
+            if (response.ok) {
+              console.log("User account updated successfully.");
+            } else {
+              // Handle errors, e.g., show an error message
+              console.error("User account update failed.");
+            }
+          });
+        } else {
+          setMessage("Registration Failed.");
+        }
+      });
+    }
+  };
 
   return (
     <>
@@ -198,6 +274,7 @@ export default function EventDetailsPage() {
                         </Button>
                       )}
                     </div>
+                    {message && <p>{message}</p>}
                     <div className="event--button">
                       {button && (
                         <Button
