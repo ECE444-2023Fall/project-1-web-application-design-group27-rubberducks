@@ -156,38 +156,6 @@ export function Host_profile() {
 }
 
 
-// export function Host_profile() {
-//   const [hostInfo, ownerLoggedIn] = useOutletContext();
-//   return (
-//     <>
-//       <div>
-//         {ownerLoggedIn ? (
-//           <div className="createEventBtnContainer">
-//             <Link to={`/hosts/${hostInfo.hid}/create_event`}>
-//               <Button variant="primary">Create Event</Button>
-//             </Link>
-//           </div>
-//         ) : null}
-
-//         <div className="host--events">
-//           <EventCategory
-//             title="Upcoming Events"
-//             link={`/hosts/${hostInfo.hid}/upcoming`}
-//           />
-//           <hr />
-//           <div className="previous--events">
-//             <EventCategory
-//               title="Previous Events"
-//               link={`/hosts/${hostInfo.hid}/previous`}
-//             />
-//           </div>
-//         </div>
-//       </div>
-//       <Outlet context={[hostInfo]} />
-//     </>
-//   );
-// }
-
 export function Host_upcoming() {
   const [upcomingEvents, setUpcomingEvents] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
