@@ -1,6 +1,6 @@
 import React from "react";
 import CardItem from "./CardItem";
-import "../../css/components/Cards.css";
+import "../../css/components/Eventcard.css";
 
 
 function Favorites({event,onCardClick}) {

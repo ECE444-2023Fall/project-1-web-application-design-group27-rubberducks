@@ -81,7 +81,7 @@ export function Profile_upcoming() {
       const currentDateTime = new Date();
       const upcoming = eventsDetails.filter(event => {
         const eventStart = new Date(`${event.date}T${event.start_time}`); //compare the event time and the current time
-        return eventStart > currentDateTime;
+        return eventStart > currentDateTime || event.reoccuring > 0;
       });
 
       setUpcomingEvents(upcoming);
@@ -161,7 +161,7 @@ export function Profile_previous() {
       const currentDateTime = new Date();
       const previous = eventsDetails.filter(event => {
         const eventStart = new Date(`${event.date}T${event.start_time}`); //compare the event time and the current time
-        return eventStart < currentDateTime;
+        return eventStart < currentDateTime && event.reoccuring == 0;
       });
 
       setPreviousEvents(previous);

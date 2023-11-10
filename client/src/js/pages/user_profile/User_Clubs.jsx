@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import UserCards from "../../components/UserCards";
+import MyClubCards from "../../components/MyClubCard";
 import UserSidebar from "../../components/UserSidebar";
 import "../../../css/pages/user_profile/Profile_upcoming.css";
 
@@ -72,7 +72,7 @@ export default function My_Clubs() {
           </div>
           {orgsWithHosts.length > 0 ? (
             orgsWithHosts.map((orgWithHost) => (
-              <UserCards key={orgWithHost.id} org={orgWithHost} />
+              <MyClubCards key={orgWithHost.id} org={orgWithHost} />
             ))
           ) : (
             <p>You have not joined any clubs yet.</p>
