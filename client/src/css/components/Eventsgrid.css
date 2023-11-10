@@ -26,8 +26,8 @@
     }
 }
 
-@media screen and (min-width: 1600px) {
+/* @media screen and (min-width: 1600px) {
     .eventsGrid {
         grid-template-columns: repeat(5, 1fr);
     }
-}
+} */
