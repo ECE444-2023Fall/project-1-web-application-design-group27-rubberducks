@@ -2,11 +2,12 @@ import time
 from datetime import datetime
 from sqlalchemy.dialects.postgresql import ARRAY
 from sqlalchemy.sql.expression import cast
-from sqlalchemy import Integer
+from sqlalchemy import Integer, func
 from flask import request
 from flask_restx import Namespace, Resource, fields
-from models import Event, Event_tag
+from models import Event, Event_tag, Host
 from flask_jwt_extended import jwt_required
+from exts import db
 
 events_ns = Namespace("events", description="Event operations")
 
@@ -35,6 +36,7 @@ event_model = events_ns.model(
         "attendees": fields.List(fields.Integer),
         "owner": fields.Integer,
         "tags": fields.List(fields.Integer),
+        "owner_name": fields.String,
     },
 )
 
@@ -46,14 +48,6 @@ tags_model = events_ns.model(
         "description": fields.String,
     }
 )
-
-filters_model = events_ns.model(
-    "Filters",
-    {
-        "filters": fields.List(fields.String)
-    }
-)
-
 
 @events_ns.route("/all")
 class Events(Resource):
@@ -68,87 +62,118 @@ class Events(Resource):
         event.save()
         return event, 201
     
-# @events_ns.route("/")
-# class Events(Resource):
-#     @events_ns.marshal_list_with(event_model)
-#     def get(self):
-#         # Infinite scroll
-#         page = int(request.args.get('page', 1))
-#         limit = int(request.args.get('limit', 20))
-#         offset = (page - 1) * limit
+"""
+TODO: Limit information transmitted for privacy (attendees list, etc)
+TODO: Implement limit for past event
+"""
+@events_ns.route("/")
+class Events(Resource):
+    @events_ns.marshal_list_with(event_model)
+    def get(self):
+        # Infinite scroll
+        page = int(request.args.get('page', 1))
+        limit = int(request.args.get('limit', 20))
+        offset = (page - 1) * limit
 
-#         """
-#         # Search filtering
-#         order = str(request.args.get('ord', 0)) # order
-#         name = str(request.args.get('name')) # name
-#         location = str(request.args.get('loc')) # location
-#         time_start = str(request.args.get('ts')) # start time
-#         time_end = str(request.args.get('te')) # end time
-#         date_start = str(request.args.get('ds')) # start date
-#         date_end = str(request.args.get('de')) # end date
-#         capacity = str(request.args.get('cap')) # capacity
-#         cap_r = str(request.args.get('cap_r')) # capacity reached, 1 to limit
-#         reoccuring = str(request.args.get('re')) # reoccuring
-#         uid = str(request.args.get('uid')) # user_id, TODO: implement auth checks for this
-#         """
-#         tags_filter = str(request.args.get('tags')) # tags
+        # Search filtering
+        order = str(request.args.get('ord', 0)) # order
+        name = str(request.args.get('name')) # name
+        location = str(request.args.get('loc')) # location
+        time_start = str(request.args.get('ts')) # start time
+        time_end = str(request.args.get('te')) # end time
+        date = str(request.args.get('d')) # start date
+        capacity = str(request.args.get('cap')) # capacity
+        cap_r = str(request.args.get('capr')) # capacity reached, 1 to limit
+        reoccuring = str(request.args.get('re')) # reoccuring
+        host = str(request.args.get('host')) #host
+        uid = str(request.args.get('uid')) # user_id
+        tags_filter = str(request.args.get('tags')) # tags
+
+        """
+        # Debug Prints
+        print(order)
+        print(name)
+        print(location)
+        print(time_start)
+        print(time_end)
+        print(date)
+        print(capacity)
+        print(cap_r)
+        print(reoccuring)
+        print(host)
+        print(uid)
+        print(tags_filter)
+        """
+
+        # Initialize Query
+        query = db.session.query(Event, Host.name.label('owner_name')).join(Host, Event.owner == Host.hid)
+
+        # Filtering
+        if name and name != 'None': # Name
+            query = query.filter(Event.name.ilike(f"%{name}%"))
+        if location and location != 'None': # Location
+            query = query.filter(Event.location.ilike(f"%{location}%"))
+        if time_start and time_start != 'None': # Start Time
+            query = query.filter(Event.start_time >= time_start)
+        if time_end and time_end != 'None': # End Time
+            query = query.filter(Event.end_time <= time_end)
+        if date and date != 'None': # Date
+            query = query.filter(Event.date >= date)
+        if capacity and capacity != 'None': # Capacity
+            cap = int(capacity)
+            query = query.filter(Event.capacity>cap)
+        if cap_r and cap_r == '1': # Capacity Reached
+            query = query.filter(func.cardinality(Event.attendees) < Event.capacity)
+        if reoccuring and reoccuring != 'None': # Reoccuring
+            reo = int(reoccuring)
+            query = query.filter(Event.reoccuring==reo)
+        if host and host != 'None': # Host
+            #host_id = int(host)
+            query = query.filter(Host.name.ilike(f"%{host}%"))
+        if uid and uid != 'None': # Uid
+            user_id = int(uid)
+            query = query.filter(Event.attendees.any(user_id))
+            
+        # Tags
+        if (tags_filter and tags_filter != 'None'):
+            tags_filter = [int(tag) for tag in tags_filter.split(',')]
+            query = query.filter(cast(Event.tags, ARRAY(Integer)).contains(tags_filter))
+
+        # Order
+        if order == '0':
+            query = query.order_by(Event.date.asc()) # Date ascending
+        elif order == '1':
+            query = query.order_by(Event.date.desc()) # Date descending
+        elif order == '2':
+            query = query.order_by(Event.date_created.asc()) # Creation date ascending (oldest)
+        elif order == '3':
+            query = query.order_by(Event.date_created.desc()) # Creation date descending (newest)
+        elif order == '4':
+            query = query.order_by(func.cardinality(Event.attendees).desc(), Event.date.asc()).group_by(Event.eid, Host.name) # Attendees descending
+        elif order == '5':
+            query = query.order_by(func.cardinality(Event.attendees).asc(), Event.date.asc()).group_by(Event.eid, Host.name) # Attendees ascending
         
-        
-#         #Query config
-#         query = Event.query
-
-#         """
-#         #name
-#         if name:
-#             query = query.filter(Event.name.ilike(f"%{name}%"))
-        
-#         #location
-#         if location:
-#             query = query.filter(Event.location.ilike(f"%{location}"))
-        
-#         """
-
-#         """
-#         if time_start: # compare time_start < Event.time
-#             #TODO
-#             if time_end: # compare time_end > Event.end
-#                 #TODO
-#         if date_start: # compare date_start < Event.date
-
-#         if date_end: # compare date_end > Event.date
-
-#         if capacity: # compare capacity > Event.capacity
-
-#         if cap_r: # compare Event.attendees.length < Event.capacity
-
-#         if reoccuring: #compare Event.reoccuring == reoccuring
-#             """ 
-
-
-#         #tags
-#         if tags_filter:
-#             print(tags_filter)
-#             tags_filter = [int(tag) for tag in tags_filter.split(',')]
-#             query = query.filter(cast(Event.tags, ARRAY(Integer)).contains(tags_filter))
-
-#         """
-#         # order
-#         if order == 0:
-#             query = query.order_by(Event.date.asc()) # Date ascending
-#         elif order == 1:
-#             query = query.order_by(Event.date.dsc()) # Date descending
-#         elif order == 2:
-#             query = query.order_by(Event.date_created.dsc()) # Creation date ascending
-#         elif order == 3:
-#             query = query.order_by(Event.date_created.dsc()) # Creation date descending
-#         elif order == 4:
-#             query = query.order_by(Event.date.dsc()) # Attendees ascending
-#         elif order == 5:
-#             query = query.order_by(Event.date.dsc()) # Attendees descending
-#         """
-
-#         events = query.order_by(Event.date.asc()).offset(offset).limit(limit).all()
-#         return events, 200
+        #print(str(query.statement.compile(compile_kwargs={"literal_binds": True})))
+        events = query.offset(offset).limit(limit).all()
+        return [
+            {
+                'eid': event.eid,
+                'name': event.name,
+                'description': event.description,
+                'location': event.location,
+                'date': event.date.strftime('%Y-%m-%d'),
+                'start_time': event.start_time.strftime("%H:%M"),
+                'end_time': event.end_time.strftime("%H:%M"),
+                'capacity': event.capacity,
+                'reoccuring': event.reoccuring,
+                'date_created': event.date_created.strftime('%Y-%m-%d'),
+                'attendees': event.attendees,
+                'owner': event.owner,
+                'tags': event.tags,
+                'owner_name': owner_name,
+            }
+            for event, owner_name in events
+        ], 200
 
 
 @events_ns.route("/<int:eid>")
@@ -201,18 +226,3 @@ class EventTagId(Resource):
         event_tag = Event_tag.query.get_or_404(etid)
         event_tag.delete()
         return {"message": "event tag deleted"}, 200
-
-"""@events_ns.route("/filtered")
-class FilteredEvents(Resource):
-    @events_ns.expect(filters_model)
-    @events_ns.marshal_list_with(event_model)
-    def post(self):
-        filters_list = request.json.get('filters')
-        if not filters_list:
-            return Event.query.all(), 200
-
-        all_events = Event.query.all()
-
-        filtered_events = [event for event in all_events if event.tags and all(tag in event.tags for tag in filters_list)]
-
-        return filtered_events, 200"""
