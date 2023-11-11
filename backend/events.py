@@ -5,7 +5,7 @@ from sqlalchemy.sql.expression import cast
 from sqlalchemy import Integer, func
 from flask import request
 from flask_restx import Namespace, Resource, fields
-from models import Event, Event_tag, Host
+from backend.models import Event, Event_tag
 from flask_jwt_extended import jwt_required
 from exts import db
 
