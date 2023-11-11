@@ -4,10 +4,10 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 import logging
 import pytest
-from models import Account, Host, Event, Message
-from main import create_app
-from config import TestConfig
-from exts import db
+from backend.models import Account, Host, Event, Message
+from backend.main import create_app
+from backend.config import TestConfig
+from backend.exts import db
 
 @pytest.fixture()
 def app():
