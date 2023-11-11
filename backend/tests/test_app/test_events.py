@@ -1,5 +1,5 @@
 import pytest
-from models import Account, Host, Event
+from backend.models import Account, Host, Event
 
 def test_get_all_events(client):#danny ahmad
     response=client.get("/events/all")
