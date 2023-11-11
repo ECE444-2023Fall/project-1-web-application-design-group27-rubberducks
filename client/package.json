@@ -49,10 +49,13 @@
     "vite": "^4.4.5"
   },
   "jest": {
-    "testEnvironment": "jsdom",
-    "moduleNameMapper": {
-      "\\.css$": "jest-transform-stub",
-      "\\.(jpg|jpeg|png|gif|webp|svg)$": "jest-transform-stub"
-    }
+  "testEnvironment": "jsdom",
+  "moduleNameMapper": {
+    "\\.css$": "jest-transform-stub",
+    "\\.(jpg|jpeg|png|gif|webp|svg)$": "jest-transform-stub"
+  },
+  "transformIgnorePatterns": [
+    "node_modules/(?!(ldrs)/)" 
+  ]
   }
 }
