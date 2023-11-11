@@ -33,6 +33,7 @@ import Host_transfer_send from "./js/pages/host_profile/Host_Transfer_Send.jsx";
 import Host_transfer_Recieve from "./js/pages/host_profile/Host_Transfer_Recieve.jsx";
 import ResourceError from "./js/pages/ResourceError.jsx";
 import AttendeeList from "./js/pages/host_profile/Attendee.jsx";
+import Edit_Event from "./js/pages/Edit_Event.jsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -75,6 +76,7 @@ const router = createBrowserRouter(
         <Route element={<Events />} index />
         <Route path=":eventId" element={<EventDetailsPage />} />
         <Route path=":eventId/attendees" element={<AttendeeList />} />
+        <Route path=":eventId/edit_event" element={<Edit_Event />} />
       </Route>
       <Route path="inbox" element={<InboxPage />} />
       <Route path="404" element={<ResourceError />} />
