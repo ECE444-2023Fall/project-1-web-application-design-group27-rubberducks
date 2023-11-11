@@ -229,12 +229,12 @@ function CreateHostProfile() {
         <div className="button-group">
           <button
             type="button"
-            className="btn btn--back"
+            className="btn--new btn--back"
             onClick={handleBack}
           >
             Back
           </button>
-          <button type="submit" className="btn btn--create">
+          <button type="submit" className="btn--new btn--create">
             Create Profile
           </button>
         </div>
