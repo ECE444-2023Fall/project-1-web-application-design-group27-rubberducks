@@ -12,6 +12,7 @@ import "../../css/components/Button.css";
 // import TagSelect from "./host_profile/Tag_Select";
 import AttendeeList from "./host_profile/Attendee";
 import { Loader } from "@googlemaps/js-api-loader";
+import TagSelect from "./host_profile/Tag_Select";
 
 function formatTime(timeString) {
   // Use a regular expression to extract hours and minutes
@@ -69,23 +70,13 @@ function processReoccuring(reoccuring) {
 export default function EventDetailsPage() {
   const { eventId = "" } = useParams();
   const { eventInfo, hostInfo, ownerLoggedIn, loading } = useGetEventInfo(eventId);
+  const [message, setMessage] = useState("");
 
   const formattedDate = formatDate(eventInfo.date);
   const formattedStartTime = formatTime(eventInfo.start_time);
   const formattedEndTime = formatTime(eventInfo.end_time);
   const reoccurrence = processReoccuring(eventInfo.reoccuring);
   // const tagArray = translateTags(eventInfo.tags);
-
-  const [button, setButton] = useState(true);
-
-
-  const showButton = () => {
-    setButton(true);
-  };
-
-  useEffect(() => {
-    showButton();
-  }, []);
 
   const handleRegister = () => {
     console.log("user", user);
@@ -197,27 +188,23 @@ export default function EventDetailsPage() {
                 </div>
                 <div className="event--two-columns-left-offset">
                   <div className="event--register">
-                  <div className="event--button">
-                    {/* {message && <p>{message}</p>} */}
-                    {ownerLoggedIn ? button && (
-                      <Button to={`/events/${eventId}/attendees`} buttonStyle="btn--register" buttonSize="btn--large">
-                        Attendee Info
-                      </Button>
-                      ) : button && (
-                      <Button to="/events" buttonStyle="btn--register" buttonSize="btn--large">
-                        Register
-                      </Button>
-                    )}
+                    <div className="event--button">
+                      {ownerLoggedIn ? (
+                        <Button to={`/events/${eventId}/attendees`} buttonStyle="btn--register" buttonSize="btn--large">
+                          Attendee Info
+                        </Button>
+                        ) : (
+                        <Button onClick={handleRegister} buttonStyle="btn--register" buttonSize="btn--large">
+                          Register
+                        </Button>
+                      )}
+                    </div>
+                    {message && <p>{message}</p>}
                   </div>
                   <div className="event--additional-info">
                     <div className="event--item">
                       <div className="label">{"Event Tags"}</div>
-                      {/* <div className="text">
-                        {tagArray.map((tag, index) => (
-                          <span key={index} className="event-tag">{tag}</span>
-                        ))}
-                      </div> */}
-                      </div>
+                      {/* <TagSelect> selectedTags={eventInfo.tags} onTagChange={}</TagSelect> */}
                       <div className="text">{eventInfo.tags}</div>
                     </div>
                     <div className="event--item">
