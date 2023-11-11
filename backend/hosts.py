@@ -1,6 +1,6 @@
 from flask import request
 from flask_restx import Namespace, Resource, fields
-from models import Host
+from backend.models import Host
 from flask_jwt_extended import jwt_required
 
 hosts_ns = Namespace("hosts", description="Host operations")

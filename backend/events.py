@@ -5,7 +5,7 @@ from sqlalchemy.sql.expression import cast
 from sqlalchemy import Integer
 from flask import request
 from flask_restx import Namespace, Resource, fields
-from models import Event, Event_tag
+from backend.models import Event, Event_tag
 from flask_jwt_extended import jwt_required
 
 events_ns = Namespace("events", description="Event operations")

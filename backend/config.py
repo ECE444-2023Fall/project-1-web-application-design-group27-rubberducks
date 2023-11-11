@@ -19,7 +19,7 @@ class DevConfig(Config):
 
 
 class ProdConfig(Config):
-    pass
+    SQLALCHEMY_DATABASE_URI = config("DATABASE_URL")
 
 
 class TestConfig(Config):
