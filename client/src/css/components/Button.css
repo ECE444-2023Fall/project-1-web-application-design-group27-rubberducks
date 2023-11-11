@@ -142,3 +142,51 @@
   border: 1px solid #002452;
 }
 
+.btn {
+  display: block;
+  width: 30%; /* Adjust the width as needed */
+  margin: 10px auto;
+  padding: 12px 20px;
+  border: 1px solid; /* border color will be set by specific button class */
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+/* Styling for the "Back" button */
+.btn--back {
+  background-color: #d9534f; /* Red color for caution */
+  color: white;
+  border-color: #d9534f;
+}
+
+/* Hover effect for the "Back" button */
+.btn--back:hover {
+  background-color: white;
+  color: #d9534f;
+}
+
+/* Styling for the "Create Profile" button */
+.btn--create {
+  background-color: #002452; /* Green color for 'go' or 'create' */
+  color: white;
+  border-color: #002452;
+}
+
+/* Hover effect for the "Create Profile" button */
+.btn--create:hover {
+  background-color: white;
+  color: #002452;
+}
+
+.btn--clubphoto {
+  background-color: rgb(76, 77, 78); /* Green color for 'go' or 'create' */
+  color: white;
+  border-color: rgb(76, 77, 78);
+}
+
+.btn--create:hover {
+  background-color: white;
+  color: rgb(76, 77, 78);
+}
