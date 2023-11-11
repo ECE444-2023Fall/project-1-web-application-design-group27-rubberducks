@@ -3,8 +3,7 @@ import { FaMapMarkerAlt,  FaCalendar, FaClock } from "react-icons/fa";
 //import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import Navbar from "../components/Navbar";
-import EventHostSidebar from "../components/EventHostSideBar";
-// import { useGetHostInfo } from "../useGetHostInfo";
+import HostSidebar from "../components/HostSideBar";
 import { useGetEventInfo } from "../useGetEventInfo";
 // import { Map } from './Map';
 import { Button } from "../components/Button";
@@ -75,50 +74,7 @@ function processReoccuring(reoccuring) {
 
 export default function EventDetailsPage() {
   const { eventId = "" } = useParams();
-  const [loading, setLoading] = useState(true);
-  const [eventInfo, setEventInfo] = useState({});
-  const [hostInfo, setHostInfo] = useState({});
-  const [error, setError] = useState(null);
-
-
-  useEffect(() => {
-    const loadEventInfo = async () => {
-      try {
-        const eventResponse = await fetch("/api/events/" + eventId);
-
-        if (eventResponse.status === 404) {
-          setError("Event not found");
-        } else if (eventResponse.ok) {
-          const eventData = await eventResponse.json();
-          setEventInfo(eventData);
-
-          const hostId = eventData.owner;
-
-          const hostResponse = await fetch("/api/hosts/" + hostId);
-
-          if (hostResponse.status === 404) {
-            setError("Host not found");
-          } else if (hostResponse.ok) {
-            const hostData = await hostResponse.json();
-            setHostInfo(hostData);
-          } else {
-            setError("Error fetching host information");
-            console.log(hostResponse.status);
-          }
-        } else {
-          setError("Error fetching event information");
-          console.log(eventResponse.status);
-        }
-      } catch (err) {
-        setError("Network error");
-        console.error(err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    loadEventInfo();
-  }, [eventId]);
+  const { eventInfo, hostInfo, ownerLoggedIn, loading } = useGetEventInfo(eventId);
 
 
   const formattedDate = formatDate(eventInfo.date);
@@ -129,18 +85,23 @@ export default function EventDetailsPage() {
 
   const [button, setButton] = useState(true);
 
+
   const showButton = () => {
-      setButton(true);
+    setButton(true);
+
   };
 
   useEffect(() => {
     showButton();
   }, []);
 
+  
+
   return (
     <>
       <Navbar />
-      <EventHostSidebar
+      <HostSidebar
+        ownerLoggedIn={ownerLoggedIn}
         hid={hostInfo.hid}
         name={hostInfo.name}
         email={hostInfo.email}
@@ -153,10 +114,8 @@ export default function EventDetailsPage() {
           {/* <div className="event--header-pic" style={{ backgroundImage: 'url("images/placeholder.png")' }}> */}
             <div className="event--header-bar">
               <h1 className="event--header-text">{eventInfo.name}</h1>
-              { error ? <ul className="event-subtitle">Error: {error}</ul> : (
-                <ul className="event-subtitle">{hostInfo.name}</ul>
-              )}
-              < Button to="/events" buttonStyle=".btn--grey" buttonSize="btn--large">
+              <ul className="event-subtitle">{hostInfo.name}</ul>
+              < Button to="/events" buttonSize="btn--large">
                 Edit Event
               </Button>
             </div>
@@ -189,17 +148,14 @@ export default function EventDetailsPage() {
                 </div>
                 <div className="event--two-columns-left-offset">
                   <div className="event--register">
-                    <div className="event--button">
-                      {button && (
+                  <div className="event--button">
+                    {ownerLoggedIn ? (
                       <Button to="/events" buttonStyle="btn--register" buttonSize="btn--large">
-                          Register
+                        Attendee Info
                       </Button>
-                      )}
-                    </div>
-                    <div className="event--button">
-                      {button && (
+                      ) : (
                       <Button to="/events" buttonStyle="btn--register" buttonSize="btn--large">
-                          Attendee Info
+                        Register
                       </Button>
                       )}
                     </div>
@@ -244,25 +200,3 @@ export default function EventDetailsPage() {
 
 }
 
-
-  // const [event, setEvent] = useState("");
-
-  // useEffect(() => {
-
-  //   fetch("/api/events/${eid}")
-  //     .then((response) => response.json())
-  //     .then((data) => {
-  //       const jsonString = JSON.stringify(data, null, 2);
-  //       setEvent(jsonString);
-  //     })
-  //     .catch((error) => console.error("Failed to fetch event", error));
-
-  // }, [eid]);
-
-    // return (
-  //   <div>
-  //       {events.map(event => (
-  //         <EventDetails key={eid} event={event}/>
-  //       ))}
-  //   </div>
-  // );

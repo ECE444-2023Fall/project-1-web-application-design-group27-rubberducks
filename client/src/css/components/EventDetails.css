@@ -10,63 +10,12 @@
   background: #fff;
 }
 
-.event--sidebar {
-  /* flex: 0 0 30%; */
-  display: inline-block;
-  max-width: 300px;
-  width: 300px;
-  position: fixed;
-  background-color: #f1f1f1;
-  align-items: flex-start;
-  height: 100%;
-  padding: 20px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  overflow: auto;
-}
 
 .event--main {
   padding: 2rem;
   background: #fff;
 }
 
-.event--sidebar img {
-  display: block;
-  margin: 20px auto;
-  width: 80%;
-  max-width: 200px;
-  border-radius: 50%;
-}
-
-.event--sidebar .host--name {
-  text-align: center;
-  font-size: 1.2rem;
-  font-weight: bold;
-  margin-top: 10px;
-}
-
-.event--sidebar .host--email {
-  text-align: center;
-  font-size: 1rem;
-  margin-top: 5px;
-  color: #666;
-}
-
-/* .event--sidebar .host--bio {
-  margin-top: 20px;
-  padding: 10px;
-  background-color: transparent;
-  border-radius: 5px;
-}
-
-.event--sidebar .host--tags {
-  font-size: 12px;
-  margin-top: 30px;
-  margin-left: 30px;
-  padding: 10px;
-  border-radius: 5px;
-  width: 100%;
-  box-sizing: border-box;
-} */
 
   
 h1 {
