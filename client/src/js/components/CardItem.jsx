@@ -2,8 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { FaMapMarkerAlt, FaClock,FaCalendar,FaRegUserCircle } from "react-icons/fa";
 import "../../css/components/CardItem.css"
-// import "../../css/pages/events/Eventsgrid.css"
-
+//This file add "location,date,time" icons to cards
 function CardItem(props) {
   return (
     <>
