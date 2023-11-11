@@ -43,7 +43,7 @@ function EventCard({ event, onStarClick, favEvents }) {
           {isLogged && ( //if user logged in, show star icon
             <span
               title={
-                event.favorite ? "Click to Unfavourite!" : "Click to Favourite!"
+                favEvents.includes(event.eid) ? "Unfavourite" : "Favourite"
               }
               className="starIcon"
               onClick={(e) => {
