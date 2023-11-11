@@ -137,7 +137,6 @@ export default function Edit_Event() {
     const minute = parseInt(minuteStr, 10);
     setHour2(hour);
     setMinute2(minute);
-    setLoading(false);
     autoCompleteRef.current = new window.google.maps.places.Autocomplete(
       inputRef.current,
       options
@@ -148,6 +147,11 @@ export default function Edit_Event() {
       setLocation(place.name);
       setCoords([place.geometry.location.lat(), place.geometry.location.lng()]);
     });
+    if (user.uid != hostInfo.owner){
+      setError("you have no permission");
+      navigate(`/404`);
+    }
+    setLoading(false);
   }, [end_time]);
 
   const handleUpdate = (e) => {
