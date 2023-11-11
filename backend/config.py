@@ -19,7 +19,8 @@ class DevConfig(Config):
 
 
 class ProdConfig(Config):
-    pass
+    DEBUG = False
+    SQLACHEMY_ECHO = False
 
 
 class TestConfig(Config):
