@@ -299,7 +299,11 @@ function Events() {
             curSort={fOrd}
           />
         </span>
-        <EventsGrid events={events} onStarClick={handleStarClick} />
+        <EventsGrid
+          events={events}
+          onStarClick={handleStarClick}
+          favEvents={favEvents}
+        />
       </div>
     </>
   );
