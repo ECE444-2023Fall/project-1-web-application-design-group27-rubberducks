@@ -140,6 +140,8 @@ export default function EventDetailsPage() {
     }
   };
 
+  const isOwner = userInfo.uid === hostInfo.owner;
+
   const handleEdit = () => {
     navigate(`/events/${eventId}/edit_event`);
   };
@@ -163,11 +165,7 @@ export default function EventDetailsPage() {
               <h1 className="event--header-text">{eventInfo.name}</h1>
               <ul className="event-subtitle">{hostInfo.name}</ul>
               {isOwner && (
-              <Button
-                onClick={handleEdit}
-                buttonStyle=".btn--grey"
-                buttonSize="btn--large"
-              >
+              <Button onClick={handleEdit} buttonStyle=".btn--grey" buttonSize="btn--large">
                 Edit Event
               </Button>
               )}
