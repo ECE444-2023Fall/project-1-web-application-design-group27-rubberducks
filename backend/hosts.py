@@ -1,6 +1,6 @@
 from flask import request
 from flask_restx import Namespace, Resource, fields
-from models import Host
+from backend.models import Host
 from flask_jwt_extended import jwt_required
 
 hosts_ns = Namespace("hosts", description="Host operations")
@@ -14,6 +14,7 @@ host_model = hosts_ns.model(
         "bio": fields.String,
         "events": fields.List(fields.Integer),
         "owner": fields.Integer,
+        "pending_transfer": fields.Boolean,
     },
 )
 

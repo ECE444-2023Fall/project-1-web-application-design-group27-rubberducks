@@ -1,4 +1,4 @@
-from exts import db
+from backend.exts import db
 from sqlalchemy.dialects.postgresql import JSON
 from flask_login import UserMixin
 from datetime import datetime
@@ -48,15 +48,21 @@ class Account(UserMixin, db.Model):
         db.session.delete(self)
         db.session.commit()
 
-    def update(self, name, email, events, fav_events, orgs, msgids, password=None):
-        self.name = name
-        self.email = email
+    def update(self, name=None, email=None, events=None, fav_events=None, orgs=None, msgids=None, password=None):
+        if name is not None:
+            self.name = name
+        if email is not None:
+            self.email = email
         if password is not None:
             self.password = password
-        self.events = events
-        self.fav_events = fav_events
-        self.orgs = orgs
-        self.msgids = msgids
+        if events is not None:
+            self.events = events
+        if fav_events is not None:
+            self.fav_events = fav_events
+        if orgs is not None:
+            self.orgs = orgs
+        if msgids is not None:
+            self.msgids = msgids
         db.session.commit()
     
     @property
@@ -128,16 +134,18 @@ class Host(db.Model):
     bio = db.Column(db.String(120), nullable=False)
     events = db.Column(db.ARRAY(db.Integer))
     owner = db.Column(db.Integer, db.ForeignKey("account.uid"), nullable=False)
+    pending_transfer = db.Column(db.Boolean, default=False, nullable=False)
 
-    def __init__(self, name, email, bio, events, owner):
+    def __init__(self, name, email, bio, events, owner, pending_transfer=False):
         self.name = name
         self.email = email
         self.bio = bio
         self.events = events
         self.owner = owner
+        self.pending_transfer = pending_transfer
 
     def __repr__(self):
-        return f"<Host {self.hid} {self.name} {self.email} {self.bio} {self.events} {self.owner}>"
+        return f"<Host {self.hid} {self.name} {self.email} {self.bio} {self.events} {self.owner} {self.pending_transfer}>"
 
     def save(self):
         db.session.add(self)
@@ -147,12 +155,18 @@ class Host(db.Model):
         db.session.delete(self)
         db.session.commit()
 
-    def update(self, name, email, bio, events, owner):
-        self.name = name
-        self.email = email
-        self.bio = bio
-        self.events = events
-        self.owner = owner
+    def update(self, name=None, email=None, bio=None, events=None, owner=None, pending_transfer=False):
+        if name is not None:
+            self.name = name
+        if email is not None:
+            self.email = email
+        if bio is not None:
+            self.bio = bio
+        if events is not None:
+            self.events = events
+        if owner is not None:
+            self.owner = owner
+        self.pending_transfer = pending_transfer
         db.session.commit()
 
 

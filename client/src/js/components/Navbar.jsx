@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { Button } from "./Button";
 import { RiArrowDropDownFill } from "react-icons/ri";
 import "../../css/components/Navbar.css";
+import logoImage from "../../../public/images/Screenshot_2023-11-09_at_4.35.40_PM-removebg-preview.png";
 
 function Navbar() {
   const [click, setClick] = useState(false);
@@ -65,7 +66,11 @@ function Navbar() {
       <nav className="navbar">
         <div className="navbar-container"></div>
         <Link to="/" className="navbar-logo" onClick={closeMobileMenu}>
-          LOGO
+          <img
+            src={logoImage}
+            alt="Logo"
+            style={{ width: "100px", height: "auto" }}
+          />
         </Link>
         <div className="menu-icon" onClick={handleClick}>
           <i className={click ? "fa-solid fa-times" : "fa-solid fa-bars"} />
@@ -79,11 +84,6 @@ function Navbar() {
           <li className="nav-item">
             <Link to="/events" className="nav-links" onClick={closeMobileMenu}>
               Events
-            </Link>
-          </li>
-          <li className="nav-item">
-            <Link to="/clubs" className="nav-links" onClick={closeMobileMenu}>
-              Clubs
             </Link>
           </li>
           {isLoggedIn && (
@@ -131,7 +131,7 @@ function Navbar() {
                     className="dropdown-nav-links"
                     onClick={(closeMobileMenu, toggleDropdown)}
                   >
-                    + Create Profile
+                    + Create Club
                   </Link>
                 </li>
               </ul>

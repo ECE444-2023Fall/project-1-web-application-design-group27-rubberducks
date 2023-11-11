@@ -6,7 +6,6 @@ import {
   RouterProvider,
   createRoutesFromElements,
 } from "react-router-dom";
-import Page_root from "./js/pages/Page_root.jsx";
 import Profile_root, {
   Profile,
   Profile_edit,
@@ -23,8 +22,7 @@ import Host_root, {
 import Create_Host_Profile from "./js/pages/Create_Host_Profile.jsx";
 import Create_Event from "./js/pages/host_profile/Create_Event.jsx";
 import InboxPage from "./js/pages/Inbox.jsx";
-import Clubs from "./js/pages/Clubs.jsx";
-import Events from "./js/pages/Events.jsx";
+import Events from "./js/pages/events/Events.jsx";
 import EventDetailsPage from "./js/pages/EventDetails.jsx";
 import Home from "./js/pages/Home.jsx";
 import Login from "./js/pages/Login.jsx";
@@ -56,7 +54,6 @@ const router = createBrowserRouter(
         <Route path="create_host" element={<Create_Host_Profile />} />
         <Route path="clubs" element={<My_Clubs />} />
       </Route>
-      <Route path="clubs" element={<Clubs />} />
       <Route
         path="hosts"
         element={<Host_root />}
@@ -89,7 +86,7 @@ const router = createBrowserRouter(
 );
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <React.StrictMode>
-    <RouterProvider router={router} />
-  </React.StrictMode>
+  // <React.StrictMode>
+  <RouterProvider router={router} />
+  // </React.StrictMode>
 );

@@ -1,3 +1,7 @@
+.profile--name--link {
+  text-decoration: none;
+  color: #002452;
+}
 .sidebar--user--header {
   display: flex;
   align-items: center;

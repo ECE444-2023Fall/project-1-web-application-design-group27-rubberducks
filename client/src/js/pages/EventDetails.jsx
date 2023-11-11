@@ -13,6 +13,7 @@ import "../../css/components/Button.css";
 // import TagSelect from "./host_profile/Tag_Select";
 import AttendeeList from "./host_profile/Attendee";
 import { Loader } from "@googlemaps/js-api-loader";
+import HostSidebar from "../components/HostSidebar";
 
 function formatTime(timeString) {
   // Use a regular expression to extract hours and minutes
@@ -214,7 +215,7 @@ export default function EventDetailsPage() {
   return (
     <>
       <Navbar />
-      <EventHostSidebar
+      <HostSidebar
         hid={hostInfo.hid}
         name={hostInfo.name}
         email={hostInfo.email}
@@ -227,12 +228,6 @@ export default function EventDetailsPage() {
             {/* <div className="event--header-pic" style={{ backgroundImage: 'url("images/placeholder.png")' }}> */}
             <div className="event--header-bar">
               <h1 className="event--header-text">{eventInfo.name}</h1>
-              {error ? (
-                <ul className="event-subtitle">Error: {error}</ul>
-              ) : (
-                <ul className="event-subtitle">{hostInfo.name}</ul>
-              )}
-              {isOwner && (
               <Button
                 onClick={handleEdit}
                 buttonStyle=".btn--grey"

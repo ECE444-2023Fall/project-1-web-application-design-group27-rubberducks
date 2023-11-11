@@ -1,20 +1,24 @@
-from flask import Flask
+from flask import Flask, render_template
 from flask_restx import Api
-from models import Account, Event, Host, Message
-from exts import db
+from backend.models import Account, Event, Host, Message
+from backend.exts import db
 from flask_jwt_extended import JWTManager
-from messages import messages_ns
-from events import events_ns
-from accounts import accounts_ns
-from hosts import hosts_ns
-from auth import auth_ns, principal 
-from s3 import s3_ns
+from backend.messages import messages_ns
+from backend.events import events_ns
+from backend.accounts import accounts_ns
+from backend.hosts import hosts_ns
+from backend.auth import auth_ns, principal 
+from backend.s3 import s3_ns
 
-from config import DevConfig
-from auth import login_manager
+from backend.config import DevConfig
+from backend.auth import login_manager
 
 def create_app(config=DevConfig):
-    app = Flask(__name__)
+    app = Flask(__name__,
+            static_url_path='',
+            static_folder='../client/dist',
+            template_folder='../client/dist'
+                )
     app.config.from_object(config)
     db.init_app(app)
     JWTManager(app)
@@ -36,5 +40,9 @@ def create_app(config=DevConfig):
     @app.shell_context_processor
     def make_shell_context():
         return {"db": db, "Account": Account, "Host": Host, "Event": Event, "Message": Message}
+    
+    @app.errorhandler(404)
+    def not_found(e):
+        return render_template("index.html")
 
     return app
