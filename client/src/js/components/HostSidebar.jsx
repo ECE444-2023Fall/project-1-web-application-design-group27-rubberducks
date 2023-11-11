@@ -14,7 +14,9 @@ function HostSidebar(props) {
       <img src="../../../images/placeholder.png" alt="Profile Picture" />
       <div className="side--basic--info">
         <div className="sidebar--user--header">
-          <div className="sidebar--user--name">{props.name}</div>
+          <Link className="profile--name--link" to={`/hosts/${props.hid}`}>
+            <div className="sidebar--user--name">{props.name}</div>
+          </Link>
           {props.ownerLoggedIn && !isHostTransferReceivePage ? (
             <div className="edit--button">
               <Link to={`/hosts/${props.hid}/edit`}>
@@ -40,9 +42,6 @@ function HostSidebar(props) {
         <div className="host--bio">
           <h2 className="sidebar--heading">Bio</h2>
           <p className="sidebar--paragraph">{props.bio}</p>
-        </div>
-        <div className="host--tags">
-          <h2 className="sidebar--heading">Tags</h2>
         </div>
       </div>
     </div>

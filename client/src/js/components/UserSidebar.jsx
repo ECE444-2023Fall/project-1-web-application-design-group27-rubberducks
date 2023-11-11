@@ -9,7 +9,9 @@ function UserSidebar(props) {
       <img src="../../../images/placeholder.png" alt="Profile Picture" />
       <div className="side--basic--info">
         <div className="sidebar--user--header">
-          <div className="sidebar--user--name">{props.name}</div>
+          <Link className="profile--name--link" to="/profile">
+            <div className="sidebar--user--name">{props.name}</div>
+          </Link>
           <div className="edit--button">
             <Link to="/profile/edit">
               <button className="edit--button--icon">

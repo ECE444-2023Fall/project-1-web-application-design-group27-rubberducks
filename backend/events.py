@@ -7,7 +7,7 @@ from flask import request
 from flask_restx import Namespace, Resource, fields
 from backend.models import Event, Event_tag, Host
 from flask_jwt_extended import jwt_required
-from exts import db
+from backend.exts import db
 events_ns = Namespace("events", description="Event operations")
 
 class DateFormat(fields.Raw):

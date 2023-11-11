@@ -6,7 +6,6 @@ import {
   RouterProvider,
   createRoutesFromElements,
 } from "react-router-dom";
-import Page_root from "./js/pages/Page_root.jsx";
 import Profile_root, {
   Profile,
   Profile_edit,

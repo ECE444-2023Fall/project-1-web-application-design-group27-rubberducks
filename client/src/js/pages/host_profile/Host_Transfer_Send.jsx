@@ -161,7 +161,6 @@ function Host_transfer_send() {
 
   return (
     <>
-      <HostSidebar name={name} email={email} bio={bio} />
       <div className="form">
         <h1 className="edit_header">Transfer Host Ownership</h1>
         <br />
