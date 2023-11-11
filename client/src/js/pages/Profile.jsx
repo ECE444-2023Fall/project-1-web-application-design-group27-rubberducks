@@ -260,9 +260,7 @@ export function Profile_upcoming() {
             </span>
           </div>
           {upcomingEvents.length > 0 ? (
-            upcomingEvents.map((event) => (
-              <Favorites key={event.eid} event={event} /> // Using Favorites component to render each event, favorites/upcoming/previous are all the same
-            ))
+             <Favorites events={upcomingEvents} /> // Using Favorites component to render each event, favorites/upcoming/previous are all the same
           ) : (
             <p className="empty-event-field">
               You do not have any upcoming events yet.
@@ -355,9 +353,7 @@ export function Profile_previous() {
             </span>
           </div>
           {previousEvents.length > 0 ? (
-            previousEvents.map((event) => (
-              <Favorites key={event.eid} event={event} /> // Using Favorites component to render each event, favorites/upcoming/previous are all the same
-            ))
+            <Favorites events={previousEvents} />// Using Favorites component to render each event, favorites/upcoming/previous are all the same
           ) : (
             <p className="empty-event-field">
               You do not have any previous events yet.
@@ -424,9 +420,7 @@ export function Profile_favourites() {
             </span>
           </div>
           {favorite.length > 0 ? (
-            favorite.map((event) => (
-              <Favorites key={event.eid} event={event} /> // Using Favorites component to render each event
-            ))
+            <Favorites events={favorite} />// Using Favorites component to render each event
           ) : (
             <p className="empty-event-field">
               You do not have any favorite events yet.

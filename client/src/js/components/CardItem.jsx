@@ -1,6 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { FaMapMarkerAlt, FaClock } from "react-icons/fa";
+import "../../css/components/CardItem.css"
+// import "../../css/pages/events/Eventsgrid.css"
 
 function CardItem(props) {
   return (
