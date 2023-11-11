@@ -69,7 +69,7 @@ function processReoccuring(reoccuring) {
 
 export default function EventDetailsPage() {
   const { eventId = "" } = useParams();
-  const { eventInfo, hostInfo, ownerLoggedIn, loading } = useGetEventInfo(eventId);
+  const { eventInfo, hostInfo, userInfo, ownerLoggedIn, loading } = useGetEventInfo(eventId);
   const [message, setMessage] = useState("");
 
   const formattedDate = formatDate(eventInfo.date);
@@ -78,12 +78,14 @@ export default function EventDetailsPage() {
   const reoccurrence = processReoccuring(eventInfo.reoccuring);
   // const tagArray = translateTags(eventInfo.tags);
 
+  
+
   const handleRegister = () => {
-    console.log("user", user);
+    console.log("user", userInfo);
     //make sure there is still space left for the event
     if (eventInfo.attendees.length >= eventInfo.capacity) {
       setMessage("The event is at full capacity.");
-    } else if (eventInfo.attendees.includes(user.uid)) {
+    } else if (eventInfo.attendees.includes(userInfo.uid)) {
       setMessage("You are already registered.");
     } else {
       fetch(`/api/events/${eventId}`, {
@@ -95,6 +97,7 @@ export default function EventDetailsPage() {
           name: eventInfo.name,
           description: eventInfo.description,
           location: eventInfo.location,
+          coords: eventInfo.coords,
           date: eventInfo.date,
           start_time: eventInfo.start_time,
           end_time: eventInfo.end_time,
@@ -103,24 +106,24 @@ export default function EventDetailsPage() {
           date_created: eventInfo.date_created,
           owner: eventInfo.owner,
           tags: eventInfo.tags,
-          attendees: [...eventInfo.attendees, user.uid],
+          attendees: [...eventInfo.attendees, userInfo.uid],
         }),
       }).then((response) => {
         if (response.ok) {
           setMessage("You are successfully registered.");
           //update registered event in user's account
-          fetch(`/api/accounts/${user.uid}`, {
+          fetch(`/api/accounts/${userInfo.uid}`, {
             method: "PUT",
             headers: {
               "Content-Type": "application/json",
             },
             body: JSON.stringify({
-              name: user.name,
-              email: user.email,
-              events: [...user.events, eventId],
-              fav_events: user.fav_events,
-              orgs: user.orgs,
-              msgids: user.msgids,
+              name: userInfo.name,
+              email: userInfo.email,
+              events: [...userInfo.events, eventId],
+              fav_events: userInfo.fav_events,
+              orgs: userInfo.orgs,
+              msgids: userInfo.msgids,
             }),
           }).then((response) => {
             if (response.ok) {
@@ -171,9 +174,7 @@ export default function EventDetailsPage() {
                     </ul>
                     <ul className="event--item-center">
                       <FaClock className="event--icon" />
-                      <ul>{formattedStartTime}</ul>
-                      <ul>{"-  "}</ul>
-                      <ul>{formattedEndTime}</ul>
+                      <ul>{`${formattedStartTime} - ${formattedEndTime}`}</ul>
                     </ul>
                     <ul className="event--item-center">
                       <FaMapMarkerAlt className="event--icon" />
@@ -189,7 +190,7 @@ export default function EventDetailsPage() {
                 <div className="event--two-columns-left-offset">
                   <div className="event--register">
                     <div className="event--button">
-                      {ownerLoggedIn ? (
+                      {ownerLoggedIn ? ( 
                         <Button to={`/events/${eventId}/attendees`} buttonStyle="btn--register" buttonSize="btn--large">
                           Attendee Info
                         </Button>
@@ -203,16 +204,16 @@ export default function EventDetailsPage() {
                   </div>
                   <div className="event--additional-info">
                     <div className="event--item">
-                      <div className="label">{"Event Tags"}</div>
+                      <div className="label">{"Event Tags:"}</div>
                       {/* <TagSelect> selectedTags={eventInfo.tags} onTagChange={}</TagSelect> */}
                       <div className="text">{eventInfo.tags}</div>
                     </div>
                     <div className="event--item">
-                      <div className="label">{"Reoccurrence"}</div>
+                      <div className="label">{"Reoccurrence:"}</div>
                       <div className="text">{reoccurrence}</div>
                     </div>
                     <div className="event--item">
-                      <div className="label">{"Event Capacity"}</div>
+                      <div className="label">{"Event Capacity:"}</div>
                       <div className="text">{eventInfo.capacity}</div>
                     </div>
                   </div>

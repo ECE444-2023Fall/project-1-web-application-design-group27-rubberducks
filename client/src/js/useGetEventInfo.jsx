@@ -63,5 +63,5 @@ export const useGetEventInfo = (eventId) => {
     loadUserInfo();
   }, [loadUserInfo, loadingHostInfo]);
 
-  return { hostInfo, eventInfo, ownerLoggedIn, loading };
+  return { hostInfo, eventInfo, userInfo, ownerLoggedIn, loading };
 };
