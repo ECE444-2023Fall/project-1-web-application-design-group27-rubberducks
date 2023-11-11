@@ -34,7 +34,6 @@ import Host_transfer_send from "./js/pages/host_profile/Host_Transfer_Send.jsx";
 import Host_transfer_Recieve from "./js/pages/host_profile/Host_Transfer_Recieve.jsx";
 import ResourceError from "./js/pages/ResourceError.jsx";
 import AttendeeList from "./js/pages/host_profile/Attendee.jsx";
-import Root from "./js/Root.jsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(

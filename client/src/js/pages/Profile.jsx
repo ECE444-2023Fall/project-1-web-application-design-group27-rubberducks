@@ -10,16 +10,18 @@ import { Outlet, useNavigate, Link, useOutletContext } from "react-router-dom";
 import { useGetUserInfo } from "../useGetUserInfo";
 import { useForm } from "react-hook-form";
 import { Form, Button, Modal } from "react-bootstrap";
-import { confirmPassword, checkPassword } from "../confirmPassword";
+import { checkPassword } from "../confirmPassword";
 import Favorites from "../components/Favorite";
 import { bouncy } from "ldrs";
 import ProfileCategory from "../components/Profile_Category";
 
 export default function Profile_root() {
+  //gets and saves the user info
   const { userInfo, loading } = useGetUserInfo();
-  bouncy.register();
+  bouncy.register(); //loading animation
 
   if (loading) {
+    //if loading, show loading animation
     return (
       <>
         <Navbar />
@@ -37,6 +39,7 @@ export default function Profile_root() {
     );
   }
   return (
+    //if not loading, show the user profile
     <>
       <Navbar />
       <UserSidebar name={userInfo.name} email={userInfo.email} />
@@ -52,6 +55,7 @@ export function Profile() {
   const [isLoading, setIsLoading] = useState(true);
 
   const fetchUserFavEvents = async () => {
+    //fetch the user's favorite events
     try {
       const user = JSON.parse(localStorage.getItem("user"));
       if (!user || !user.id) {
@@ -134,7 +138,21 @@ export function Profile() {
   }, []);
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    //if loading, show loading animation
+    return (
+      <>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "100vh",
+          }}
+        >
+          <l-bouncy size="45" speed="1.75" color="#002452"></l-bouncy>
+        </div>
+      </>
+    );
   }
 
   return (

@@ -62,10 +62,9 @@ export function Host_profile() {
   const [upcomingEvents, setUpcomingEvents] = useState([]);
   const [previousEvents, setPreviousEvents] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const {hostId} = useParams();
+  const { hostId } = useParams();
   const [hostInfo, ownerLoggedIn] = useOutletContext();
   console.log("The host ID from the URL is:", hostId);
-
 
   // Function to fetch event details by ID
   const fetchEventDetails = async (eid) => {
@@ -92,20 +91,19 @@ export function Host_profile() {
       const eventsDetails = await Promise.all(eventsPromises);
       // Filter for upcoming events
       const currentDateTime = new Date();
-      const upcoming = eventsDetails.filter(event => {
+      const upcoming = eventsDetails.filter((event) => {
         const eventStart = new Date(`${event.date}T${event.start_time}`); //compare the event time and the current time
         return eventStart > currentDateTime || event.reoccuring > 0;
       });
 
-      const previous = eventsDetails.filter(event => {
+      const previous = eventsDetails.filter((event) => {
         const eventStart = new Date(`${event.date}T${event.start_time}`); //compare the event time and the current time
         return eventStart < currentDateTime && event.reoccuring == 0;
       });
 
       setPreviousEvents(previous);
       setUpcomingEvents(upcoming);
-      console.log(upcomingEvents)
-      
+      console.log(upcomingEvents);
     } catch (error) {
       console.error("Error fetching user events:", error);
     } finally {
@@ -144,7 +142,6 @@ export function Host_profile() {
               title="Previous Events"
               link={`/hosts/${hostInfo.hid}/previous`}
               events={previousEvents.slice(0, 4)}
-              
             />
           </div>
         </div>
@@ -153,7 +150,6 @@ export function Host_profile() {
     </>
   );
 }
-
 
 export function Host_upcoming() {
   const [upcomingEvents, setUpcomingEvents] = useState([]);
@@ -187,9 +183,8 @@ export function Host_upcoming() {
         const eventStart = new Date(`${event.date}T${event.start_time}`); //compare the event time and the current time
         return eventStart > currentDateTime || event.reoccuring > 0;
       });
-    
-      setUpcomingEvents(upcoming);
 
+      setUpcomingEvents(upcoming);
     } catch (error) {
       console.error("Error fetching user events:", error);
     } finally {
