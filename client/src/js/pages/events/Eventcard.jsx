@@ -54,7 +54,7 @@ function EventCard({ event, onStarClick, favEvents }) {
             >
               <FaStar
                 className={
-                  favEvents.includes(event.eid) ? "filledStar" : "defaultStar"
+                  favEvents.includes(event.eid) ? "filledStar" : "defaultStar" //if event is in favEvents, show filled star
                 }
               />
             </span>

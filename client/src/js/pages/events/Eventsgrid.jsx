@@ -10,6 +10,7 @@ function EventsGrid({ events, onStarClick }) {
   const [favEvents, setFavEvents] = useState([]);
 
   const loadFavEvents = async () => {
+    //load the users favourite events if logged in
     const user = JSON.parse(localStorage.getItem("user"));
     if (user) {
       const favEvents = await fetch(`/api/accounts/${user.id}`)

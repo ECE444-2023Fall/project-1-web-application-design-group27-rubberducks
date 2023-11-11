@@ -99,6 +99,7 @@ function Events() {
         }
 
         if (isLogged) {
+          //if user logged in, load fav events
           const userRes = await fetch(
             "/api/accounts/" + JSON.parse(localStorage.getItem("user")).id
           )
@@ -127,6 +128,7 @@ function Events() {
       };
 
       const requestOptions = {
+        //update fav events for logged in user
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
@@ -244,17 +246,17 @@ function Events() {
       if (favEvents.includes(clickedEvent.eid)) {
         const index = favEvents.indexOf(clickedEvent.eid);
         if (index > -1) {
-          setFavEvents((prevFavEvents) =>
-            prevFavEvents.filter((_, i) => i !== index)
+          //if event in favEvents
+          setFavEvents(
+            (prevFavEvents) => prevFavEvents.filter((_, i) => i !== index) //remove event from favEvents
           );
         }
       } else {
-        setFavEvents((prevFavEvents) => [...prevFavEvents, clickedEvent.eid]);
+        setFavEvents((prevFavEvents) => [...prevFavEvents, clickedEvent.eid]); //add event to favEvents
       }
     } else {
       alert("You must be logged in to favourite events.");
     }
-    // Load user's favourites, then check within events function itself for favourited eid = event eid
   };
   bouncy.register();
 
