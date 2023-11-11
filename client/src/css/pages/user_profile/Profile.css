@@ -1,3 +1,11 @@
+.empty-event-field {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-style: italic;
+  height: 80vh;
+}
+
 .profile--category {
   margin-left: 300px;
 }

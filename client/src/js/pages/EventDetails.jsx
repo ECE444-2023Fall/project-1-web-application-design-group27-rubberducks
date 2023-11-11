@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { FaMapMarkerAlt, FaCalendar, FaClock } from "react-icons/fa";
 //import { useNavigate } from "react-router-dom";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import HostSidebar from "../components/HostSideBar";
 import { useGetEventInfo } from "../useGetEventInfo";
@@ -71,6 +71,7 @@ export default function EventDetailsPage() {
   const { eventId = "" } = useParams();
   const { eventInfo, hostInfo, userInfo, ownerLoggedIn, loading } = useGetEventInfo(eventId);
   const [message, setMessage] = useState("");
+  const navigate = useNavigate();
 
   const formattedDate = formatDate(eventInfo.date);
   const formattedStartTime = formatTime(eventInfo.start_time);
@@ -78,7 +79,6 @@ export default function EventDetailsPage() {
   const reoccurrence = processReoccuring(eventInfo.reoccuring);
   // const tagArray = translateTags(eventInfo.tags);
 
-  
 
   const handleRegister = () => {
     console.log("user", userInfo);
@@ -140,6 +140,10 @@ export default function EventDetailsPage() {
     }
   };
 
+  const handleEdit = () => {
+    navigate(`/events/${eventId}/edit_event`);
+  };
+
   return (
     <>
       <Navbar />
@@ -158,9 +162,15 @@ export default function EventDetailsPage() {
             <div className="event--header-bar">
               <h1 className="event--header-text">{eventInfo.name}</h1>
               <ul className="event-subtitle">{hostInfo.name}</ul>
-              < Button to="/events" buttonSize="btn--large">
+              {isOwner && (
+              <Button
+                onClick={handleEdit}
+                buttonStyle=".btn--grey"
+                buttonSize="btn--large"
+              >
                 Edit Event
               </Button>
+              )}
             </div>
           </div>
           <div className="event--main">

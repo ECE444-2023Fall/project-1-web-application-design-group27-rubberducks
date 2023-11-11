@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import "../../css/pages/user_profile/Profile.css";
 import "../../css/pages/user_profile/Profile_edit.css";
 import Cards from "../components/Cards";
@@ -10,16 +10,36 @@ import { Outlet, useNavigate, Link, useOutletContext } from "react-router-dom";
 import { useGetUserInfo } from "../useGetUserInfo";
 import { useForm } from "react-hook-form";
 import { Form, Button, Modal } from "react-bootstrap";
-import { confirmPassword } from "../confirmPassword";
+import { checkPassword } from "../confirmPassword";
 import Favorites from "../components/Favorite";
+import { bouncy } from "ldrs";
+import ProfileCategory from "../components/Profile_Category";
 
 export default function Profile_root() {
+  //gets and saves the user info
   const { userInfo, loading } = useGetUserInfo();
+  bouncy.register(); //loading animation
 
   if (loading) {
-    <div>Loading...</div>;
+    //if loading, show loading animation
+    return (
+      <>
+        <Navbar />
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "100vh",
+          }}
+        >
+          <l-bouncy size="45" speed="1.75" color="#002452"></l-bouncy>
+        </div>
+      </>
+    );
   }
   return (
+    //if not loading, show the user profile
     <>
       <Navbar />
       <UserSidebar name={userInfo.name} email={userInfo.email} />
@@ -29,16 +49,132 @@ export default function Profile_root() {
 }
 
 export function Profile() {
+  const [favorites, setFavorites] = useState([]);
+  const [upcomingEvents, setUpcomingEvents] = useState([]);
+  const [previousEvents, setPreviousEvents] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  const fetchUserFavEvents = async () => {
+    //fetch the user's favorite events
+    try {
+      const user = JSON.parse(localStorage.getItem("user"));
+      if (!user || !user.id) {
+        console.error("No user id found");
+        return;
+      }
+
+      const response = await fetch(`/api/accounts/${user.id}`);
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      if (data.fav_events) {
+        await fetchEvents(data.fav_events);
+      }
+    } catch (error) {
+      console.error("Fetch error:", error);
+    }
+  };
+
+  // Function to fetch details for each favorite event
+  const fetchEvents = async (fav_events) => {
+    try {
+      const eventDetailsPromises = fav_events.map((eventId) =>
+        fetch(`/api/events/${eventId}`).then((res) => res.json())
+      );
+
+      const eventsDetails = await Promise.all(eventDetailsPromises);
+      setFavorites(eventsDetails); // Update the favorite state
+    } catch (error) {
+      console.error("Error fetching events details:", error);
+    }
+  };
+
+  // Function to fetch all the user's events and categorize them
+  const fetchUserEvents = async () => {
+    try {
+      const user = JSON.parse(localStorage.getItem("user"));
+      if (!user || !user.id) {
+        throw new Error("No user id found");
+      }
+
+      const response = await fetch(`/api/accounts/${user.id}`);
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      const eventsDetailsPromises = data.events.map((eid) =>
+        fetch(`/api/events/${eid}`).then((res) => res.json())
+      );
+
+      const eventsDetails = await Promise.all(eventsDetailsPromises);
+      const currentDateTime = new Date();
+
+      const upcoming = eventsDetails.filter(
+        (event) =>
+          new Date(`${event.date}T${event.start_time}`) > currentDateTime ||
+          event.reoccuring > 0
+      );
+      const previous = eventsDetails.filter(
+        (event) =>
+          new Date(`${event.date}T${event.start_time}`) < currentDateTime &&
+          event.reoccuring === 0
+      );
+
+      setUpcomingEvents(upcoming);
+      setPreviousEvents(previous);
+    } catch (error) {
+      console.error("Error fetching user events:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchUserFavEvents();
+    fetchUserEvents();
+  }, []);
+
+  if (isLoading) {
+    //if loading, show loading animation
+    return (
+      <>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "100vh",
+          }}
+        >
+          <l-bouncy size="45" speed="1.75" color="#002452"></l-bouncy>
+        </div>
+      </>
+    );
+  }
+
   return (
     <>
       <div className="user--events">
-        <EventCategory title="Favourite Events" link="/profile/favourite" />
+        <ProfileCategory
+          title="Favourite Events"
+          link="/profile/favourite"
+          events={favorites.slice(0, 4)}
+        />
         <hr />
-        <EventCategory title="Upcoming Events" link="/profile/upcoming" />
+        <ProfileCategory
+          title="Upcoming Events"
+          link="/profile/upcoming"
+          events={upcomingEvents.slice(0, 4)}
+        />
         <hr />
-        <div className="previous--events">
-          <EventCategory title="Previous Events" link="/profile/previous" />
-        </div>
+        <ProfileCategory
+          title="Previous Events"
+          link="/profile/previous"
+          events={previousEvents.slice(0, 4)}
+        />
       </div>
     </>
   );
@@ -47,7 +183,7 @@ export function Profile() {
 export function Profile_upcoming() {
   const [upcomingEvents, setUpcomingEvents] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-
+  bouncy.register();
 
   // Function to fetch event details by ID
   const fetchEventDetails = async (eid) => {
@@ -79,7 +215,7 @@ export function Profile_upcoming() {
       const eventsDetails = await Promise.all(eventsPromises);
       // Filter for upcoming events
       const currentDateTime = new Date();
-      const upcoming = eventsDetails.filter(event => {
+      const upcoming = eventsDetails.filter((event) => {
         const eventStart = new Date(`${event.date}T${event.start_time}`); //compare the event time and the current time
         return eventStart > currentDateTime || event.reoccuring > 0;
       });
@@ -97,7 +233,20 @@ export function Profile_upcoming() {
   }, []);
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return (
+      <>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "100vh",
+          }}
+        >
+          <l-bouncy size="45" speed="1.75" color="#002452"></l-bouncy>
+        </div>
+      </>
+    );
   }
 
   return (
@@ -115,7 +264,9 @@ export function Profile_upcoming() {
               <Favorites key={event.eid} event={event} /> // Using Favorites component to render each event, favorites/upcoming/previous are all the same
             ))
           ) : (
-            <p>You do not have any upcoming events yet.</p>
+            <p className="empty-event-field">
+              You do not have any upcoming events yet.
+            </p>
           )}
         </div>
       </div>
@@ -123,11 +274,9 @@ export function Profile_upcoming() {
   );
 }
 
-
 export function Profile_previous() {
   const [previousEvents, setPreviousEvents] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-
 
   // Function to fetch event details by ID
   const fetchEventDetails = async (eid) => {
@@ -159,7 +308,7 @@ export function Profile_previous() {
       const eventsDetails = await Promise.all(eventsPromises);
       // Filter for previous events
       const currentDateTime = new Date();
-      const previous = eventsDetails.filter(event => {
+      const previous = eventsDetails.filter((event) => {
         const eventStart = new Date(`${event.date}T${event.start_time}`); //compare the event time and the current time
         return eventStart < currentDateTime && event.reoccuring == 0;
       });
@@ -176,8 +325,23 @@ export function Profile_previous() {
     fetchUserEvents();
   }, []);
 
+  bouncy.register();
+
   if (isLoading) {
-    return <div>Loading...</div>;
+    return (
+      <>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "100vh",
+          }}
+        >
+          <l-bouncy size="45" speed="1.75" color="#002452"></l-bouncy>
+        </div>
+      </>
+    );
   }
 
   return (
@@ -195,7 +359,9 @@ export function Profile_previous() {
               <Favorites key={event.eid} event={event} /> // Using Favorites component to render each event, favorites/upcoming/previous are all the same
             ))
           ) : (
-            <p>You do not have any previous events yet.</p>
+            <p className="empty-event-field">
+              You do not have any previous events yet.
+            </p>
           )}
         </div>
       </div>
@@ -203,10 +369,8 @@ export function Profile_previous() {
   );
 }
 
-
 export function Profile_favourites() {
   const [favorite, setFavorite] = useState([]);
-
 
   // Function to fetch the user's favorite events
   const fetchUserFavEvents = async () => {
@@ -217,12 +381,10 @@ export function Profile_favourites() {
         return;
       }
 
-
       const response = await fetch(`/api/accounts/${user.id}`);
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
-
 
       const data = await response.json();
       if (data.fav_events) {
@@ -233,14 +395,12 @@ export function Profile_favourites() {
     }
   };
 
-
   // Function to fetch details for each favorite event
   const fetchEvents = async (fav_events) => {
     try {
       const eventDetailsPromises = fav_events.map((eventId) =>
         fetch(`/api/events/${eventId}`).then((res) => res.json())
       );
-
 
       const eventsDetails = await Promise.all(eventDetailsPromises);
       setFavorite(eventsDetails); // Update the favorite state
@@ -249,11 +409,9 @@ export function Profile_favourites() {
     }
   };
 
-
   useEffect(() => {
     fetchUserFavEvents();
   }, []); // Empty dependency array to run only on component mount
-
 
   return (
     <>
@@ -270,7 +428,9 @@ export function Profile_favourites() {
               <Favorites key={event.eid} event={event} /> // Using Favorites component to render each event
             ))
           ) : (
-            <p>You do not have any favorite events yet.</p>
+            <p className="empty-event-field">
+              You do not have any favorite events yet.
+            </p>
           )}
         </div>
       </div>
@@ -278,20 +438,47 @@ export function Profile_favourites() {
   );
 }
 
-
 export function Profile_edit() {
   const [userInfo] = useOutletContext();
 
   const [showDelete, setShowDelete] = useState(false);
   const handleCloseDelete = () => setShowDelete(false);
   const handleShowDelete = () => setShowDelete(true);
-  const handleAccountDelete = async () => {
+  const [loading, setLoading] = useState(false);
+
+  const handleAccountDelete = useCallback(async () => {
+    setLoading(true);
     for (let org of userInfo.orgs) {
+      //get all the orgs the user has
       const orgInfo = await fetch(`/api/hosts/${org}`).then((res) =>
         res.json()
       );
 
       for (let event of orgInfo.events) {
+        //get all the events the org has
+        const eventInfo = await fetch(`/api/events/${event}`).then((res) =>
+          res.json()
+        );
+
+        for (let attendee of eventInfo.attendees) {
+          //get all the attendees of the event
+          const attendeeInfo = await fetch(`/api/accounts/${attendee}`).then(
+            (res) => res.json()
+          );
+          //remove the event from the attendees' events and fav_events
+          const attendeeRes = await fetch(`/api/accounts/${attendee}`, {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              events: attendeeInfo.events.filter((e) => e !== event),
+              fav_events: attendeeInfo.fav_events.filter((e) => e !== event),
+            }),
+          });
+        }
+
+        //delete the event
         const eventRes = await fetch(`/api/events/${event}`, {
           method: "DELETE",
         });
@@ -300,6 +487,7 @@ export function Profile_edit() {
           throw new Error("Failed to delete event");
         }
       }
+      //delete the org
       const orgRes = await fetch(`/api/hosts/${org}`, {
         method: "DELETE",
       });
@@ -308,9 +496,12 @@ export function Profile_edit() {
         throw new Error("Failed to delete org");
       }
     }
+    //delete the account
     const accountRes = await fetch(`/api/accounts/${userInfo.uid}`, {
       method: "DELETE",
     });
+
+    setLoading(false);
 
     if (accountRes.ok) {
       localStorage.removeItem("access_token");
@@ -320,7 +511,7 @@ export function Profile_edit() {
     } else {
       throw new Error("Failed to delete account");
     }
-  };
+  }, []);
 
   const navigate = useNavigate();
   const {
@@ -331,65 +522,89 @@ export function Profile_edit() {
   } = useForm();
 
   const submitForm = (data) => {
-    if (
-      data.password === data.confirmPassword &&
-      confirmPassword(userInfo.email, data.oldPassword)
-    ) {
-      if (data.username === "") {
-        data.username = userInfo.name;
-      }
-      if (data.password === "") {
-        data.password = data.oldPassword;
-      }
-      const body = {
-        name: data.username,
-        password: data.password,
-        email: userInfo.email,
-        events: userInfo.events,
-        fav_events: userInfo.fav_events,
-        orgs: userInfo.orgs,
-        msgids: userInfo.msgids,
-      };
+    if (data.password === data.confirmPassword) {
+      checkPassword(userInfo.email, data.oldPassword)
+        .then((isValid) => {
+          if (isValid) {
+            if (data.username === "") {
+              data.username = userInfo.name;
+            }
+            if (data.password === "") {
+              data.password = data.oldPassword;
+            }
+            const body = {
+              name: data.username,
+              password: data.password,
+              email: userInfo.email,
+              events: userInfo.events,
+              fav_events: userInfo.fav_events,
+              orgs: userInfo.orgs,
+              msgids: userInfo.msgids,
+            };
 
-      const accessToken = localStorage.getItem("access_token");
+            const accessToken = localStorage.getItem("access_token");
 
-      const headers = {
-        Authorization: `Bearer ${accessToken}`,
-        "Content-Type": "application/json",
-      };
+            const headers = {
+              Authorization: `Bearer ${accessToken}`,
+              "Content-Type": "application/json",
+            };
 
-      const requestOptions = {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${accessToken}`,
-        },
-        body: JSON.stringify(body),
-      };
+            const requestOptions = {
+              method: "PUT",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${accessToken}`,
+              },
+              body: JSON.stringify(body),
+            };
 
-      fetch("/api/accounts/" + userInfo.uid, requestOptions)
-        .then((res) => {
-          if (!res.ok) {
-            throw new Error(res.statusText);
+            fetch("/api/accounts/" + userInfo.uid, requestOptions)
+              .then((res) => {
+                if (!res.ok) {
+                  throw new Error(res.statusText);
+                }
+                return res.json();
+              })
+              .then((data) => {
+                navigate("/profile");
+              })
+              .catch((error) => {
+                console.error(
+                  "There has been a problem with your put operation:",
+                  error
+                );
+              });
+            reset();
+          } else {
+            alert("Previous password incorrect");
           }
-          return res.json();
-        })
-        .then((data) => {
-          navigate("/profile");
         })
         .catch((error) => {
-          console.error(
-            "There has been a problem with your put operation:",
-            error
-          );
+          console.error(error);
         });
-      reset();
-    } else if (data.password !== data.confirmPassword) {
-      alert("Passwords do not match");
     } else {
-      alert("Previous password incorrect");
+      alert("Passwords do not match");
     }
   };
+
+  bouncy.register();
+
+  if (loading) {
+    return (
+      <>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "100vh",
+          }}
+        >
+          <l-bouncy size="45" speed="1.75" color="#002452"></l-bouncy>
+        </div>
+      </>
+    );
+  }
 
   return (
     <>

@@ -1,4 +1,4 @@
-from exts import db
+from backend.exts import db
 from sqlalchemy.dialects.postgresql import JSON
 from flask_login import UserMixin
 from datetime import datetime
@@ -48,15 +48,21 @@ class Account(UserMixin, db.Model):
         db.session.delete(self)
         db.session.commit()
 
-    def update(self, name, email, events, fav_events, orgs, msgids, password=None):
-        self.name = name
-        self.email = email
+    def update(self, name=None, email=None, events=None, fav_events=None, orgs=None, msgids=None, password=None):
+        if name is not None:
+            self.name = name
+        if email is not None:
+            self.email = email
         if password is not None:
             self.password = password
-        self.events = events
-        self.fav_events = fav_events
-        self.orgs = orgs
-        self.msgids = msgids
+        if events is not None:
+            self.events = events
+        if fav_events is not None:
+            self.fav_events = fav_events
+        if orgs is not None:
+            self.orgs = orgs
+        if msgids is not None:
+            self.msgids = msgids
         db.session.commit()
     
     @property

@@ -12,3 +12,8 @@ export const confirmPassword = async (email, password) => {
 
   return res.ok;
 };
+
+export async function checkPassword(email, password) {
+  const isValid = await confirmPassword(email, password);
+  return isValid;
+}

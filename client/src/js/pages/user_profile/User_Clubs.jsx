@@ -9,6 +9,7 @@ export default function My_Clubs() {
   const [bio, setBio] = useState("");
   const [orgs, setOrgs] = useState([]);
   const [orgsWithHosts, setOrgsWithHosts] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   // Function to fetch user details and their orgs
   const fetchUserDetailsAndOrgs = async () => {
@@ -38,6 +39,7 @@ export default function My_Clubs() {
 
       // Fetch the host details after setting the orgs
       await fetchHostDetailsForOrgs(data.orgs);
+      setLoading(false);
     } catch (error) {
       console.error("Fetch error:", error);
     }
@@ -62,9 +64,25 @@ export default function My_Clubs() {
     fetchUserDetailsAndOrgs();
   }, []);
 
+  if (loading) {
+    return (
+      <>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "100vh",
+          }}
+        >
+          <l-bouncy size="45" speed="1.75" color="#002452"></l-bouncy>
+        </div>
+      </>
+    );
+  }
+
   return (
     <>
-      <UserSidebar name={name} email={email} bio={bio} />
       <div className="user--events">
         <div className="profile--category">
           <div className="card--header">
@@ -82,5 +100,3 @@ export default function My_Clubs() {
     </>
   );
 }
-
-

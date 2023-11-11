@@ -1,15 +1,22 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useForm } from "react-hook-form";
+import { set, useForm } from "react-hook-form";
 import "../../css/components/App.css";
 import "../../css/pages/Create_Host_Profile.css";
 // import { useNavigate } from "react-router-dom";
+import { bouncy } from "ldrs";
 
 function CreateHostProfile() {
-  const { register, formState: { errors }, handleSubmit } = useForm();
-  const [profilePhoto, setProfilePhoto] = useState(null); 
-  const [errorMessage, setErrorMessage] = useState(""); 
+  const {
+    register,
+    formState: { errors },
+    handleSubmit,
+  } = useForm();
+  const [profilePhoto, setProfilePhoto] = useState(null);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  bouncy.register();
 
   const handleProfilePhotoChange = (e) => {
     const file = e.target.files[0];
@@ -17,6 +24,7 @@ function CreateHostProfile() {
   };
 
   const onSubmit = (data) => {
+    setLoading(true);
     // Get the current account from local storage
     if (localStorage.getItem("user")) {
       const curr_account = JSON.parse(localStorage.getItem("user"));
@@ -83,6 +91,7 @@ function CreateHostProfile() {
                     return res3.json();
                   })
                   .then((data3) => {
+                    setLoading(false);
                     navigate(`/hosts/${data.hid}`);
 
                     // Clear form fields
@@ -107,6 +116,23 @@ function CreateHostProfile() {
     // Navigate back to the previous page
     navigate(-1);
   };
+
+  if (loading) {
+    return (
+      <>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "100vh",
+          }}
+        >
+          <l-bouncy size="45" speed="1.75" color="#002452"></l-bouncy>
+        </div>
+      </>
+    );
+  }
 
   return (
     <div className="container">
@@ -136,7 +162,7 @@ function CreateHostProfile() {
             </p>
           )}
         </div>
-  
+
         <div className="form-group">
           <label htmlFor="club_email" id="club_email_label">
             Email:
@@ -159,7 +185,7 @@ function CreateHostProfile() {
             </p>
           )}
         </div>
-  
+
         <div className="form-group">
           <label htmlFor="club_bio" id="club_bio_label">
             Bio:
@@ -175,7 +201,7 @@ function CreateHostProfile() {
             </p>
           )}
         </div>
-  
+
         <div className="form-group">
           <label htmlFor="profilePhoto" id="photo_label">
             Club Photo
@@ -188,7 +214,7 @@ function CreateHostProfile() {
             onChange={handleProfilePhotoChange}
           />
         </div>
-  
+
         {profilePhoto && (
           <img
             src={URL.createObjectURL(profilePhoto)}
@@ -199,7 +225,7 @@ function CreateHostProfile() {
         {errorMessage && (
           <div className="club-error-message">{errorMessage}</div>
         )}
-  
+
         <div className="button-group">
           <button
             type="button"
@@ -215,6 +241,6 @@ function CreateHostProfile() {
       </form>
     </div>
   );
-};  
+}
 
 export default CreateHostProfile;
