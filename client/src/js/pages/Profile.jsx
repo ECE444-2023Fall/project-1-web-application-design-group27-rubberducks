@@ -63,6 +63,7 @@ export function Profile() {
 export function Profile_upcoming() {
   const [upcomingEvents, setUpcomingEvents] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  bouncy.register();
 
   // Function to fetch event details by ID
   const fetchEventDetails = async (eid) => {
@@ -112,7 +113,20 @@ export function Profile_upcoming() {
   }, []);
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return (
+      <>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "100vh",
+          }}
+        >
+          <l-bouncy size="45" speed="1.75" color="#002452"></l-bouncy>
+        </div>
+      </>
+    );
   }
 
   return (
@@ -130,7 +144,9 @@ export function Profile_upcoming() {
               <Favorites key={event.eid} event={event} /> // Using Favorites component to render each event, favorites/upcoming/previous are all the same
             ))
           ) : (
-            <p>You do not have any upcoming events yet.</p>
+            <p className="empty-event-field">
+              You do not have any upcoming events yet.
+            </p>
           )}
         </div>
       </div>
@@ -189,8 +205,23 @@ export function Profile_previous() {
     fetchUserEvents();
   }, []);
 
+  bouncy.register();
+
   if (isLoading) {
-    return <div>Loading...</div>;
+    return (
+      <>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "100vh",
+          }}
+        >
+          <l-bouncy size="45" speed="1.75" color="#002452"></l-bouncy>
+        </div>
+      </>
+    );
   }
 
   return (
@@ -208,7 +239,9 @@ export function Profile_previous() {
               <Favorites key={event.eid} event={event} /> // Using Favorites component to render each event, favorites/upcoming/previous are all the same
             ))
           ) : (
-            <p>You do not have any previous events yet.</p>
+            <p className="empty-event-field">
+              You do not have any previous events yet.
+            </p>
           )}
         </div>
       </div>
@@ -275,7 +308,9 @@ export function Profile_favourites() {
               <Favorites key={event.eid} event={event} /> // Using Favorites component to render each event
             ))
           ) : (
-            <p>You do not have any favorite events yet.</p>
+            <p className="empty-event-field">
+              You do not have any favorite events yet.
+            </p>
           )}
         </div>
       </div>
