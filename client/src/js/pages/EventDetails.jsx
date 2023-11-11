@@ -174,6 +174,7 @@ export default function EventDetailsPage() {
           date_created: eventInfo.date_created,
           owner: eventInfo.owner,
           tags: eventInfo.tags,
+          coords: eventInfo.coords,
           attendees: [...eventInfo.attendees, user.uid],
         }),
       }).then((response) => {
@@ -228,6 +229,7 @@ export default function EventDetailsPage() {
             {/* <div className="event--header-pic" style={{ backgroundImage: 'url("images/placeholder.png")' }}> */}
             <div className="event--header-bar">
               <h1 className="event--header-text">{eventInfo.name}</h1>
+              {isOwner && (
               <Button
                 onClick={handleEdit}
                 buttonStyle=".btn--grey"
