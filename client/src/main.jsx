@@ -6,7 +6,6 @@ import {
   RouterProvider,
   createRoutesFromElements,
 } from "react-router-dom";
-import Page_root from "./js/pages/Page_root.jsx";
 import Profile_root, {
   Profile,
   Profile_edit,
@@ -35,10 +34,11 @@ import Host_transfer_send from "./js/pages/host_profile/Host_Transfer_Send.jsx";
 import Host_transfer_Recieve from "./js/pages/host_profile/Host_Transfer_Recieve.jsx";
 import ResourceError from "./js/pages/ResourceError.jsx";
 import AttendeeList from "./js/pages/host_profile/Attendee.jsx";
+import Root from "./js/Root.jsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
-    <Route path="/" errorElement={<ResourceError />}>
+    <Route path="/" element={<Root />} errorElement={<ResourceError />}>
       <Route element={<Home />} index />
       <Route path="login" element={<Login />} />
       <Route path="signup" element={<SignUp />} />

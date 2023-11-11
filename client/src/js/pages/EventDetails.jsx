@@ -207,7 +207,6 @@ export default function EventDetailsPage() {
 
   return (
     <>
-      <Navbar />
       <EventHostSidebar
         hid={hostInfo.hid}
         name={hostInfo.name}

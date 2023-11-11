@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import "../../../css/components/App.css";
-import '../../../css/pages/events/Events.css';
-import EventsGrid from './Eventsgrid';
-import TagDrawerButton from './TagDrawerButton';
-import SortButton from './SortButton'
+import "../../../css/pages/events/Events.css";
+import EventsGrid from "./Eventsgrid";
+import TagDrawerButton from "./TagDrawerButton";
+import SortButton from "./SortButton";
 import Navbar from "../../components/Navbar";
+import { bouncy } from "ldrs";
 
 function Events() {
-
   /* Configure Events Collection */
   const [events, setEvents] = useState([]);
 
@@ -20,17 +20,17 @@ function Events() {
   const [selectedTags, setSelectedTags] = useState([]);
 
   /* Configure Query */
-  const [fName, setfName] = useState(null) // Name <str>
-  const [fLoc, setfLoc] = useState(null) // Location <str?
-  const [fTimeS, setfTimeS] = useState(null) // Start Time <time>
-  const [fTimeE, setfTimeE] = useState(null) // End Time <time>
-  const [fDate, setfDate] = useState(null) // Date <date>
-  const [fCap, setfCap] = useState(null) // Capacity <int>
-  const [fCapR, setfCapR] = useState(null) // Capacity Reached, set true to disable filled events <1,0>
-  const [fReo, setfReo] = useState(null) // Reoccuring <0,1,2,3,4>
-  const [fHost, setfHost] = useState(null) // Host <str>
-  const [fUid, setfUid] = useState(null) // UserID <int>
-  const [fOrd, setfOrd] = useState(0) // Sort order 0: Date asc 1: Date desc 2: Create asc 3: Create desc 4: Attend asc 5: Attend desc
+  const [fName, setfName] = useState(null); // Name <str>
+  const [fLoc, setfLoc] = useState(null); // Location <str?
+  const [fTimeS, setfTimeS] = useState(null); // Start Time <time>
+  const [fTimeE, setfTimeE] = useState(null); // End Time <time>
+  const [fDate, setfDate] = useState(null); // Date <date>
+  const [fCap, setfCap] = useState(null); // Capacity <int>
+  const [fCapR, setfCapR] = useState(null); // Capacity Reached, set true to disable filled events <1,0>
+  const [fReo, setfReo] = useState(null); // Reoccuring <0,1,2,3,4>
+  const [fHost, setfHost] = useState(null); // Host <str>
+  const [fUid, setfUid] = useState(null); // UserID <int>
+  const [fOrd, setfOrd] = useState(0); // Sort order 0: Date asc 1: Date desc 2: Create asc 3: Create desc 4: Attend asc 5: Attend desc
 
   var spin_lock = false; // access control
 
@@ -45,7 +45,7 @@ function Events() {
       try {
         // Configure the query attributes
         var fetchQuery = `api/events/?page=${page}&limit=${pageLimit}`;
-        const tagQuery = selectedTags.join(',');
+        const tagQuery = selectedTags.join(",");
         fetchQuery = fetchQuery.concat(`&ord=${fOrd}`);
         if (tagQuery.length > 0) {
           fetchQuery = fetchQuery.concat(`&tags=${tagQuery}`);
@@ -90,7 +90,7 @@ function Events() {
         //console.log("Prev data", events);
         if (data.length) {
           setEvents((prevEvents) => [...prevEvents, ...data]);
-          setPage(prevPage => prevPage + 1);
+          setPage((prevPage) => prevPage + 1);
         }
       } catch (error) {
         console.error("Failed to fetch events:", error);
@@ -109,28 +109,32 @@ function Events() {
   // Scroll listener (infinite scroll)
   useEffect(() => {
     const handleScroll = () => {
-      if (window.innerHeight + document.documentElement.scrollTop < document.documentElement.offsetHeight - 100 || loading) {
+      if (
+        window.innerHeight + document.documentElement.scrollTop <
+          document.documentElement.offsetHeight - 100 ||
+        loading
+      ) {
         return;
       } else {
         loadEvents(page);
       }
     };
 
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener("scroll", handleScroll);
     return () => {
-      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener("scroll", handleScroll);
     };
   }, [page, loading]);
 
   const handleTagsSelected = (selection) => {
     setSelectedTags(selection);
     //handleReload();
-  }
+  };
 
   const handleSortChange = (value) => {
     setfOrd(value);
     //handleReload();
-  }
+  };
 
   const handleNameSearch = (name) => {
     setfName(name);
@@ -185,34 +189,59 @@ function Events() {
     setPage(1);
     setEvents([]);
     loadEvents(1);
-  }
+  };
 
   const handleStarClick = (clickedEvent) => {
     /* Favorite logic */
     console.log(`Favorite clicked ${clickedEvent.eid}`);
     console.log(`SelectedTags Debug`, selectedTags);
-    console.log(`${clickedEvent.owner_name}`)
-    
+    console.log(`${clickedEvent.owner_name}`);
+
     // Load user's favourites, then check within events function itself for favourited eid = event eid
+  };
+  bouncy.register();
+
+  if (loading) {
+    return (
+      <>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "100vh",
+          }}
+        >
+          <l-bouncy size="45" speed="1.75" color="#002452"></l-bouncy>
+        </div>
+      </>
+    );
   }
 
   return (
     <>
-    <Navbar />
-    <div className="eventsPage">
-      <span className="eventTagDrawer">
-        <TagDrawerButton
-          onTagSelection={handleTagsSelected}
-          onNameSearch={handleNameSearch} onHostSearch={handleHostSearch} onLocationSearch={handleLocationSearch}
-          onStartTimeSelect={handleTimeSelect} onEndTimeSelect={handleEndTimeSelect} onDateSelect={handleDateSelect}
-          onMaxAttendeesSelect={handleMaxAttendeesSelect} onCapacityReachedToggle={handleCapacityReachedToggle} 
-          onRecurringSelect={handleRecurringSelect} onReload={handleReload} onSort={handleSortChange} curSort={fOrd}
-        />
-      </span>
-      <EventsGrid events={events} onStarClick={handleStarClick}/>
-    </div>
+      <div className="eventsPage">
+        <span className="eventTagDrawer">
+          <TagDrawerButton
+            onTagSelection={handleTagsSelected}
+            onNameSearch={handleNameSearch}
+            onHostSearch={handleHostSearch}
+            onLocationSearch={handleLocationSearch}
+            onStartTimeSelect={handleTimeSelect}
+            onEndTimeSelect={handleEndTimeSelect}
+            onDateSelect={handleDateSelect}
+            onMaxAttendeesSelect={handleMaxAttendeesSelect}
+            onCapacityReachedToggle={handleCapacityReachedToggle}
+            onRecurringSelect={handleRecurringSelect}
+            onReload={handleReload}
+            onSort={handleSortChange}
+            curSort={fOrd}
+          />
+        </span>
+        <EventsGrid events={events} onStarClick={handleStarClick} />
+      </div>
     </>
-  )
+  );
 }
 
 export default Events;
