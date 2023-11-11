@@ -138,6 +138,7 @@ export default function EventDetailsPage() {
   // const tagArray = translateTags(eventInfo.tags);
 
   const [button, setButton] = useState(true);
+  const isOwner = user.uid === hostInfo.owner;
 
   const showButton = () => {
     setButton(true);
@@ -231,6 +232,7 @@ export default function EventDetailsPage() {
               ) : (
                 <ul className="event-subtitle">{hostInfo.name}</ul>
               )}
+              {isOwner && (
               <Button
                 onClick={handleEdit}
                 buttonStyle=".btn--grey"
@@ -238,6 +240,7 @@ export default function EventDetailsPage() {
               >
                 Edit Event
               </Button>
+              )}
             </div>
           </div>
           <div className="event--main">

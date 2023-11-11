@@ -17,7 +17,6 @@ export default function Edit_Event() {
   const [eventInfo, setEventInfo] = useState({});
   const [hostInfo, setHostInfo] = useState({});
   const [error, setError] = useState(null);
-  const [user, setUser] = useState({});
   const [start_time, setStartTime] = useState("");
   const [end_time, setEndTime] = useState("");
   const [hour1, setHour1] = useState(0);
@@ -77,21 +76,6 @@ export default function Edit_Event() {
       } finally {
       }
     };
-    const getUserInfo = async () => {
-      const get_user = JSON.parse(localStorage.getItem("user"));
-      if (!get_user || !get_user.id) {
-        console.error("No user id found");
-        setError("User not logged in");
-      } else {
-        const userResponse = await fetch(`/api/accounts/${get_user.id}`);
-        if (userResponse.status === 404) {
-          setError("User information not found");
-        } else if (userResponse.ok) {
-          const userData = await userResponse.json();
-          setUser(userData);
-        }
-      }
-    };
     autoCompleteRef.current = new window.google.maps.places.Autocomplete(
       inputRef.current,
       options
@@ -103,7 +87,6 @@ export default function Edit_Event() {
       setCoords([place.geometry.location.lat(), place.geometry.location.lng()]);
     });
     loadEventInfo();
-    getUserInfo();
   }, [eventId]);
   
   const handleTagChange = (tags) => {
@@ -147,10 +130,6 @@ export default function Edit_Event() {
       setLocation(place.name);
       setCoords([place.geometry.location.lat(), place.geometry.location.lng()]);
     });
-    if (user.uid != hostInfo.owner){
-      setError("you have no permission");
-      navigate(`/404`);
-    }
     setLoading(false);
   }, [end_time]);
 
