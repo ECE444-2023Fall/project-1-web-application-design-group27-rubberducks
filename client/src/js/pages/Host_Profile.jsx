@@ -5,7 +5,7 @@ import { MdEdit } from "react-icons/md";
 import HostSidebar from "../components/HostSidebar";
 import EventCategory from "../components/EventCategory";
 import { Form, Button, Modal } from "react-bootstrap";
-import { useForm } from "react-hook-form";
+import { set, useForm } from "react-hook-form";
 import {
   Link,
   useNavigate,
@@ -359,6 +359,7 @@ export function Host_edit() {
   };
 
   const submitForm = (data) => {
+    setLoading(true);
     if (data.password === data.confirmPassword) {
       checkPassword(ownerInfo.email, data.oldPassword).then((isValid) => {
         if (isValid) {
@@ -382,6 +383,7 @@ export function Host_edit() {
               }
             })
             .then((data) => {
+              setLoading(false);
               navigate(`/hosts/${hostInfo.hid}`);
             })
             .catch((error) => {
@@ -427,7 +429,7 @@ export function Host_edit() {
             <Form.Label>New Email</Form.Label>
             <br />
             <Form.Control
-              type="text"
+              type="email"
               placeholder="New Email"
               {...register("email", { maxLength: 50 })}
             />

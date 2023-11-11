@@ -41,9 +41,6 @@ function HostSidebar(props) {
           <h2 className="sidebar--heading">Bio</h2>
           <p className="sidebar--paragraph">{props.bio}</p>
         </div>
-        <div className="host--tags">
-          <h2 className="sidebar--heading">Tags</h2>
-        </div>
       </div>
     </div>
   );
