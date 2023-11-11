@@ -6,6 +6,7 @@ import TagDrawerButton from "./TagDrawerButton";
 import SortButton from "./SortButton";
 import Navbar from "../../components/Navbar";
 import { bouncy } from "ldrs";
+import { set } from "react-hook-form";
 
 function Events() {
   /* Configure Events Collection */
@@ -31,6 +32,10 @@ function Events() {
   const [fHost, setfHost] = useState(null); // Host <str>
   const [fUid, setfUid] = useState(null); // UserID <int>
   const [fOrd, setfOrd] = useState(0); // Sort order 0: Date asc 1: Date desc 2: Create asc 3: Create desc 4: Attend asc 5: Attend desc
+
+  const isLogged = JSON.parse(localStorage.getItem("user")) ? true : false; //find if user logged in
+  const [favEvents, setFavEvents] = useState([]); //favourite events
+  const [initialLoad, setInitialLoad] = useState(true); //initial load
 
   var spin_lock = false; // access control
 
@@ -92,6 +97,15 @@ function Events() {
           setEvents((prevEvents) => [...prevEvents, ...data]);
           setPage((prevPage) => prevPage + 1);
         }
+
+        if (isLogged) {
+          const userRes = await fetch(
+            "/api/accounts/" + JSON.parse(localStorage.getItem("user")).id
+          )
+            .then((res) => res.json())
+            .then((data) => data);
+          setFavEvents(userRes.fav_events);
+        }
       } catch (error) {
         console.error("Failed to fetch events:", error);
       } finally {
@@ -105,6 +119,39 @@ function Events() {
   useEffect(() => {
     loadEvents(1);
   }, []);
+
+  useEffect(() => {
+    if (!initialLoad && favEvents.length > 0) {
+      const body = {
+        fav_events: favEvents,
+      };
+
+      const requestOptions = {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      };
+
+      fetch(
+        `/api/accounts/${JSON.parse(localStorage.getItem("user")).id}`,
+        requestOptions
+      )
+        .then((res) => {
+          if (!res.ok) {
+            throw new Error(`HTTP error! Status: ${res.status}`);
+          }
+          return res.json();
+        })
+        .then((data) => {
+          data;
+        })
+        .catch((error) => {
+          console.error("Error while updating account fav_events:", error);
+        });
+    } else if (initialLoad) {
+      setInitialLoad(false);
+    }
+  }, [favEvents]);
 
   // Scroll listener (infinite scroll)
   useEffect(() => {
@@ -193,10 +240,20 @@ function Events() {
 
   const handleStarClick = (clickedEvent) => {
     /* Favorite logic */
-    console.log(`Favorite clicked ${clickedEvent.eid}`);
-    console.log(`SelectedTags Debug`, selectedTags);
-    console.log(`${clickedEvent.owner_name}`);
-
+    if (isLogged) {
+      if (favEvents.includes(clickedEvent.eid)) {
+        const index = favEvents.indexOf(clickedEvent.eid);
+        if (index > -1) {
+          setFavEvents((prevFavEvents) =>
+            prevFavEvents.filter((_, i) => i !== index)
+          );
+        }
+      } else {
+        setFavEvents((prevFavEvents) => [...prevFavEvents, clickedEvent.eid]);
+      }
+    } else {
+      alert("You must be logged in to favourite events.");
+    }
     // Load user's favourites, then check within events function itself for favourited eid = event eid
   };
   bouncy.register();
