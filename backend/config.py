@@ -19,7 +19,8 @@ class DevConfig(Config):
 
 
 class ProdConfig(Config):
-    SQLALCHEMY_DATABASE_URI = config("DATABASE_URL")
+    DEBUG = False
+    SQLACHEMY_ECHO = False
 
 
 class TestConfig(Config):
