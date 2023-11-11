@@ -6,7 +6,7 @@ import TagSelect from "./host_profile/Tag_Select";
 import "../../css/pages/host_profile/Create_Event.css"
 import { convertTimetoString } from "./host_profile/Create_Event";
 import Navbar from "../components/Navbar";
-import EventHostSidebar from "../components/EventHostSideBar";
+import HostSidebar from "../components/HostSidebar";
 import { bouncy } from "ldrs";
 import { set } from "react-hook-form";
 
@@ -200,7 +200,7 @@ export default function Edit_Event() {
   return (
     <>
      <Navbar />
-     <EventHostSidebar
+     <HostSidebar
         hid={hostInfo.hid}
         name={hostInfo.name}
         email={hostInfo.email}
