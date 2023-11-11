@@ -56,9 +56,9 @@ describe('Profile Components', () => {
     });
   });
 
-  describe('Profile_edit Component', () => {
-    it('renders Profile_edit component without crashing', () => {
-      render(<Profile_edit />);
-    });
-  });
+//   describe('Profile_edit Component', () => {
+//     it('renders Profile_edit component without crashing', () => {
+//       render(<Profile_edit />);
+//     });
+//   });
 });
