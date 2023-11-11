@@ -172,6 +172,7 @@ function InboxPage() {
 
   return (
     <div>
+      <Navbar />
       <h1>Inbox</h1>
       <div className="message-list">
         {messages.length > 0 ? (

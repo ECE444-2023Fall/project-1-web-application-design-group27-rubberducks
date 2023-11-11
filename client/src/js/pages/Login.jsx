@@ -59,6 +59,7 @@ function Login() {
 
   return (
     <>
+      <Navbar />
       <div className="login-container">
         <div className="login-card">
           <h2>Welcome Back!</h2>

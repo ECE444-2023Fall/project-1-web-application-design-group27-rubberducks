@@ -21,6 +21,7 @@ export default function Profile_root() {
   if (loading) {
     return (
       <>
+        <Navbar />
         <div
           style={{
             display: "flex",
@@ -36,6 +37,7 @@ export default function Profile_root() {
   }
   return (
     <>
+      <Navbar />
       <UserSidebar name={userInfo.name} email={userInfo.email} />
       <Outlet context={[userInfo]} />
     </>

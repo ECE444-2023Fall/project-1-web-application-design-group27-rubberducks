@@ -38,7 +38,7 @@ import Root from "./js/Root.jsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
-    <Route path="/" element={<Root />} errorElement={<ResourceError />}>
+    <Route path="/" errorElement={<ResourceError />}>
       <Route element={<Home />} index />
       <Route path="login" element={<Login />} />
       <Route path="signup" element={<SignUp />} />

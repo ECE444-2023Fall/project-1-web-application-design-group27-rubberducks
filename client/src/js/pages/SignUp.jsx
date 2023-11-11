@@ -69,6 +69,7 @@ function SignUp() {
 
   return (
     <>
+      <Navbar />
       <div className="login-container">
         <div className="login-card">
           <h2>Create Account</h2>

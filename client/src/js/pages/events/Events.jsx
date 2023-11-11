@@ -204,6 +204,7 @@ function Events() {
   if (loading) {
     return (
       <>
+        <Navbar />
         <div
           style={{
             display: "flex",
@@ -220,6 +221,7 @@ function Events() {
 
   return (
     <>
+      <Navbar />
       <div className="eventsPage">
         <span className="eventTagDrawer">
           <TagDrawerButton

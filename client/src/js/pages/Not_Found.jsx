@@ -8,6 +8,7 @@ const NotFound = () => {
   return (
     <>
       <>
+        <Navbar />
         <div className="error-container">
           <p>Please Login to Access Resource</p>
           <br />

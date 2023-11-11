@@ -27,6 +27,7 @@ export default function Host_root() {
   if (loading) {
     return (
       <>
+        <Navbar />
         <div
           style={{
             display: "flex",
@@ -43,6 +44,7 @@ export default function Host_root() {
 
   return (
     <>
+      <Navbar />
       <HostSidebar
         ownerLoggedIn={ownerLoggedIn}
         hid={hostInfo.hid}
