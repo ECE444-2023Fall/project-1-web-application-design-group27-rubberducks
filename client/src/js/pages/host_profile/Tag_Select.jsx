@@ -2,6 +2,8 @@
 import React, { useState, useEffect } from "react";
 import Select from "react-select";
 
+//a multiselect component to be used in create event
+//with tags fetched from the database
 const TagSelect = ({ selectedTags, onTagChange }) => {
   const [tagOptions, setTagOptions] = useState([]);
   useEffect(() => {
