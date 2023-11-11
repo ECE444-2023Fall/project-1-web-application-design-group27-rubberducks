@@ -11,6 +11,7 @@ import { useGetUserInfo } from "../useGetUserInfo";
 import { useForm } from "react-hook-form";
 import { Form, Button, Modal } from "react-bootstrap";
 import { confirmPassword } from "../confirmPassword";
+import Favorites from "../components/Favorite";
 
 export default function Profile_root() {
   const { userInfo, loading } = useGetUserInfo();
@@ -44,6 +45,61 @@ export function Profile() {
 }
 
 export function Profile_upcoming() {
+  const [upcomingEvents, setUpcomingEvents] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+
+  // Function to fetch event details by ID
+  const fetchEventDetails = async (eid) => {
+    const response = await fetch(`/api/events/${eid}`);
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+    return response.json();
+  };
+
+  // Function to fetch the user's events
+  const fetchUserEvents = async () => {
+    setIsLoading(true);
+    try {
+      const user = JSON.parse(localStorage.getItem("user"));
+      if (!user || !user.id) {
+        console.error("No user id found");
+        setIsLoading(false);
+        return;
+      }
+
+      const response = await fetch(`/api/accounts/${user.id}`); //fetch the current user
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      const eventsPromises = data.events.map(fetchEventDetails); //fetch the current user's events details
+      const eventsDetails = await Promise.all(eventsPromises);
+      // Filter for upcoming events
+      const currentDateTime = new Date();
+      const upcoming = eventsDetails.filter(event => {
+        const eventStart = new Date(`${event.date}T${event.start_time}`); //compare the event time and the current time
+        return eventStart > currentDateTime || event.reoccuring > 0;
+      });
+
+      setUpcomingEvents(upcoming);
+    } catch (error) {
+      console.error("Error fetching user events:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchUserEvents();
+  }, []);
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <>
       <div className="user--events">
@@ -54,17 +110,76 @@ export function Profile_upcoming() {
               <a href="/profile">Return to Profile</a>
             </span>
           </div>
-          <Cards />
-          <Cards />
-          <Cards />
+          {upcomingEvents.length > 0 ? (
+            upcomingEvents.map((event) => (
+              <Favorites key={event.eid} event={event} /> // Using Favorites component to render each event, favorites/upcoming/previous are all the same
+            ))
+          ) : (
+            <p>You do not have any upcoming events yet.</p>
+          )}
         </div>
       </div>
     </>
   );
 }
 
+
 export function Profile_previous() {
-  const [userInfo] = useOutletContext();
+  const [previousEvents, setPreviousEvents] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+
+  // Function to fetch event details by ID
+  const fetchEventDetails = async (eid) => {
+    const response = await fetch(`/api/events/${eid}`);
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+    return response.json();
+  };
+
+  // Function to fetch the user's events
+  const fetchUserEvents = async () => {
+    setIsLoading(true);
+    try {
+      const user = JSON.parse(localStorage.getItem("user"));
+      if (!user || !user.id) {
+        console.error("No user id found");
+        setIsLoading(false);
+        return;
+      }
+
+      const response = await fetch(`/api/accounts/${user.id}`); //fetch the current user
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      const eventsPromises = data.events.map(fetchEventDetails); //fetch the current user's events details
+      const eventsDetails = await Promise.all(eventsPromises);
+      // Filter for previous events
+      const currentDateTime = new Date();
+      const previous = eventsDetails.filter(event => {
+        const eventStart = new Date(`${event.date}T${event.start_time}`); //compare the event time and the current time
+        return eventStart < currentDateTime && event.reoccuring == 0;
+      });
+
+      setPreviousEvents(previous);
+    } catch (error) {
+      console.error("Error fetching user events:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchUserEvents();
+  }, []);
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <>
       <div className="user--events">
@@ -75,16 +190,71 @@ export function Profile_previous() {
               <a href="/profile">Return to Profile</a>
             </span>
           </div>
-          <Cards />
-          <Cards />
-          <Cards />
+          {previousEvents.length > 0 ? (
+            previousEvents.map((event) => (
+              <Favorites key={event.eid} event={event} /> // Using Favorites component to render each event, favorites/upcoming/previous are all the same
+            ))
+          ) : (
+            <p>You do not have any previous events yet.</p>
+          )}
         </div>
       </div>
     </>
   );
 }
 
+
 export function Profile_favourites() {
+  const [favorite, setFavorite] = useState([]);
+
+
+  // Function to fetch the user's favorite events
+  const fetchUserFavEvents = async () => {
+    try {
+      const user = JSON.parse(localStorage.getItem("user"));
+      if (!user || !user.id) {
+        console.error("No user id found");
+        return;
+      }
+
+
+      const response = await fetch(`/api/accounts/${user.id}`);
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+
+      const data = await response.json();
+      if (data.fav_events) {
+        await fetchEvents(data.fav_events);
+      }
+    } catch (error) {
+      console.error("Fetch error:", error);
+    }
+  };
+
+
+  // Function to fetch details for each favorite event
+  const fetchEvents = async (fav_events) => {
+    try {
+      const eventDetailsPromises = fav_events.map((eventId) =>
+        fetch(`/api/events/${eventId}`).then((res) => res.json())
+      );
+
+
+      const eventsDetails = await Promise.all(eventDetailsPromises);
+      setFavorite(eventsDetails); // Update the favorite state
+    } catch (error) {
+      console.error("Error fetching events details:", error);
+    }
+  };
+
+
+  useEffect(() => {
+    fetchUserFavEvents();
+  }, []); // Empty dependency array to run only on component mount
+
+
   return (
     <>
       <div className="user--events">
@@ -95,14 +265,19 @@ export function Profile_favourites() {
               <a href="/profile">Return to Profile</a>
             </span>
           </div>
-          <Cards />
-          <Cards />
-          <Cards />
+          {favorite.length > 0 ? (
+            favorite.map((event) => (
+              <Favorites key={event.eid} event={event} /> // Using Favorites component to render each event
+            ))
+          ) : (
+            <p>You do not have any favorite events yet.</p>
+          )}
         </div>
       </div>
     </>
   );
 }
+
 
 export function Profile_edit() {
   const [userInfo] = useOutletContext();

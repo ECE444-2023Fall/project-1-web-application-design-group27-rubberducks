@@ -1,0 +1,51 @@
+
+.attendee-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    max-width: 600px; 
+    margin: auto; /* This will center your attendee list */
+  }
+  
+  .attendee-list-item {
+    background-color: #ffffff;
+    border: 1px solid #e1e1e1;
+    border-radius: 5px;
+    padding: 15px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .attendee-details {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .attendee-name {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+  
+  .attendee-email {
+    font-size: 16px;
+    color: #555;
+  }
+  
+  /*add some interactivity on hover */
+  .attendee-list-item:hover {
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    cursor: pointer;
+  }
+  
+  /* Loading and empty states */
+  .loading-message,
+  .empty-message {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 18px;
+    color: #555;
+  }
+  

@@ -61,13 +61,16 @@ def add_event_to_db(app, add_host_to_db):
         event1 = Event(
             name="Sample Event",
             location="Sample Location",
+            coords=[43.65980450000001,
+            -79.39729799999999],
             description="Sample Description",
             date="2023-10-30",
-            time="12:00:00",
+            start_time= "00:00:00",
+            end_time= "00:00:00",
             capacity=100,
             attendees=[],
-            tags=["tag1", "tag2"],
-            reoccuring=False,
+            tags=[1, 2],
+            reoccuring=0,
             date_created="2023-10-29",
             owner=host.hid  
         )
@@ -211,7 +214,8 @@ def host():
         'email': 'test1@example.com', 
         'bio': 'Host bio 1', 
         'events': [], 
-        'owner': 1}
+        'owner': 1,
+        'pending_transfer': False}
         )
 
 @pytest.fixture
@@ -235,13 +239,16 @@ def sample_event_data():
     data = {
         "name": "Sample Event",
         "location": "Sample Location",
+        "coords": [43.65980450000001,
+            -79.39729799999999],
         "description": "Sample Description",
         "date": "2023-10-30", 
-        "time": "12:00:00",
+        "start_time": "00:00:00",
+        "end_time": "00:00:00",
         "capacity": 100,
         "attendees": [],
-        "tags": ["tag1", "tag2"],
-        "reoccuring": False,
+        "tags": [1, 2],
+        "reoccuring": 0,
         "date_created": "2023-10-29", 
         "owner": 1  
     }

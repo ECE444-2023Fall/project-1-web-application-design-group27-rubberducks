@@ -10,30 +10,6 @@ function InboxPage() {
   const navigate = useNavigate();
   const curr_account = JSON.parse(localStorage.getItem("user"));
 
-  const changeMsgType = (id, new_type) => {
-    const updateTypeUrl = `/api/messages/${id}`;
-
-    // Send a PUT request to mark the message as read
-    fetch(updateTypeUrl, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ msg_type: new_type }), // Assuming you want to mark it as read
-    })
-      .then((response) => {
-        if (response.ok) {
-          console.log('Message tyoe changed successfully.');
-          // Continue with displaying the message or any other logic.
-        } else {
-          console.error('Failed to change message type.');
-        }
-      })
-      .catch((error) => {
-        console.error('Error while changing message type:', error);
-      });
-  };
-
   const markAsRead = (id) => {
     const updateReadUrl = `/api/messages/${id}`;
 
@@ -58,20 +34,42 @@ function InboxPage() {
       });
   };
 
-  const getMessageLink = (message) => {
-    switch (message.msg_type) {
-      case 1: // event notification
-        return '/inbox';
-      case 2: // club notification
-        return '/inbox';
-      case 3: // transfer request
-        // make message unclickable
-        console.log("Handling transfer request")
-        changeMsgType(message.msgid, -1)
-        return `/hosts/${message.message.split(/\s+(?=\S*$)/)[1]}/transfer_receive/${message.msgid}`;
-      default:
-        return '/inbox' //reload inbox by default
-    }
+  const getMessageLink = (id) => {
+    // Fetch the message data
+    fetch(`/api/messages/${id}`)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then((data) => {
+        let link; // Declare the link variable here
+  
+        switch (data.msg_type) {
+          case 1: // event notification
+            link = '/inbox';
+            console.log(link);
+            navigate(link);
+            return link; // Make sure to return the link
+          case 2: // club notification
+            link = '/inbox';
+            console.log(link);
+            navigate(link);
+            return link; // Return the link
+          case 3: // transfer request
+            console.log("Handling transfer request");
+            link = `/hosts/${data.message.split(/\s+(?=\S*$)/)[1]}/transfer_receive/${data.msgid}`;
+            console.log(link);
+            navigate(link);
+            return link;
+          default:
+            link = '/inbox';
+            console.log(link);
+            navigate(link);
+            return link;
+        }
+      });
   };
 
   const handleMessageClick = (message) => {
@@ -79,10 +77,8 @@ function InboxPage() {
     markAsRead(message.msgid);
     // Handle navigation based on the message type
     console.log(message.msg_type)
-    const link = getMessageLink(message);
-    console.log(link);
-    // Perform navigation here (e.g., using React Router)
-    navigate(link);
+    getMessageLink(message.msgid);
+    
   };
 
   const handleDelete = (id) => {
@@ -168,7 +164,6 @@ function InboxPage() {
         console.error('Error fetching messages:', error);
       });
   }, []);
-  
 
   return (
     <div>

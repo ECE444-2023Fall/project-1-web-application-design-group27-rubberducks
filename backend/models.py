@@ -67,15 +67,6 @@ class Account(UserMixin, db.Model):
         return str(self.uid)
 
 
-"""
-class Host:
-    hid: int primary key
-    name: str
-    email: str
-    bio: str
-    events: list of Event
-    owner: Account
-"""
 class Message(db.Model):
     __tablename__ = "messages"
     msgid = db.Column(db.Integer, primary_key=True)
@@ -120,6 +111,15 @@ class Message(db.Model):
 
         db.session.commit()
 
+"""
+class Host:
+    hid: int primary key
+    name: str
+    email: str
+    bio: str
+    events: list of Event
+    owner: Account
+"""
 class Host(db.Model):
     __tablename__ = "host"
     hid = db.Column(db.Integer, primary_key=True)
@@ -128,16 +128,18 @@ class Host(db.Model):
     bio = db.Column(db.String(120), nullable=False)
     events = db.Column(db.ARRAY(db.Integer))
     owner = db.Column(db.Integer, db.ForeignKey("account.uid"), nullable=False)
+    pending_transfer = db.Column(db.Boolean, default=False, nullable=False)
 
-    def __init__(self, name, email, bio, events, owner):
+    def __init__(self, name, email, bio, events, owner, pending_transfer=False):
         self.name = name
         self.email = email
         self.bio = bio
         self.events = events
         self.owner = owner
+        self.pending_transfer = pending_transfer
 
     def __repr__(self):
-        return f"<Host {self.hid} {self.name} {self.email} {self.bio} {self.events} {self.owner}>"
+        return f"<Host {self.hid} {self.name} {self.email} {self.bio} {self.events} {self.owner} {self.pending_transfer}>"
 
     def save(self):
         db.session.add(self)
@@ -147,12 +149,18 @@ class Host(db.Model):
         db.session.delete(self)
         db.session.commit()
 
-    def update(self, name, email, bio, events, owner):
-        self.name = name
-        self.email = email
-        self.bio = bio
-        self.events = events
-        self.owner = owner
+    def update(self, name=None, email=None, bio=None, events=None, owner=None, pending_transfer=False):
+        if name is not None:
+            self.name = name
+        if email is not None:
+            self.email = email
+        if bio is not None:
+            self.bio = bio
+        if events is not None:
+            self.events = events
+        if owner is not None:
+            self.owner = owner
+        self.pending_transfer = pending_transfer
         db.session.commit()
 
 
@@ -161,6 +169,7 @@ class Event:
     eid: int primary key
     name: str
     location: str
+    coords: list of float
     description: str
     start_time: time
     end_time
@@ -176,9 +185,10 @@ class Event:
 class Event(db.Model):
     __tablename__ = "event"
     eid = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(50), nullable=False)
-    location = db.Column(db.String(50), nullable=False)
-    description = db.Column(db.String(50), nullable=False)
+    name = db.Column(db.String(150), nullable=False)
+    location = db.Column(db.String(450), nullable=False)
+    coords = db.Column(db.ARRAY(db.Float), nullable=False)
+    description = db.Column(db.String(450), nullable=False)
     date = db.Column(db.Date, nullable=False)
     start_time = db.Column(db.Time, nullable=False)
     end_time = db.Column(db.Time, nullable=False)
@@ -189,9 +199,10 @@ class Event(db.Model):
     owner = db.Column(db.Integer, db.ForeignKey("host.hid"), nullable=False)
     tags = db.Column(db.ARRAY(db.Integer))
 
-    def __init__(self, name, location, description, date, start_time, end_time, capacity, attendees, reoccuring, date_created, owner, tags):
+    def __init__(self, name, location, coords, description, date, start_time, end_time, capacity, attendees, reoccuring, date_created, owner, tags):
         self.name = name
         self.location = location
+        self.coords = coords
         self.description = description
         self.date = date
         self.start_time = start_time
@@ -204,7 +215,7 @@ class Event(db.Model):
         self.tags = tags
 
     def __repr__(self):
-        return f"<Event {self.eid} {self.name} {self.location} {self.description} {self.date} {self.start_time} {self.end_time} {self.capacity} {self.attendees} {self.reoccuring} {self.date_created} {self.owner} {self.tags}>"
+        return f"<Event {self.eid} {self.name} {self.location} {self.coords} {self.description} {self.date} {self.start_time} {self.end_time} {self.capacity} {self.attendees} {self.reoccuring} {self.date_created} {self.owner} {self.tags}>"
 
     def save(self):
         db.session.add(self)
@@ -214,10 +225,11 @@ class Event(db.Model):
         db.session.delete(self)
         db.session.commit()
 
-    def update(self, name, location, description, date, start_time, end_time, capacity, attendees, reoccuring, date_created, owner, tags):
+    def update(self, name, location, coords, description, date, start_time, end_time, capacity, attendees, reoccuring, date_created, owner, tags):
         self.name = name
 
         self.location = location
+        self.coords = coords
         self.description = description
         self.date = date
         self.start_time = start_time
@@ -236,6 +248,7 @@ class Event(db.Model):
             "name": self.name,
             "description": self.description,
             "location": self.location,
+            "coords": self.coords,
             "date": self.date,
             "start_time": self.start_time,
             "end_time": self.end_time,

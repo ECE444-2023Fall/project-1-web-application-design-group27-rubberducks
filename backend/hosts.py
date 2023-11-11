@@ -14,6 +14,7 @@ host_model = hosts_ns.model(
         "bio": fields.String,
         "events": fields.List(fields.Integer),
         "owner": fields.Integer,
+        "pending_transfer": fields.Boolean,
     },
 )
 
