@@ -1,6 +1,7 @@
 import React from "react";
 import ProfileCards from "./Profile_Cards";
 import "../../css/components/ProfileCategory.css";
+// import "../../css/components/CardItem.css";
 
 function ProfileCategory(props) {
   if (!props.events || props.events.length === 0) {
@@ -13,7 +14,7 @@ function ProfileCategory(props) {
           </span>
         </div>
         <div className="profile--category--empty">
-          You do not have any events. <a href="/events"> Find Events</a>
+                You do not have any events. <a href="/events"> Find Events</a>
         </div>
       </div>
     );

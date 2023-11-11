@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { FaMapMarkerAlt, FaClock } from "react-icons/fa";
+import { FaMapMarkerAlt, FaClock,FaCalendar,FaRegUserCircle } from "react-icons/fa";
 import "../../css/components/CardItem.css"
 // import "../../css/pages/events/Eventsgrid.css"
 
@@ -23,8 +23,12 @@ function CardItem(props) {
               <span className="cards--item--location">{props.location}</span>
             </div>
             <div className="cards--item--subtitle">
+              <FaCalendar className="cards--item--icon" />
+              <span className="eventDate">{props.date}</span>
+            </div>
+            <div className="cards--item--subtitle">
               <FaClock className="cards--item--icon" />
-              <span className="cards--item--date">{props.date}</span>
+              <span className="eventTime">{props.start_time} - {props.end_time}</span>
             </div>
           </div>
         </Link>

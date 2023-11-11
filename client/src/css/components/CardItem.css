@@ -1,7 +1,7 @@
 /* Styles for the card container */
 .cards--wrapper {
   display: grid;
-  grid-template-columns: repeat(4, 1fr); /* 4 columns in larger screens */
+  grid-template-columns: repeat(4, 220px); /* 4 columns in larger screens */
   gap: 30px; /* Adjust the space between cards */
   padding: 20px; /* Padding around the grid */
 }
@@ -9,25 +9,30 @@
 /* Responsive adjustments */
 @media screen and (max-width: 1024px) {
   .cards--wrapper {
-    grid-template-columns: repeat(3, 1fr); /* 3 columns for medium screens */
+    grid-template-columns: repeat(3,1fr); /* 3 columns for medium screens */
   }
 }
 
 @media screen and (max-width: 768px) {
   .cards--wrapper {
-    grid-template-columns: repeat(2, 1fr); /* 2 columns for small screens */
+    grid-template-columns: repeat(2, 1fr);
+    grid-auto-rows: minmax(150px, auto); /* Adjust for smaller screens */
   }
 }
 
 @media screen and (max-width: 480px) {
   .cards--wrapper {
-    grid-template-columns: 1fr; /* 1 column for very small screens */
+    grid-template-columns: 1fr;
+    grid-auto-rows: minmax(100px, auto); /* Adjust for very small screens */
   }
 }
+
 
 /* Styles for individual card items */
 .cards--item {
   list-style-type: none;
+  min-height: 200px; 
+  min-width:200px;
   margin-bottom: 20px;
 }
 
@@ -62,7 +67,7 @@
 }
 
 .cards--item--text {
-  font-size: 16px;
+  font-size: 6px;
   font-weight: bold;
   margin: 0 0 10px;
 }
@@ -77,8 +82,4 @@
 
 .cards--item--icon {
   margin-right: 10px;
-}
-
-.cards--wrapper {
-  border: 2px solid red; /* Temporary border */
 }

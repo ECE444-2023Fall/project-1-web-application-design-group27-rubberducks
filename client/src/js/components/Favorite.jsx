@@ -16,8 +16,10 @@ function Favorites({ events }) {
               key={event.eid}
               src={event.image || "../../../images/placeholder.png"}
               text={event.name}
-              date={event.date || "placeholder date"}
-              location={event.location || "placeholder location"}
+              date={event.date}
+              location={event.location}
+              start_time = {event.start_time}
+              end_time = {event.end_time}
               path={`/events/${event.eid}`}
               onClick={() => onCardClick(event)}
             />
