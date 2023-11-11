@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { FaSlidersH, FaSearch, FaUser, FaMapMarkerAlt, FaClock, FaCalendarAlt, FaUsers, FaCheckSquare, FaRedo } from 'react-icons/fa';
 import '../../../css/pages/events/TagDrawerButton.css';
+import SortButton from './SortButton';
+import "../../../css/components/App.css";
 
 function TagDrawerButton({
   onTagSelection, onNameSearch, onHostSearch, onLocationSearch, onStartTimeSelect, 
   onEndTimeSelect, onDateSelect, onMaxAttendeesSelect, onCapacityReachedToggle, 
-  onRecurringSelect, onReload
+  onRecurringSelect, onReload, onSort, curSort
   }) {
   const [tags, setTags] = useState([]);
 
@@ -83,7 +85,7 @@ function TagDrawerButton({
                 <div className="input-icon-wrapper checkbox-wrapper">
                   <FaCheckSquare className="input-icon" />
                   <label>
-                    Capacity Reached
+                    Exclude Full
                     <input type="checkbox" onChange={(e) => onCapacityReachedToggle(e.target.checked)} />
                   </label>
                 </div>
@@ -96,6 +98,11 @@ function TagDrawerButton({
                     <option value="3">Weekly</option>
                     <option value="4">Bi-Weekly</option>
                   </select>
+                </div>
+              </div>
+              <div className="filter-row">
+                <div className="input-icon-wrapper">
+                  <SortButton setOrder={onSort} currentSortOrder={curSort}></SortButton>
                 </div>
               </div>
             </div>
@@ -111,6 +118,7 @@ function TagDrawerButton({
                 </div>
                 ))}
             </div>
+            
             <button onClick={() => onReload()}>Apply</button>
           </div>
         )}

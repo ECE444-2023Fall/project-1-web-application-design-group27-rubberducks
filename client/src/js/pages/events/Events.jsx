@@ -129,7 +129,7 @@ function Events() {
 
   const handleSortChange = (value) => {
     setfOrd(value);
-    handleReload();
+    //handleReload();
   }
 
   const handleNameSearch = (name) => {
@@ -206,11 +206,8 @@ function Events() {
           onNameSearch={handleNameSearch} onHostSearch={handleHostSearch} onLocationSearch={handleLocationSearch}
           onStartTimeSelect={handleTimeSelect} onEndTimeSelect={handleEndTimeSelect} onDateSelect={handleDateSelect}
           onMaxAttendeesSelect={handleMaxAttendeesSelect} onCapacityReachedToggle={handleCapacityReachedToggle} 
-          onRecurringSelect={handleRecurringSelect} onReload={handleReload}
+          onRecurringSelect={handleRecurringSelect} onReload={handleReload} onSort={handleSortChange} curSort={fOrd}
         />
-      </span>
-      <span className="eventSortButton">
-        <SortButton setOrder={handleSortChange} currentSortOrder={fOrd} />
       </span>
       <EventsGrid events={events} onStarClick={handleStarClick}/>
     </div>
