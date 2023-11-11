@@ -8,7 +8,7 @@ import { useNavigate, useOutletContext } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { set } from "react-hook-form";
 
-function convertTimetoString(hour, minute) {
+export function convertTimetoString(hour, minute) {
   const formattedHour = `${hour}`.padStart(2, "0");
   const formattedMinute = `${minute}`.padStart(2, "0");
   return `${formattedHour}:${formattedMinute}`;

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { FaMapMarkerAlt, FaCalendar, FaClock } from "react-icons/fa";
 //import { useNavigate } from "react-router-dom";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import EventHostSidebar from "../components/EventHostSideBar";
 // import { useGetHostInfo } from "../useGetHostInfo";
@@ -75,6 +75,7 @@ export default function EventDetailsPage() {
   const [error, setError] = useState(null);
   const [user, setUser] = useState({});
   const [message, setMessage] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     const loadEventInfo = async () => {
@@ -205,6 +206,10 @@ export default function EventDetailsPage() {
     }
   };
 
+  const handleEdit = () => {
+    navigate(`/events/${eventId}/edit_event`);
+  };
+
   return (
     <>
       <Navbar />
@@ -227,7 +232,7 @@ export default function EventDetailsPage() {
                 <ul className="event-subtitle">{hostInfo.name}</ul>
               )}
               <Button
-                to="/events"
+                onClick={handleEdit}
                 buttonStyle=".btn--grey"
                 buttonSize="btn--large"
               >
@@ -266,7 +271,7 @@ export default function EventDetailsPage() {
                     <div className="event--button">
                       {button && (
                         <Button
-                          to="/events"
+                          onClick={handleRegister}
                           buttonStyle="btn--register"
                           buttonSize="btn--large"
                         >
