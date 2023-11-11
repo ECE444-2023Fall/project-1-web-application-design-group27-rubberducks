@@ -22,7 +22,6 @@ import Host_root, {
 import Create_Host_Profile from "./js/pages/Create_Host_Profile.jsx";
 import Create_Event from "./js/pages/host_profile/Create_Event.jsx";
 import InboxPage from "./js/pages/Inbox.jsx";
-import Clubs from "./js/pages/Clubs.jsx";
 import Events from "./js/pages/events/Events.jsx";
 import EventDetailsPage from "./js/pages/EventDetails.jsx";
 import Home from "./js/pages/Home.jsx";
@@ -54,7 +53,6 @@ const router = createBrowserRouter(
         <Route path="create_host" element={<Create_Host_Profile />} />
         <Route path="clubs" element={<My_Clubs />} />
       </Route>
-      <Route path="clubs" element={<Clubs />} />
       <Route
         path="hosts"
         element={<Host_root />}
@@ -87,6 +85,6 @@ const router = createBrowserRouter(
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   // <React.StrictMode>
-    <RouterProvider router={router} />
-  // </React.StrictMode> 
+  <RouterProvider router={router} />
+  // </React.StrictMode>
 );
