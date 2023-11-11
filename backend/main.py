@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, render_template
 from flask_restx import Api
 from backend.models import Account, Event, Host, Message
 from backend.exts import db
@@ -14,7 +14,11 @@ from backend.config import DevConfig
 from backend.auth import login_manager
 
 def create_app(config=DevConfig):
-    app = Flask(__name__)
+    app = Flask(__name__,
+            static_url_path='',
+            static_folder='../client/dist',
+            template_folder='../client/dist'
+                )
     app.config.from_object(config)
     db.init_app(app)
     JWTManager(app)
@@ -36,5 +40,9 @@ def create_app(config=DevConfig):
     @app.shell_context_processor
     def make_shell_context():
         return {"db": db, "Account": Account, "Host": Host, "Event": Event, "Message": Message}
+    
+    @app.errorhandler(404)
+    def not_found(e):
+        return render_template("index.html")
 
     return app
