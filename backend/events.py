@@ -6,8 +6,10 @@ from sqlalchemy import Integer, func
 from flask import request
 from flask_restx import Namespace, Resource, fields
 from backend.models import Event, Event_tag, Host
+#from models import Event, Event_tag, Host
 from flask_jwt_extended import jwt_required
 from backend.exts import db
+#from exts import db
 events_ns = Namespace("events", description="Event operations")
 
 class DateFormat(fields.Raw):
@@ -75,7 +77,7 @@ class Events(Resource):
         offset = (page - 1) * limit
 
         # Search filtering
-        order = str(request.args.get('ord', 0)) # order
+        order = str(request.args.get('ord', 0)) # order (sorting)
         name = str(request.args.get('name')) # name
         location = str(request.args.get('loc')) # location
         time_start = str(request.args.get('ts')) # start time
@@ -87,6 +89,7 @@ class Events(Resource):
         host = str(request.args.get('host')) #host
         uid = str(request.args.get('uid')) # user_id
         tags_filter = str(request.args.get('tags')) # tags
+        ft = str(request.args.get('ft')) # future events only
 
         """
         # Debug Prints
@@ -132,6 +135,9 @@ class Events(Resource):
         if uid and uid != 'None': # Uid
             user_id = int(uid)
             query = query.filter(Event.attendees.any(user_id))
+        if ft and ft == '1': # future events only
+            today = datetime.today().strftime('%Y-%m-%d')
+            query = query.filter(Event.date >= today)
             
         # Tags
         if (tags_filter and tags_filter != 'None'):

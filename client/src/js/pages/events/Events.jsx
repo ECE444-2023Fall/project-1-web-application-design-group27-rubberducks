@@ -49,7 +49,7 @@ function Events() {
       setLoading(true);
       try {
         // Configure the query attributes
-        var fetchQuery = `api/events/?page=${page}&limit=${pageLimit}`;
+        var fetchQuery = `api/events/?page=${page}&limit=${pageLimit}&ft=1`;
         const tagQuery = selectedTags.join(",");
         fetchQuery = fetchQuery.concat(`&ord=${fOrd}`);
         if (tagQuery.length > 0) {

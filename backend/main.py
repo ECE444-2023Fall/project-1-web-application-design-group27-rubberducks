@@ -1,17 +1,27 @@
 from flask import Flask, render_template
 from flask_restx import Api
 from backend.models import Account, Event, Host, Message
+#from models import Account, Event, Host, Message
 from backend.exts import db
+#from exts import db
 from flask_jwt_extended import JWTManager
 from backend.messages import messages_ns
+#from messages import messages_ns
 from backend.events import events_ns
+#from events import events_ns
 from backend.accounts import accounts_ns
+#from accounts import accounts_ns
 from backend.hosts import hosts_ns
+#from hosts import hosts_ns
 from backend.auth import auth_ns, principal 
+from auth import auth_ns, principal 
 from backend.s3 import s3_ns
+#from s3 import s3_ns
 
 from backend.config import DevConfig
+#from config import DevConfig
 from backend.auth import login_manager
+#from auth import login_manager
 
 def create_app(config=DevConfig):
     app = Flask(__name__,

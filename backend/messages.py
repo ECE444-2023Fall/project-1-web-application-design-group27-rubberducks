@@ -1,6 +1,7 @@
 from flask import request
 from flask_restx import Namespace, Resource, fields, abort
 from backend.models import Message
+#from models import Message
 from flask_jwt_extended import jwt_required
 
 messages_ns = Namespace("messages", description="Message operations")
