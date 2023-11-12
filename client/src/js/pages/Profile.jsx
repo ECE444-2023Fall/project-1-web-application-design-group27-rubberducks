@@ -170,6 +170,8 @@ export function Profile() {
           events={upcomingEvents.slice(0, 4)}
         />
         <hr />
+      </div>
+      <div className="previous--events">
         <ProfileCategory
           title="Previous Events"
           link="/profile/previous"
