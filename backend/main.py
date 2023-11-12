@@ -1,5 +1,7 @@
 from flask import Flask, render_template
 from flask_restx import Api
+from flask_cors import CORS
+
 from backend.models import Account, Event, Host, Message
 from backend.exts import db
 from flask_jwt_extended import JWTManager
@@ -44,5 +46,7 @@ def create_app(config=DevConfig):
     @app.errorhandler(404)
     def not_found(e):
         return render_template("index.html")
+    
+    CORS(app)
 
     return app

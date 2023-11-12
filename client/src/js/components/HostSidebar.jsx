@@ -2,6 +2,7 @@ import React from "react";
 import { MdEdit } from "react-icons/md";
 import "../../css/components/Sidebar.css";
 import { Link, useLocation } from "react-router-dom";
+import { Get_Img_Link } from "./Get_Img_Link";
 
 function HostSidebar(props) {
   const location = useLocation();
@@ -11,7 +12,7 @@ function HostSidebar(props) {
 
   return (
     <div className="sidebar">
-      <img src="../../../images/placeholder.png" alt="Profile Picture" />
+      <img src={Get_Img_Link(props.profile_pic)} alt="Profile Picture" />
       <div className="side--basic--info">
         <div className="sidebar--user--header">
           <Link className="profile--name--link" to={`/hosts/${props.hid}`}>

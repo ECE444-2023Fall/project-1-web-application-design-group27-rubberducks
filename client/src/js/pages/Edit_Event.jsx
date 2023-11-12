@@ -8,6 +8,9 @@ import { convertTimetoString } from "./host_profile/Create_Event";
 import Navbar from "../components/Navbar";
 import HostSidebar from "../components/HostSidebar";
 import { bouncy } from "ldrs";
+import { set } from "react-hook-form";
+import Choose_Picture from "../components/Choose_Picture";
+
 
 export default function Edit_Event() {
   const navigate = useNavigate();
@@ -25,6 +28,7 @@ export default function Edit_Event() {
   const [tags, setSelectedTags] = useState([]);
   const currentDate = new Date();
   const [date, setDate] = useState(new Date());
+  const [selectedPictureIndex, setSelectedPictureIndex] = useState(0);
   const [location, setLocation] = useState("");
   const [coords, setCoords] = useState([0, 0]); // [lat, lng]
 
@@ -58,6 +62,7 @@ export default function Edit_Event() {
           setStartTime(eventData.start_time);
           setEndTime(eventData.end_time);
           setLocation(eventData.location);
+          // setSelectedPictureIndex(eventData.profile_pic);
 
           const hostResponse = await fetch("/api/hosts/" + hostId);
 
@@ -119,7 +124,14 @@ export default function Edit_Event() {
     setDate(newDate);
   };
 
+
+  const handlePictureSelect = (index) => {
+    setSelectedPictureIndex(index);
+  };
+
+
   //display start and end times in integer hours and minutes
+
   useEffect(() => {
     setLoading(true);
     const [hourStr, minuteStr] = start_time.split(":");
@@ -176,6 +188,7 @@ export default function Edit_Event() {
       attendees: eventInfo.attendees,
       owner: eventInfo.owner,
       tags: tags,
+      profile_pic: selectedPictureIndex,
     };
 
     fetch(`/api/events/${eventId}`, {
@@ -226,6 +239,7 @@ export default function Edit_Event() {
         name={hostInfo.name}
         email={hostInfo.email}
         bio={hostInfo.bio}
+        profile_pic={hostInfo.profile_pic}
       />
       <div className="form_block_event">
         <h1>Edit Event</h1>
@@ -367,6 +381,11 @@ export default function Edit_Event() {
               <option value="3">Bi-weekly</option>
               <option value="4">Monthly</option>
             </select>
+          </div>
+
+          <div className="form-group">
+          <label>Choose Event Picture</label>
+          <Choose_Picture onPictureSelect={handlePictureSelect}/>
           </div>
 
           <div className="button-group">

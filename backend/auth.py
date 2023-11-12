@@ -61,6 +61,11 @@ class SignUp(Resource):
             name=data["name"],
             email=email,
             password=generate_password_hash(data["password"]),
+            events=[],
+            fav_events=[],
+            orgs=[],
+            msgids=[],
+            profile_pic=0,
             # Additional fields like events, fav_events, etc., can be initialized here
         )
         new_account.save()
