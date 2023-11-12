@@ -1,12 +1,9 @@
 import React from "react";
 import CardItem from "./CardItem";
 import "../../css/components/CardItem.css";
-
+import { Get_Img_Link } from "./Get_Img_Link";
+//This file links each card to its corresponding event, it is used for favorites/upcoming/previous events in profile/host_profile page
 function Favorites({ events }) {
-  if (!events || events.length === 0) {
-    return <p>No events found.</p>;
-  }
-
   return (
     <div className="cards">
       <div className="cards--container">
@@ -14,7 +11,7 @@ function Favorites({ events }) {
           {events.map(event => (
             <CardItem
               key={event.eid}
-              src={event.image || "../../../images/hi.png"}
+              src={Get_Img_Link(event.profile_pic)}
               text={event.name}
               date={event.date}
               location={event.location}
