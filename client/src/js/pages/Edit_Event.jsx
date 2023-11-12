@@ -1,15 +1,16 @@
-import React, { useState, useEffect, useRef} from "react";
-import { useNavigate, useParams, useOutletContext } from "react-router-dom";
+import React, { useState, useEffect, useRef } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import TagSelect from "./host_profile/Tag_Select";
-import "../../css/pages/host_profile/Create_Event.css"
+import "../../css/pages/host_profile/Create_Event.css";
 import { convertTimetoString } from "./host_profile/Create_Event";
 import Navbar from "../components/Navbar";
 import HostSidebar from "../components/HostSidebar";
 import { bouncy } from "ldrs";
 import { set } from "react-hook-form";
 import Choose_Picture from "../components/Choose_Picture";
+
 
 export default function Edit_Event() {
   const navigate = useNavigate();
@@ -30,7 +31,8 @@ export default function Edit_Event() {
   const [selectedPictureIndex, setSelectedPictureIndex] = useState(0);
   const [location, setLocation] = useState("");
   const [coords, setCoords] = useState([0, 0]); // [lat, lng]
-  //MAPS API
+
+  // Google Maps Autocomplete API
   const autoCompleteRef = useRef();
   const inputRef = useRef();
   const options = {
@@ -38,8 +40,12 @@ export default function Edit_Event() {
     fields: ["address_components", "name", "geometry"],
   };
   bouncy.register();
-  
+
   useEffect(() => {
+    // load event info and host info
+    //display all event fields to start with for user to edit
+    // display host info in sidebar
+
     const loadEventInfo = async () => {
       try {
         const eventResponse = await fetch("/api/events/" + eventId);
@@ -77,38 +83,54 @@ export default function Edit_Event() {
         setError("Network error");
         console.error(err);
       } finally {
+        setLoading(false);
       }
     };
+
+    // Initialize Google Maps Autocomplete
     autoCompleteRef.current = new window.google.maps.places.Autocomplete(
       inputRef.current,
       options
     );
 
+    // Listen for place changes in the Autocomplete
     autoCompleteRef.current.addListener("place_changed", async function () {
       const place = await autoCompleteRef.current.getPlace();
       setLocation(place.name);
       setCoords([place.geometry.location.lat(), place.geometry.location.lng()]);
     });
+
+    // Load event information
     loadEventInfo();
   }, [eventId]);
-  
+
+  // Handle tag selection
   const handleTagChange = (tags) => {
     setSelectedTags(tags);
   };
+
+  // Handle reoccurring option selection
   const handleSelectReocurring = (e) => {
     setEventInfo({ ...eventInfo, reoccuring: e.target.value });
   };
+
+  // Handle cancellation of event editing
   const handleCancel = () => {
     navigate(`/events/${eventId}`);
   };
 
+  // Handle date change in DatePicker
   const handleDateChange = (newDate) => {
     setDate(newDate);
   };
 
+
   const handlePictureSelect = (index) => {
     setSelectedPictureIndex(index);
   };
+
+
+  //display start and end times in integer hours and minutes
 
   useEffect(() => {
     setLoading(true);
@@ -120,6 +142,7 @@ export default function Edit_Event() {
     setLoading(false);
   }, [start_time]);
 
+  // Update the hour2 and minute2 states when end_time changes
   useEffect(() => {
     setLoading(true);
     const [hourStr, minuteStr] = end_time.split(":");
@@ -131,7 +154,7 @@ export default function Edit_Event() {
       inputRef.current,
       options
     );
-
+    //needed to load map api twice due to unknown error of api loading
     autoCompleteRef.current.addListener("place_changed", async function () {
       const place = await autoCompleteRef.current.getPlace();
       setLocation(place.name);
@@ -140,29 +163,32 @@ export default function Edit_Event() {
     setLoading(false);
   }, [end_time]);
 
+  // Handle the update of event information
   const handleUpdate = (e) => {
     e.preventDefault();
     const startTime = new Date(0, 0, 0, hour1, minute1);
     const endTime = new Date(0, 0, 0, hour2, minute2);
+    //check if start time and end time reasonable
     if (startTime > endTime) {
       setError("End time must be after start time");
       return;
     }
+    //make payload to update event
     const updatedEvent = {
-        name: eventInfo.name,
-        date: date,
-        description: eventInfo.description,
-        location: location,
-        coords: coords,
-        start_time: convertTimetoString(hour1, minute1),
-        end_time: convertTimetoString(hour2, minute2),
-        capacity: eventInfo.capacity,
-        reoccuring: eventInfo.reoccuring,
-        date_created: eventInfo.date_created,
-        attendees: eventInfo.attendees,
-        owner: eventInfo.owner,
-        tags: tags,
-        profile_pic: selectedPictureIndex,
+      name: eventInfo.name,
+      date: date,
+      description: eventInfo.description,
+      location: location,
+      coords: coords,
+      start_time: convertTimetoString(hour1, minute1),
+      end_time: convertTimetoString(hour2, minute2),
+      capacity: eventInfo.capacity,
+      reoccuring: eventInfo.reoccuring,
+      date_created: eventInfo.date_created,
+      attendees: eventInfo.attendees,
+      owner: eventInfo.owner,
+      tags: tags,
+      profile_pic: selectedPictureIndex,
     };
 
     fetch(`/api/events/${eventId}`, {
@@ -186,24 +212,24 @@ export default function Edit_Event() {
         console.error("Error updating event:", err);
       });
   };
-
+//loading animation
   if (loading) {
     return (
-        <>
-          <Navbar />
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              height: "100vh",
-            }}
-          >
-            <l-bouncy size="45" speed="1.75" color="#002452"></l-bouncy>
-          </div>
-        </>
-      );
-  } 
+      <>
+        <Navbar />
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "100vh",
+          }}
+        >
+          <l-bouncy size="45" speed="1.75" color="#002452"></l-bouncy>
+        </div>
+      </>
+    );
+  }
 
   return (
     <>

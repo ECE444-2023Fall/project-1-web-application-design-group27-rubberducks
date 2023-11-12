@@ -114,6 +114,7 @@ export default function EventDetailsPage() {
         setLoading(false);
       }
     };
+    // get current user info for registration
     const getUserInfo = async () => {
       const get_user = JSON.parse(localStorage.getItem("user"));
       if (!get_user || !get_user.id) {
@@ -155,9 +156,12 @@ export default function EventDetailsPage() {
     //make sure there is still space left for the event
     if (eventInfo.attendees.length >= eventInfo.capacity) {
       setMessage("The event is at full capacity.");
-    } else if (eventInfo.attendees.includes(user.uid)) {
+    } 
+    //check if user already registered
+    else if (eventInfo.attendees.includes(user.uid)) {
       setMessage("You are already registered.");
     } else {
+      //update attendees for event
       fetch(`/api/events/${eventId}`, {
         method: "PUT",
         headers: {
@@ -235,6 +239,7 @@ export default function EventDetailsPage() {
               </div>
             <div className="event--header-bar">
               <h1 className="event--header-text">{eventInfo.name}</h1>
+              {/* display event button only if current user is the owner of the event host */}
               {isOwner && (
               <Button
                 onClick={handleEdit}
