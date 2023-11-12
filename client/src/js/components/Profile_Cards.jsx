@@ -1,6 +1,5 @@
 import React from "react";
 import CardItem from "./CardItem";
-import "../../css/components/Cards.css";
 
 function ProfileCards({ events }) { // Accept events as a prop
   return (
@@ -11,11 +10,12 @@ function ProfileCards({ events }) { // Accept events as a prop
             {events.map((event, index) => (
               <CardItem
                 key={index}
-                src={event.image || "images/placeholder.png"}
-                text={event.name || "placeholder title"}
-                // label={event.label || "placeholder"}
-                date={event.date || "placeholder date"}
-                location={event.location || "placeholder location"}
+                src={event.image || "../../../images/placeholder.png"}
+                text={event.name}
+                start_time = {event.start_time}
+                end_time = {event.end_time}
+                date={event.date}
+                location={event.location}
                 path={`/events/${event.eid}`} // Construct path dynamically
               />
             ))}

@@ -226,9 +226,10 @@ export function Host_upcoming() {
             </span>
           </div>
           {upcomingEvents.length > 0 ? (
-            upcomingEvents.map((event) => (
-              <Favorites key={event.eid} event={event} /> // Using Favorites component to render each event, favorites/upcoming/previous are all the same
-            ))
+            <Favorites events={upcomingEvents} />
+            // upcomingEvents.map((event) => (
+            //   <Favorites key={event.eid} event={event} /> // Using Favorites component to render each event, favorites/upcoming/previous are all the same
+            // ))
           ) : (
             <p>You do not have any upcoming events yet.</p>
           )}
@@ -313,9 +314,7 @@ export function Host_previous() {
             </span>
           </div>
           {previousEvents.length > 0 ? (
-            previousEvents.map((event) => (
-              <Favorites key={event.eid} event={event} /> // Using Favorites component to render each event, favorites/previous/previous are all the same
-            ))
+            <Favorites events={previousEvents} /> // Using Favorites component to render each event, favorites/previous/previous are all the same
           ) : (
             <p>You do not have any previous events yet.</p>
           )}
