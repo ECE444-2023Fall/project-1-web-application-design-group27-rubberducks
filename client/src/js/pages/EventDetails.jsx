@@ -80,7 +80,7 @@ export default function EventDetailsPage() {
   const reoccurrence = processReoccuring(eventInfo.reoccuring);
   // const tagArray = translateTags(eventInfo.tags);
 
-  const [isRegistered, setIsRegistered] = useState(false);
+  const [isRegistered, setIsRegistered] = useState();
 
   const checkIfRegistered = () => {
     if (userLoggedIn) {
@@ -100,6 +100,7 @@ export default function EventDetailsPage() {
   }, []);
 
   const handleRegister = () => {
+    checkIfRegistered();
     console.log("user", userInfo);
     //make sure there is still space left for the event
     if (eventInfo.attendees.length >= eventInfo.capacity) {
@@ -109,6 +110,7 @@ export default function EventDetailsPage() {
       navigate(`/login`);
     } else if (eventInfo.attendees.includes(userInfo.uid)) {
       setMessage("You are already registered.");
+      setIsRegistered(true);
     } else {
       //update attendees for event
       fetch(`/api/events/${eventId}`, {
@@ -165,11 +167,13 @@ export default function EventDetailsPage() {
         }
       });
     }
+    checkIfRegistered();
   };
 
   const handleUnregister = () => {
+    checkIfRegistered();
     console.log("user", userInfo);
-    //make sure there is still space left for the event
+    //check that user is registered
     if (eventInfo.attendees.includes(userInfo.uid)) {
       fetch(`/api/events/${eventId}`, {
         method: "PUT",
@@ -177,20 +181,39 @@ export default function EventDetailsPage() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
+          name: eventInfo.name,
+          description: eventInfo.description,
+          location: eventInfo.location,
+          coords: eventInfo.coords,
+          date: eventInfo.date,
+          start_time: eventInfo.start_time,
+          end_time: eventInfo.end_time,
+          capacity: eventInfo.capacity,
+          reoccuring: eventInfo.reoccuring,
+          date_created: eventInfo.date_created,
+          owner: eventInfo.owner,
+          tags: eventInfo.tags,
           attendees: eventInfo.attendees.filter((id) => id !== userInfo.uid),
+          profile_pic: eventInfo.profile_pic,
         }),
       }).then((response) => {
         if (response.ok) {
           setMessage("You are successfully unregistered.");
           setIsRegistered(false);
-          //update registered event in user's account
+          //remove event from user's account
           fetch(`/api/accounts/${userInfo.uid}`, {
             method: "PUT",
             headers: {
               "Content-Type": "application/json",
             },
             body: JSON.stringify({
+              name: userInfo.name,
+              email: userInfo.email,
               events: userInfo.events.filter((e) => e !== eventId),
+              fav_events: userInfo.fav_events,
+              orgs: userInfo.orgs,
+              msgids: userInfo.msgids,
+              profile_pic: userInfo.profile_pic,
             }),
           }).then((response) => {
             if (response.ok) {
@@ -207,7 +230,9 @@ export default function EventDetailsPage() {
       });
     } else {
       setMessage("You have not registered yet.");
+      setIsRegistered(false);
     }
+    checkIfRegistered();
   };
 
   const isOwner = userInfo.uid === hostInfo.owner;
@@ -215,6 +240,8 @@ export default function EventDetailsPage() {
   const handleEdit = () => {
     navigate(`/events/${eventId}/edit_event`);
   };
+
+  const imageUrl = Get_Img_Link(eventInfo.profile_pic);
 
   return (
     <>
@@ -229,17 +256,14 @@ export default function EventDetailsPage() {
       />
       <div className="event">
         <div className="event--base">
-          <div className="event--header-pic">
-            {/* <div className="event--header-pic" style={{ backgroundImage: 'url("images/placeholder.png"), linearGradient(rgba(0, 0, 0, 0.1))' }}> */}
-            <div className="event--header-pic">
-            <img src={Get_Img_Link(eventInfo.profile_pic)}/>
-              </div>
+          <div className="event--header">
+            <img className="event--bg" src={imageUrl}/>
             <div className="event--header-bar">
               <h1 className="event--header-text">{eventInfo.name}</h1>
               <ul className="event-subtitle">{hostInfo.name}</ul>
               {/* display event button only if current user is the owner of the event host */}
               {isOwner && (
-              <Button onClick={handleEdit} buttonStyle=".btn--grey" buttonSize="btn--large">
+              <Button onClick={handleEdit} buttonStyle="event--edit-btn" buttonSize="btn--large">
                 Edit Event
               </Button>
               )}
@@ -276,9 +300,7 @@ export default function EventDetailsPage() {
                         <Button to={`/events/${eventId}/attendees`} buttonStyle="btn--register" buttonSize="btn--large">
                           Attendee Info
                         </Button>
-                        ) : (""                          
-                      )}
-                      {isRegistered ? (
+                        ) : isRegistered ? (
                         <Button onClick={handleUnregister} buttonStyle="btn--register" buttonSize="btn--large">
                           Unregister
                         </Button>
