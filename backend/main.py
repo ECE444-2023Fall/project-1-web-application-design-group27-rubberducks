@@ -14,7 +14,7 @@ from backend.accounts import accounts_ns
 from backend.hosts import hosts_ns
 #from hosts import hosts_ns
 from backend.auth import auth_ns, principal 
-from auth import auth_ns, principal 
+#from auth import auth_ns, principal 
 from backend.s3 import s3_ns
 #from s3 import s3_ns
 

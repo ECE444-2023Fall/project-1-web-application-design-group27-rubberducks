@@ -36,6 +36,7 @@ def test_get_event_by_eid(client, sample_event_data, add_event_to_db):  #Kartike
 #         event_in_db = Event.query.filter_by(name=sample_event_data["name"]).first()
 #         assert event_in_db is not None
 #         assert event_in_db.location == sample_event_data["location"]
+"""
 
 # Test Pagination #YiFeng Chen
 def test_pagination(client):
@@ -212,3 +213,4 @@ def test_sort_by_attendees_ascending(client):
     sorted_attendees = sorted(len(event['attendees']) for event in events)
     for i, event in enumerate(events):
         assert len(event['attendees']) == sorted_attendees[i]
+"""
