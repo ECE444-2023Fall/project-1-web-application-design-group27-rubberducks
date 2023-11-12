@@ -6,9 +6,10 @@ export const useGetEventInfo = (eventId) => {
   const [eventInfo, setEventInfo] = useState({});
   const [userInfo, setUserInfo] = useState({});
   const [loadingHostInfo, setLoadingHostInfo] = useState(true);
+  const [userLoggedIn, setUserLoggedIn] = useState(false);
   const [ownerLoggedIn, setOwnerLoggedIn] = useState(false);
   const user = JSON.parse(localStorage.getItem("user"));
-  const id = user ? user.id : null;
+  const id = user ? user.id : null && setUserLoggedIn(false);
 
   useEffect(() => {
     setLoading(true);
@@ -16,7 +17,7 @@ export const useGetEventInfo = (eventId) => {
     fetch("/api/events/" + eventId) 
       .then((res) => {
         if (!res.ok) {
-          window.location.href = "/404";
+          // window.location.href = "/404";
         }
         return res.json();
       })
@@ -26,7 +27,7 @@ export const useGetEventInfo = (eventId) => {
         fetch("/api/hosts/" + eventData.owner)
           .then((res) => {
             if (!res.ok) {
-              window.location.href = "/404";
+              // window.location.href = "/404";
             }
             return res.json();
           })
@@ -44,6 +45,7 @@ export const useGetEventInfo = (eventId) => {
         .then((res) => res.json())
         .then((data) => {
           setUserInfo(data);
+          setUserLoggedIn(true);
           if (!loadingHostInfo) {
             if (hostInfo.owner === data.uid) {
               setOwnerLoggedIn(true);
@@ -56,6 +58,7 @@ export const useGetEventInfo = (eventId) => {
     } else {
       setOwnerLoggedIn(false);
       setLoading(false);
+      setUserLoggedIn(false);
     }
   }, [id, hostInfo, loadingHostInfo]);
 
@@ -63,5 +66,5 @@ export const useGetEventInfo = (eventId) => {
     loadUserInfo();
   }, [loadUserInfo, loadingHostInfo]);
 
-  return { hostInfo, eventInfo, userInfo, ownerLoggedIn, loading };
+  return { hostInfo, eventInfo, userInfo, userLoggedIn, ownerLoggedIn, loading };
 };

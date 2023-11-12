@@ -69,7 +69,7 @@ function processReoccuring(reoccuring) {
 
 export default function EventDetailsPage() {
   const { eventId = "" } = useParams();
-  const { eventInfo, hostInfo, userInfo, ownerLoggedIn, loading } = useGetEventInfo(eventId);
+  const { eventInfo, hostInfo, userInfo, userLoggedIn, ownerLoggedIn, loading } = useGetEventInfo(eventId);
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
 
@@ -79,12 +79,33 @@ export default function EventDetailsPage() {
   const reoccurrence = processReoccuring(eventInfo.reoccuring);
   // const tagArray = translateTags(eventInfo.tags);
 
+  const [isRegistered, setIsRegistered] = useState(false);
+
+  const checkIfRegistered = () => {
+    if (userLoggedIn) {
+      console.log("user", userInfo);
+      if (eventInfo.attendees.includes(userInfo.uid)) {
+        setIsRegistered(true);
+      } else {
+        setIsRegistered(false);
+      }
+    } else {
+      setIsRegistered(false);
+    }
+  };
+
+  useEffect(() => {
+    checkIfRegistered();
+  }, []);
 
   const handleRegister = () => {
     console.log("user", userInfo);
     //make sure there is still space left for the event
     if (eventInfo.attendees.length >= eventInfo.capacity) {
       setMessage("The event is at full capacity.");
+    } else if (!userLoggedIn) {
+      setMessage("Please log in to register.")
+      navigate(`/login`);
     } else if (eventInfo.attendees.includes(userInfo.uid)) {
       setMessage("You are already registered.");
     } else {
@@ -111,6 +132,7 @@ export default function EventDetailsPage() {
       }).then((response) => {
         if (response.ok) {
           setMessage("You are successfully registered.");
+          setIsRegistered(true);
           //update registered event in user's account
           fetch(`/api/accounts/${userInfo.uid}`, {
             method: "PUT",
@@ -135,8 +157,52 @@ export default function EventDetailsPage() {
           });
         } else {
           setMessage("Registration Failed.");
+          setIsRegistered(false);
         }
       });
+    }
+  };
+
+  const handleUnregister = () => {
+    console.log("user", userInfo);
+    //make sure there is still space left for the event
+    if (eventInfo.attendees.includes(userInfo.uid)) {
+      fetch(`/api/events/${eventId}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          attendees: eventInfo.attendees.filter((id) => id !== userInfo.uid),
+        }),
+      }).then((response) => {
+        if (response.ok) {
+          setMessage("You are successfully unregistered.");
+          setIsRegistered(false);
+          //update registered event in user's account
+          fetch(`/api/accounts/${userInfo.uid}`, {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              events: userInfo.events.filter((e) => e !== eventId),
+            }),
+          }).then((response) => {
+            if (response.ok) {
+              console.log("User account updated successfully.");
+            } else {
+              // Handle errors, e.g., show an error message
+              console.error("User account update failed.");
+            }
+          });
+        } else {
+          setMessage("Unregistration Failed.");
+          setIsRegistered(true);
+        }
+      });
+    } else {
+      setMessage("You have not registered yet.");
     }
   };
 
@@ -201,6 +267,12 @@ export default function EventDetailsPage() {
                       {ownerLoggedIn ? ( 
                         <Button to={`/events/${eventId}/attendees`} buttonStyle="btn--register" buttonSize="btn--large">
                           Attendee Info
+                        </Button>
+                        ) : (""                          
+                      )}
+                      {isRegistered ? (
+                        <Button onClick={handleUnregister} buttonStyle="btn--register" buttonSize="btn--large">
+                          Unregister
                         </Button>
                         ) : (
                         <Button onClick={handleRegister} buttonStyle="btn--register" buttonSize="btn--large">
