@@ -52,6 +52,7 @@ export default function Host_root() {
         name={hostInfo.name}
         email={hostInfo.email}
         bio={hostInfo.bio}
+        profile_pic={hostInfo.profile_pic}
       />
       <Outlet context={[hostInfo, ownerLoggedIn]} />
     </>
