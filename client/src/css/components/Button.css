@@ -142,3 +142,195 @@
   border: 1px solid #002452;
 }
 
+:root {
+  --primary: #fff;
+}
+
+.btn {
+  padding: 8px 20px;
+  border-radius: 2px;
+  outline: none;
+  border: none;
+  cursor: pointer;
+}
+
+.btn--primary {
+  background-color: var(--primary);
+  color: #242424;
+  border: 1px solid var(--primary);
+}
+
+.btn--outline {
+  background-color: transparent;
+  color: #fff;
+  padding: 8px 20px;
+  border: 1px solid var(--primary);
+  transition: all 0.3s ease-out;
+}
+
+.btn--medium {
+  padding: 8px 20px;
+  font-size: 20px;
+}
+
+.btn--large {
+  padding: 12px 26px;
+  font-size: 20px;
+}
+
+.btn--medium:hover,
+.btn--large:hover {
+  background: #fff;
+  color: #242424;
+  transition: all 0.3s ease-out;
+}
+
+/* Define a CSS class for the blue button style */
+.blue-button {
+  background-color: blue; /* Set the background color to blue */
+  color: white; /* Set the text color to white for contrast */
+  border: 2px solid white; /* Set a white border with a 2px width */
+  padding: 10px 20px; /* Add padding for spacing inside the button */
+  text-decoration: none; /* Remove underline on hover for links */
+  display: inline-block; /* Ensure the button behaves as an inline-block element */
+  text-align: center; /* Center the text horizontally */
+  font-size: 16px; /* Set the font size */
+  cursor: pointer; /* Change cursor to pointer on hover for a button-like feel */
+  border-radius: 5px; /* Add rounded corners for a softer look */
+  transition: background-color 0.2s, color 0.2s; /* Add a smooth transition effect */
+}
+
+/* Style for button hover state */
+.blue-button:hover {
+  background-color: white; /* Change the background color to white on hover */
+  color: blue; /* Change the text color to blue on hover */
+}
+
+.btn--login {
+  display: block;
+  width: 50%;
+  margin: 10px auto;
+  padding: 12px 20px;
+  background-color: #002452;
+  color: white;
+  border: 1px solid #002452;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.btn--login:hover {
+  background-color: white;
+  color: #002452;
+}
+
+.btn--register {
+  display: block;
+  /* width: 50%; */
+  margin: 10px auto;
+  padding: 12px 20px;
+  background-color: #002452;
+  color: white;
+  border: 1px solid #002452;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.btn--register:hover {
+  background-color: white;
+  color: #002452;
+  border: 1px solid #002452;
+}
+
+
+.btn--grey {
+  display: block;
+  /* width: 50%; */
+  margin: 10px auto;
+  padding: 12px 20px;
+  background-color: #c6c6c6;
+  color: #002452;
+  border: 1px solid #c6c6c6;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.btn--grey:hover {
+  background-color: white;
+  color: #002452;
+  border: 1px solid #002452;
+}
+
+.btn--grey--right {
+  display: block;
+  /* width: 50%; */
+  margin: 10px auto;
+  padding: 12px 20px;
+  background-color: #c6c6c6;
+  color: #002452;
+  border: 1px solid #c6c6c6;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.btn--grey--right:hover {
+  background-color: white;
+  color: #002452;
+  border: 1px solid #002452;
+}
+
+.btn--new {
+  display: block;
+  width: 30%; /* Adjust the width as needed */
+  margin: 10px auto;
+  padding: 12px 20px;
+  border: 1px solid; /* border color will be set by specific button class */
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+/* Styling for the "Back" button */
+.btn--back {
+  background-color: #d9534f; /* Red color for caution */
+  color: white;
+  border-color: #d9534f;
+}
+
+/* Hover effect for the "Back" button */
+.btn--back:hover {
+  background-color: white;
+  color: #d9534f;
+}
+
+/* Styling for the "Create Profile" button */
+.btn--create {
+  background-color: #002452; /* Green color for 'go' or 'create' */
+  color: white;
+  border-color: #002452;
+}
+
+/* Hover effect for the "Create Profile" button */
+.btn--create:hover {
+  background-color: white;
+  color: #002452;
+}
+
+.btn--clubphoto {
+  background-color: rgb(76, 77, 78); /* Green color for 'go' or 'create' */
+  color: white;
+  border-color: rgb(76, 77, 78);
+}
+
+.btn--create:hover {
+  background-color: white;
+  color: rgb(76, 77, 78);
+}
