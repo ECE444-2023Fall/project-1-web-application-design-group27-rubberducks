@@ -109,6 +109,7 @@ export default function EventDetailsPage() {
     } else if (eventInfo.attendees.includes(userInfo.uid)) {
       setMessage("You are already registered.");
     } else {
+      //update attendees for event
       fetch(`/api/events/${eventId}`, {
         method: "PUT",
         headers: {
@@ -230,6 +231,7 @@ export default function EventDetailsPage() {
             <div className="event--header-bar">
               <h1 className="event--header-text">{eventInfo.name}</h1>
               <ul className="event-subtitle">{hostInfo.name}</ul>
+              {/* display event button only if current user is the owner of the event host */}
               {isOwner && (
               <Button onClick={handleEdit} buttonStyle=".btn--grey" buttonSize="btn--large">
                 Edit Event

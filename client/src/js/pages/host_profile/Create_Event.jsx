@@ -8,6 +8,7 @@ import { useNavigate, useOutletContext } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { set } from "react-hook-form";
 
+// Converts integer hours and minutes selected to formatted time to be stored in the database
 export function convertTimetoString(hour, minute) {
   const formattedHour = `${hour}`.padStart(2, "0");
   const formattedMinute = `${minute}`.padStart(2, "0");
@@ -18,6 +19,7 @@ export default function Create_Event() {
   const navigate = useNavigate();
   const [hostInfo, ownerLoggedIn] = useOutletContext();
 
+  //only the owner of the host can create event for the host
   useEffect(() => {
     if (!ownerLoggedIn) {
       navigate("/login-error");
@@ -47,6 +49,7 @@ export default function Create_Event() {
   const [events, setEvents] = useState([]);
   const [error, setError] = useState("");
 
+  //some handle change functions for some more complicated fields
   const handleTagChange = (tags) => {
     setSelectedTags(tags);
   };
@@ -55,13 +58,13 @@ export default function Create_Event() {
     setEventPhoto(file);
   };
   const handleDateChange = (newDate) => {
-    const currentDate = new Date();
     setDate(newDate);
   };
   const handleSelectReocurring = (event) => {
     setReoccuring(event.target.value);
   };
 
+  //fetch host info for later put request
   useEffect(() => {
     fetch(`/api/hosts/${hostId}`)
       .then((res) => res.json())
@@ -74,14 +77,17 @@ export default function Create_Event() {
       });
   }, [hostId]);
 
+  //submit create event
   const handleSubmit = (e) => {
     e.preventDefault();
     const dateCreated = currentDate.toISOString();
     const startTime = new Date(0, 0, 0, hour1, minute1);
     const endTime = new Date(0, 0, 0, hour2, minute2);
+    //event times should make sense
     if (startTime > endTime) {
       setError("End time must be after start time");
     } else {
+      //build the event payload
       const event = {
         name: name,
         description: description,
@@ -100,7 +106,7 @@ export default function Create_Event() {
       };
       console.log("Event Data:", event);
 
-      //create new event
+      //create new event through post request
       fetch("/api/events/all", {
         method: "POST",
         headers: {
@@ -116,6 +122,7 @@ export default function Create_Event() {
         })
         .then((data) => {
           console.log(events);
+          // update host info with the new event
           const new_events = {
             events: [...events, data.eid],
             name: hostname,
@@ -156,11 +163,12 @@ export default function Create_Event() {
     }
   };
 
+  //cancel create event
   const handleCancel = () => {
     navigate(`/hosts/${hostId}`);
   };
 
-  //MAPS API
+  //MAPS API. Autofill for location and get longitude and latitude for the location
   const autoCompleteRef = useRef();
   const inputRef = useRef();
   const options = {
