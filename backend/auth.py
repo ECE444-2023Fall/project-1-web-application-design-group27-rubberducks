@@ -62,6 +62,11 @@ class SignUp(Resource):
             email=email,
             password=generate_password_hash(data["password"]),
             # Additional fields like events, fav_events, etc., can be initialized here
+            events=[],
+            fav_events=[],
+            orgs=[],
+            msgids=[],
+            profile_pic=0,
         )
         new_account.save()
         return {"message": f"user with email {email} created"}, 201

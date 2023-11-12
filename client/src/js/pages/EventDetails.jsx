@@ -13,6 +13,7 @@ import "../../css/components/Button.css";
 import AttendeeList from "./host_profile/Attendee";
 import { Loader } from "@googlemaps/js-api-loader";
 import TagSelect from "./host_profile/Tag_Select";
+import { Get_Img_Link } from "../components/Get_Img_Link";
 
 function formatTime(timeString) {
   // Use a regular expression to extract hours and minutes
@@ -129,6 +130,7 @@ export default function EventDetailsPage() {
           owner: eventInfo.owner,
           tags: eventInfo.tags,
           attendees: [...eventInfo.attendees, userInfo.uid],
+          profile_pic: eventInfo.profile_pic,
         }),
       }).then((response) => {
         if (response.ok) {
@@ -147,6 +149,7 @@ export default function EventDetailsPage() {
               fav_events: userInfo.fav_events,
               orgs: userInfo.orgs,
               msgids: userInfo.msgids,
+              profile_pic: userInfo.profile_pic,
             }),
           }).then((response) => {
             if (response.ok) {
@@ -222,12 +225,15 @@ export default function EventDetailsPage() {
         name={hostInfo.name}
         email={hostInfo.email}
         bio={hostInfo.bio}
+        profile_pic={hostInfo.profile_pic}
       />
       <div className="event">
         <div className="event--base">
           <div className="event--header-pic">
             {/* <div className="event--header-pic" style={{ backgroundImage: 'url("images/placeholder.png"), linearGradient(rgba(0, 0, 0, 0.1))' }}> */}
-            {/* <div className="event--header-pic" style={{ backgroundImage: 'url("images/placeholder.png")' }}> */}
+            <div className="event--header-pic">
+            <img src={Get_Img_Link(eventInfo.profile_pic)}/>
+              </div>
             <div className="event--header-bar">
               <h1 className="event--header-text">{eventInfo.name}</h1>
               <ul className="event-subtitle">{hostInfo.name}</ul>

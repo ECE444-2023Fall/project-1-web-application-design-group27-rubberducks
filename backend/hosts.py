@@ -18,6 +18,7 @@ host_model = hosts_ns.model(
         "events": fields.List(fields.Integer),  # List of event IDs associated with the host
         "owner": fields.Integer,  # Owner's user ID
         "pending_transfer": fields.Boolean,  # Status flag for pending ownership transfer
+        "profile_pic": fields.Integer,
     },
 )
 
