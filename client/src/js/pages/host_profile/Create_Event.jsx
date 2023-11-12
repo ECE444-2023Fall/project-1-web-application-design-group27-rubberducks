@@ -7,6 +7,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { useNavigate, useOutletContext } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { set } from "react-hook-form";
+import Choose_Picture from "../../components/Choose_Picture";
 
 export function convertTimetoString(hour, minute) {
   const formattedHour = `${hour}`.padStart(2, "0");
@@ -45,7 +46,9 @@ export default function Create_Event() {
   const [bio, setBio] = useState("");
   const [owner, setOwner] = useState(-1);
   const [events, setEvents] = useState([]);
+  const [host_pic, setHostPic] = useState(0);
   const [error, setError] = useState("");
+  const [selectedPictureIndex, setSelectedPictureIndex] = useState(0);
 
   const handleTagChange = (tags) => {
     setSelectedTags(tags);
@@ -62,6 +65,10 @@ export default function Create_Event() {
     setReoccuring(event.target.value);
   };
 
+  const handlePictureSelect = (index) => {
+    setSelectedPictureIndex(index);
+  };
+
   useEffect(() => {
     fetch(`/api/hosts/${hostId}`)
       .then((res) => res.json())
@@ -71,6 +78,7 @@ export default function Create_Event() {
         setBio(data.bio);
         setOwner(data.owner);
         setEvents(data.events);
+        setHostPic(data.profile_pic);
       });
   }, [hostId]);
 
@@ -96,7 +104,7 @@ export default function Create_Event() {
         attendees: [],
         owner: hostId,
         tags: tags,
-        //eventPhoto, //event photo not in models yet
+        profile_pic: selectedPictureIndex,
       };
       console.log("Event Data:", event);
 
@@ -122,6 +130,7 @@ export default function Create_Event() {
             email: email,
             bio: bio,
             owner: owner,
+            profile_pic: host_pic,
           };
           console.log(new_events);
           if (data && data.eid) {
@@ -180,6 +189,10 @@ export default function Create_Event() {
       setCoords([place.geometry.location.lat(), place.geometry.location.lng()]);
     });
   }, []);
+
+  const handleAttributions = () => {
+    navigate(`/attributions`);
+  };
 
   return (
     <>
@@ -325,8 +338,10 @@ export default function Create_Event() {
               <option value="4">Monthly</option>
             </select>
           </div>
-
           <div className="form-group">
+          <Choose_Picture onPictureSelect={handlePictureSelect}/>
+          </div>
+          {/* <div className="form-group">
             <label htmlFor="eventPhoto" className="button_event">
               Upload Photo
             </label>
@@ -346,7 +361,7 @@ export default function Create_Event() {
                 />
               )}
             </div>
-          </div>
+          </div> */}
           <div className="button-group">
             <button onClick={handleCancel} className="cancel-button">
               Cancel
@@ -356,6 +371,7 @@ export default function Create_Event() {
             </button>
           </div>
         </form>
+        <button onClick={handleAttributions}>ViewAttributions</button>
       </div>
     </>
   );
