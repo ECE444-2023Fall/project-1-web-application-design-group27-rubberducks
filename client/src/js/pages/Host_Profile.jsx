@@ -19,6 +19,7 @@ import { confirmPassword, checkPassword } from "../confirmPassword";
 import { bouncy } from "ldrs";
 import Favorites from "../components/Favorite";
 import ProfileCategory from "../components/Profile_Category";
+import Choose_Picture from "../components/Choose_Picture";
 
 export default function Host_root() {
   const { hostId = "" } = useParams();
@@ -341,6 +342,11 @@ export function Host_edit() {
   }, [ownerLoggedIn]);
 
   const [ownerInfo, setOwnerInfo] = useState(null);
+  const [selectedPictureIndex, setSelectedPictureIndex] = useState(0);
+
+  const handlePictureSelect = (index) => {
+    setSelectedPictureIndex(index);
+  };
 
   const getOwnerInfo = async () => {
     const res = await fetch(`/api/accounts/${hostInfo.owner}`);
@@ -422,7 +428,7 @@ export function Host_edit() {
   };
 
   const submitForm = (data) => {
-    setLoading(true);
+    // setLoading(true);
     if (data.password === data.confirmPassword) {
       checkPassword(ownerInfo.email, data.oldPassword).then((isValid) => {
         if (isValid) {
@@ -432,6 +438,7 @@ export function Host_edit() {
             bio: data.bio,
             events: hostInfo.events,
             owner: hostInfo.owner,
+            profile_pic: selectedPictureIndex,
           };
           const requestOptions = {
             method: "PUT",
@@ -531,6 +538,11 @@ export function Host_edit() {
                 <small>Previous password is required</small>
               </p>
             )}
+          </Form.Group>
+          <br />
+          <Form.Group>
+          <label>Choose Club Picture</label>
+          <Choose_Picture onPictureSelect={handlePictureSelect}/>
           </Form.Group>
           <br />
           <Form.Group>
