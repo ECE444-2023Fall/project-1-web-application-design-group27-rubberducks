@@ -4,32 +4,39 @@ import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 
 function SignUp() {
+  // State variables to manage form inputs and messages
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [confirmEmail, setConfirmEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState(""); // New state for confirming password
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [signupSuccess, setSignupSuccess] = useState(false);
+
+  // React Router navigation hook
   const navigate = useNavigate();
 
+  // Function to handle form submission
   const submitSignUpForm = (e) => {
     e.preventDefault();
+    // Check if the password meets a minimum length requirement
     if (password.length < 8) {
       setErrorMessage("Password must be at least 8 characters long.");
       return;
     }
+    // Check if the provided email and confirmEmail match
     if (email !== confirmEmail) {
       setErrorMessage("Emails do not match.");
       return;
     }
-
+    // Check if the provided password and confirmPassword match
     if (password !== confirmPassword) {
       setErrorMessage("Passwords do not match.");
       return;
     }
 
+    // Send a POST request to the signup API
     fetch("/api/auth/signup", {
       method: "POST",
       headers: {
@@ -50,7 +57,7 @@ function SignUp() {
         return res.json();
       })
       .then((data) => {
-        console.log(data);
+        // Clear form inputs and set signup success state
         setName("");
         setEmail("");
         setConfirmEmail("");
@@ -59,16 +66,17 @@ function SignUp() {
         setErrorMessage("");
         setSignupSuccess(true);
 
+        // Navigate to the login page after successful signup
         navigate("/login");
       })
       .catch((err) => {
-        console.log("error:", err);
         setErrorMessage(err.message);
       });
   };
 
   return (
     <>
+      {/* Render the Navbar component */}
       <Navbar />
       <div className="login-container">
         <div className="login-card">
@@ -140,9 +148,11 @@ function SignUp() {
                 Remember me
               </label>
             </div>
+            {/* Display error message if signup fails */}
             {errorMessage && (
               <div className="error-message">{errorMessage}</div>
             )}
+            {/* Display success message if signup succeeds */}
             {signupSuccess && (
               <p className="success-message" style={{ textAlign: "center" }}>
                 Signup successful!
