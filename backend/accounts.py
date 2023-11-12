@@ -25,13 +25,13 @@ account_model = accounts_ns.model(
 )
 
 # Define a test route to check if the API is working
-@accounts_ns.route("/test")
+# @accounts_ns.route("/test")
 class Test(Resource):
     def get(self):
         return {"message": "test"}, 404
 
 # Define routes for managing accounts
-@accounts_ns.route("/")
+# @accounts_ns.route("/")
 class Accounts(Resource):
     @accounts_ns.marshal_list_with(account_model)
     def get(self):
@@ -47,7 +47,7 @@ class Accounts(Resource):
         return account, 201
 
 # Define routes for managing accounts by their unique identifier (uid)
-@accounts_ns.route("/<int:uid>")
+# @accounts_ns.route("/<int:uid>")
 class AccountById(Resource):
     @accounts_ns.marshal_with(account_model)
     def get(self, uid):
@@ -71,7 +71,7 @@ class AccountById(Resource):
         return {"message": "account deleted"}, 200
 
 # Define a route to retrieve an account by email
-@accounts_ns.route("/<string:email>")
+# @accounts_ns.route("/<string:email>")
 class AccountByEmail(Resource):
     @accounts_ns.marshal_with(account_model)
     def get(self, email):

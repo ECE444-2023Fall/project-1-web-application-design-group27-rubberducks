@@ -21,7 +21,7 @@ messages_model = messages_ns.model(
 )
 
 # Route for operations on multiple messages
-@messages_ns.route("/")
+# @messages_ns.route("/")
 class Messages(Resource):
     # GET endpoint to retrieve all messages
     @messages_ns.marshal_list_with(messages_model)
@@ -39,7 +39,7 @@ class Messages(Resource):
         return messages, 201
 
 # Route for operations on a specific message identified by its ID
-@messages_ns.route("/<int:msgid>")
+# @messages_ns.route("/<int:msgid>")
 class MessagesById(Resource):
     # GET endpoint to retrieve a message by its ID
     @messages_ns.marshal_with(messages_model)
@@ -65,7 +65,7 @@ class MessagesById(Resource):
         return {"message": "message deleted"}, 200
 
 # Route for retrieving messages for a specific account
-@messages_ns.route("/account/<int:account_id>")
+# @messages_ns.route("/account/<int:account_id>")
 class MessagesByAccount(Resource):
     # GET endpoint to retrieve messages by account ID
     @messages_ns.marshal_list_with(messages_model)
@@ -77,7 +77,7 @@ class MessagesByAccount(Resource):
         return messages, 200
 
 # Route for retrieving the latest message for a specific account
-@messages_ns.route("/account/<int:account_id>/latest")
+# @messages_ns.route("/account/<int:account_id>/latest")
 class LatestMessageByAccount(Resource):
     # GET endpoint to retrieve the latest message by account ID
     @messages_ns.marshal_with(messages_model)

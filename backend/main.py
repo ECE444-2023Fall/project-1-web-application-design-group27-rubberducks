@@ -1,15 +1,14 @@
 from flask import Flask, render_template
-from flask_restx import Api
 from flask_cors import CORS
-
+from flask_restx import Api
 from backend.models import Account, Event, Host, Message
 from backend.exts import db
 from flask_jwt_extended import JWTManager
-from backend.messages import messages_ns
-from backend.events import events_ns
-from backend.accounts import accounts_ns
-from backend.hosts import hosts_ns
-from backend.auth import auth_ns, principal 
+from backend.messages import messages_ns, Messages, MessagesById, MessagesByAccount, LatestMessageByAccount
+from backend.events import events_ns, Events, EventById, Event_tags, EventTagId, EventsAll
+from backend.accounts import accounts_ns, Accounts, AccountById, AccountByEmail
+from backend.hosts import hosts_ns, Hosts, HostById, HostByName
+from backend.auth import auth_ns, principal, SignUp, Login, Refresh
 from backend.s3 import s3_ns
 
 from backend.config import DevConfig
@@ -38,6 +37,7 @@ def create_app(config=DevConfig):
     app.config['JWT_TOKEN_LOCATION'] = ['headers']
     app.config['JWT_ALGORITHM'] = 'HS256'
 
+    CORS(app, resources=r'/*')
 
     @app.shell_context_processor
     def make_shell_context():
@@ -47,6 +47,23 @@ def create_app(config=DevConfig):
     def not_found(e):
         return render_template("index.html")
     
-    CORS(app)
-
+    api.add_resource(SignUp, '/api/auth/signup')
+    api.add_resource(Login, '/api/auth/login')
+    api.add_resource(Refresh, '/api/auth/refresh')
+    api.add_resource(Accounts, '/api/accounts')
+    api.add_resource(AccountById, '/api/accounts/<int:uid>')
+    api.add_resource(AccountByEmail, '/api/accounts/<string:email>')
+    api.add_resource(Events, '/api//events')
+    api.add_resource(EventsAll, '/api/events/all')
+    api.add_resource(EventById, '/api/events/<int:eid>')
+    api.add_resource(Event_tags, '/api/events/tags')
+    api.add_resource(EventTagId, '/api/events/tags/<int:etid>')
+    api.add_resource(Messages, '/api/messages')
+    api.add_resource(MessagesById, '/api/messages/<int:msgid>')
+    api.add_resource(MessagesByAccount, '/api/messages/account/<int:account_id>')
+    api.add_resource(LatestMessageByAccount, '/api/messages/account/<int:account_id>/latest')
+    api.add_resource(Hosts, '/api/hosts')
+    api.add_resource(HostById, '/api/hosts/<int:hid>')
+    api.add_resource(HostByName, '/api/hosts/<string:name>')
+    
     return app

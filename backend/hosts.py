@@ -23,7 +23,7 @@ host_model = hosts_ns.model(
 )
 
 # Route for operations on multiple hosts
-@hosts_ns.route("/")
+# @hosts_ns.route("/")
 class Hosts(Resource):
     # GET endpoint to retrieve all hosts
     @hosts_ns.marshal_list_with(host_model)

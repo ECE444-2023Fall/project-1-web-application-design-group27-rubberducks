@@ -50,7 +50,7 @@ tags_model = events_ns.model(
 )
 
 @events_ns.route("/all")
-class Events(Resource):
+class EventsAll(Resource):
     @events_ns.marshal_list_with(event_model)
     def get(self):
         return Event.query.all(), 200
@@ -66,7 +66,7 @@ class Events(Resource):
 TODO: Limit information transmitted for privacy (attendees list, etc)
 TODO: Implement limit for past event
 """
-@events_ns.route("/")
+# @events_ns.route("/")
 class Events(Resource):
     @events_ns.marshal_list_with(event_model)
     def get(self):
@@ -177,7 +177,7 @@ class Events(Resource):
         ], 200
 
 
-@events_ns.route("/<int:eid>")
+# @events_ns.route("/<int:eid>")
 class EventById(Resource):
     @events_ns.marshal_with(event_model)
     def get(self, eid):
@@ -196,7 +196,7 @@ class EventById(Resource):
         event.delete()
         return {"message": "event deleted"}, 200
     
-@events_ns.route("/tags")
+# @events_ns.route("/tags")
 class Event_tags(Resource):
     @events_ns.marshal_list_with(tags_model)
     def get(self):

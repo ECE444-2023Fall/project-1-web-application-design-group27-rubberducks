@@ -43,7 +43,7 @@ login_model = auth_ns.model(
 )
 
 # Route for user signup
-@auth_ns.route("/signup")
+# @auth_ns.route("/signup")
 class SignUp(Resource):
     @auth_ns.expect(signup_model)
     def post(self):
@@ -77,7 +77,7 @@ def load_user(user_id):
     return Account.query.get(user_id)
 
 # Route for user login
-@auth_ns.route("/login")
+# @auth_ns.route("/login")
 class Login(Resource):
     @auth_ns.expect(login_model)
     def post(self):
@@ -109,7 +109,7 @@ class Login(Resource):
             return {"message": "invalid email or password"}, 401
 
 # Route for refreshing JWT tokens
-@auth_ns.route("/refresh")
+# @auth_ns.route("/refresh")
 class Refresh(Resource):
     @jwt_required(refresh=True)
     def post(self):
