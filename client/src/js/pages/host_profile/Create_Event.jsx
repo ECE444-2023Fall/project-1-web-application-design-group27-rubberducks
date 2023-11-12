@@ -339,6 +339,7 @@ export default function Create_Event() {
             </select>
           </div>
           <div className="form-group">
+            <label>Choose Event Picture</label>
           <Choose_Picture onPictureSelect={handlePictureSelect}/>
           </div>
           {/* <div className="form-group">
