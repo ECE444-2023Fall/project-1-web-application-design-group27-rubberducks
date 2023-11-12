@@ -16,7 +16,8 @@ account_model = accounts_ns.model(
         "events": fields.List(fields.Integer),
         "fav_events": fields.List(fields.Integer),
         "orgs": fields.List(fields.Integer),
-        "msgids": fields.List(fields.Integer)
+        "msgids": fields.List(fields.Integer),
+        "profile_pic": fields.Integer
     },
 )
 

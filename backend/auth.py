@@ -59,6 +59,7 @@ class SignUp(Resource):
             fav_events=[],
             orgs=[],
             msgids=[],
+            profile_pic=0,
         )
         new_account.save()
         return {"message": f"user with email {email} created"}, 201

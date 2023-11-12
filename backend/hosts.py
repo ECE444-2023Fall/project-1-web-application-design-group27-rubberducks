@@ -15,6 +15,7 @@ host_model = hosts_ns.model(
         "events": fields.List(fields.Integer),
         "owner": fields.Integer,
         "pending_transfer": fields.Boolean,
+        "profile_pic": fields.Integer,
     },
 )
 
