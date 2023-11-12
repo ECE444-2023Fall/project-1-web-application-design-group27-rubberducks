@@ -1,5 +1,7 @@
 import React from "react";
 import CardItem from "./CardItem";
+import { Get_Img_Link } from "./Get_Img_Link";
+import { Get_Profile_Img_Link } from "./Get_Img_Link";
 
 function ProfileCards({ events }) { // Accept events as a prop
   return (
@@ -10,7 +12,7 @@ function ProfileCards({ events }) { // Accept events as a prop
             {events.map((event, index) => (
               <CardItem
                 key={index}
-                src={event.image || "../../../images/placeholder.png"}
+                src = {Get_Img_Link(event.profile_pic)}
                 text={event.name}
                 start_time = {event.start_time}
                 end_time = {event.end_time}

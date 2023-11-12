@@ -14,7 +14,7 @@ import { checkPassword } from "../confirmPassword";
 import Favorites from "../components/Favorite";
 import { bouncy } from "ldrs";
 import ProfileCategory from "../components/Profile_Category";
-
+//This file creates a "My profile" page
 export default function Profile_root() {
   //gets and saves the user info
   const { userInfo, loading } = useGetUserInfo();
@@ -48,6 +48,7 @@ export default function Profile_root() {
   );
 }
 
+//This function displays the first four events in favorites/upcoming/previous events
 export function Profile() {
   const [favorites, setFavorites] = useState([]);
   const [upcomingEvents, setUpcomingEvents] = useState([]);
@@ -182,6 +183,8 @@ export function Profile() {
   );
 }
 
+//This functions fecth all the registered events, compare their starting times and current time
+//to see if it is an upcoming event
 export function Profile_upcoming() {
   const [upcomingEvents, setUpcomingEvents] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -274,6 +277,8 @@ export function Profile_upcoming() {
   );
 }
 
+//This functions fecth all the registered events, compare their starting times and current time
+//to see if it is a previous event
 export function Profile_previous() {
   const [previousEvents, setPreviousEvents] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -366,7 +371,7 @@ export function Profile_previous() {
     </>
   );
 }
-
+//If you favorite a event in the event page, it will display here
 export function Profile_favourites() {
   const [favorite, setFavorite] = useState([]);
 

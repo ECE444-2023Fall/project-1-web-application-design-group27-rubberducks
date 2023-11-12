@@ -11,7 +11,6 @@
 @media screen and (max-width: 1024px) {
   .cards--wrapper {
     grid-template-columns: repeat(3,1fr); /* 3 columns for medium screens */
-    /* grid-auto-rows: minmax(180px, auto); */
   }
 }
 
