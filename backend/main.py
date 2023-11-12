@@ -53,7 +53,7 @@ def create_app(config=DevConfig):
     api.add_resource(Accounts, '/api/accounts')
     api.add_resource(AccountById, '/api/accounts/<int:uid>')
     api.add_resource(AccountByEmail, '/api/accounts/<string:email>')
-    api.add_resource(Events, '/api//events')
+    api.add_resource(Events, '/api/events')
     api.add_resource(EventsAll, '/api/events/all')
     api.add_resource(EventById, '/api/events/<int:eid>')
     api.add_resource(Event_tags, '/api/events/tags')
