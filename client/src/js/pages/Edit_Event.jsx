@@ -38,7 +38,10 @@ export default function Edit_Event() {
   bouncy.register();
 
   useEffect(() => {
-    // Function to load event information
+    // load event info and host info
+    //display all event fields to start with for user to edit
+    // display host info in sidebar
+
     const loadEventInfo = async () => {
       try {
         const eventResponse = await fetch("/api/events/" + eventId);
@@ -116,7 +119,7 @@ export default function Edit_Event() {
     setDate(newDate);
   };
 
-  // Update the hour1 and minute1 states when start_time changes
+  //display start and end times in integer hours and minutes
   useEffect(() => {
     setLoading(true);
     const [hourStr, minuteStr] = start_time.split(":");
@@ -139,7 +142,7 @@ export default function Edit_Event() {
       inputRef.current,
       options
     );
-
+    //needed to load map api twice due to unknown error of api loading
     autoCompleteRef.current.addListener("place_changed", async function () {
       const place = await autoCompleteRef.current.getPlace();
       setLocation(place.name);
@@ -153,10 +156,12 @@ export default function Edit_Event() {
     e.preventDefault();
     const startTime = new Date(0, 0, 0, hour1, minute1);
     const endTime = new Date(0, 0, 0, hour2, minute2);
+    //check if start time and end time reasonable
     if (startTime > endTime) {
       setError("End time must be after start time");
       return;
     }
+    //make payload to update event
     const updatedEvent = {
       name: eventInfo.name,
       date: date,
@@ -194,7 +199,7 @@ export default function Edit_Event() {
         console.error("Error updating event:", err);
       });
   };
-
+//loading animation
   if (loading) {
     return (
       <>
