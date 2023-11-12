@@ -14,7 +14,7 @@ function Favorites({ events }) {
           {events.map(event => (
             <CardItem
               key={event.eid}
-              src={event.image || "../../../images/placeholder.png"}
+              src={event.image || "../../../images/hi.png"}
               text={event.name}
               date={event.date}
               location={event.location}
