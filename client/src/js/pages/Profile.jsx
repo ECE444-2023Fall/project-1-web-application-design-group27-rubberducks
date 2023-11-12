@@ -42,7 +42,7 @@ export default function Profile_root() {
     //if not loading, show the user profile
     <>
       <Navbar />
-      <UserSidebar name={userInfo.name} email={userInfo.email} />
+      <UserSidebar name={userInfo.name} email={userInfo.email} profile_pic={userInfo.profile_pic}/>
       <Outlet context={[userInfo]} />
     </>
   );

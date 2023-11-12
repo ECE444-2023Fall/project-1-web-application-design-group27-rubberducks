@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { FaMapMarkerAlt, FaCalendar, FaClock } from "react-icons/fa";
 //import { useNavigate } from "react-router-dom";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import EventHostSidebar from "../components/EventHostSideBar";
 // import { useGetHostInfo } from "../useGetHostInfo";
@@ -14,6 +14,7 @@ import "../../css/components/Button.css";
 import AttendeeList from "./host_profile/Attendee";
 import { Loader } from "@googlemaps/js-api-loader";
 import HostSidebar from "../components/HostSidebar";
+import { Get_Img_Link } from "../components/Get_Img_Link";
 
 function formatTime(timeString) {
   // Use a regular expression to extract hours and minutes
@@ -76,6 +77,7 @@ export default function EventDetailsPage() {
   const [error, setError] = useState(null);
   const [user, setUser] = useState({});
   const [message, setMessage] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     const loadEventInfo = async () => {
@@ -112,6 +114,7 @@ export default function EventDetailsPage() {
         setLoading(false);
       }
     };
+    // get current user info for registration
     const getUserInfo = async () => {
       const get_user = JSON.parse(localStorage.getItem("user"));
       if (!get_user || !get_user.id) {
@@ -138,6 +141,7 @@ export default function EventDetailsPage() {
   // const tagArray = translateTags(eventInfo.tags);
 
   const [button, setButton] = useState(true);
+  const isOwner = user.uid === hostInfo.owner;
 
   const showButton = () => {
     setButton(true);
@@ -152,9 +156,12 @@ export default function EventDetailsPage() {
     //make sure there is still space left for the event
     if (eventInfo.attendees.length >= eventInfo.capacity) {
       setMessage("The event is at full capacity.");
-    } else if (eventInfo.attendees.includes(user.uid)) {
+    } 
+    //check if user already registered
+    else if (eventInfo.attendees.includes(user.uid)) {
       setMessage("You are already registered.");
     } else {
+      //update attendees for event
       fetch(`/api/events/${eventId}`, {
         method: "PUT",
         headers: {
@@ -172,7 +179,9 @@ export default function EventDetailsPage() {
           date_created: eventInfo.date_created,
           owner: eventInfo.owner,
           tags: eventInfo.tags,
+          coords: eventInfo.coords,
           attendees: [...eventInfo.attendees, user.uid],
+          profile_pic: eventInfo.profile_pic,
         }),
       }).then((response) => {
         if (response.ok) {
@@ -190,6 +199,7 @@ export default function EventDetailsPage() {
               fav_events: user.fav_events,
               orgs: user.orgs,
               msgids: user.msgids,
+              profile_pic: user.profile_pic,
             }),
           }).then((response) => {
             if (response.ok) {
@@ -206,6 +216,10 @@ export default function EventDetailsPage() {
     }
   };
 
+  const handleEdit = () => {
+    navigate(`/events/${eventId}/edit_event`);
+  };
+
   return (
     <>
       <Navbar />
@@ -214,21 +228,27 @@ export default function EventDetailsPage() {
         name={hostInfo.name}
         email={hostInfo.email}
         bio={hostInfo.bio}
+        profile_pic={hostInfo.profile_pic}
       />
       <div className="event">
         <div className="event--base">
           <div className="event--header-pic">
             {/* <div className="event--header-pic" style={{ backgroundImage: 'url("images/placeholder.png"), linearGradient(rgba(0, 0, 0, 0.1))' }}> */}
-            {/* <div className="event--header-pic" style={{ backgroundImage: 'url("images/placeholder.png")' }}> */}
+            <div className="event--header-pic">
+            <img src={Get_Img_Link(eventInfo.profile_pic)}/>
+              </div>
             <div className="event--header-bar">
               <h1 className="event--header-text">{eventInfo.name}</h1>
+              {/* display event button only if current user is the owner of the event host */}
+              {isOwner && (
               <Button
-                to="/events"
+                onClick={handleEdit}
                 buttonStyle=".btn--grey"
                 buttonSize="btn--large"
               >
                 Edit Event
               </Button>
+              )}
             </div>
           </div>
           <div className="event--main">
@@ -262,7 +282,7 @@ export default function EventDetailsPage() {
                     <div className="event--button">
                       {button && (
                         <Button
-                          to="/events"
+                          onClick={handleRegister}
                           buttonStyle="btn--register"
                           buttonSize="btn--large"
                         >

@@ -33,6 +33,9 @@ import Host_transfer_send from "./js/pages/host_profile/Host_Transfer_Send.jsx";
 import Host_transfer_Recieve from "./js/pages/host_profile/Host_Transfer_Recieve.jsx";
 import ResourceError from "./js/pages/ResourceError.jsx";
 import AttendeeList from "./js/pages/host_profile/Attendee.jsx";
+import Edit_Event from "./js/pages/Edit_Event.jsx";
+import ViewAttributions from "./js/pages/View_Attributions.jsx";
+import EditProfilePic from "./js/pages/user_profile/Edit_Profile_Pic.jsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -50,6 +53,7 @@ const router = createBrowserRouter(
         <Route path="favourite" element={<Profile_favourites />} />
         <Route path="previous" element={<Profile_previous />} />
         <Route path="edit" element={<Profile_edit />} />
+        <Route path="edit_pic" element={<EditProfilePic />} />
         <Route path="create_host" element={<Create_Host_Profile />} />
         <Route path="clubs" element={<My_Clubs />} />
       </Route>
@@ -75,10 +79,12 @@ const router = createBrowserRouter(
         <Route element={<Events />} index />
         <Route path=":eventId" element={<EventDetailsPage />} />
         <Route path=":eventId/attendees" element={<AttendeeList />} />
+        <Route path=":eventId/edit_event" element={<Edit_Event />} />
       </Route>
       <Route path="inbox" element={<InboxPage />} />
       <Route path="404" element={<ResourceError />} />
       <Route path="login-error" element={<NotFound />} />
+      <Route path="attributions" element={<ViewAttributions />} />
     </Route>
   )
 );

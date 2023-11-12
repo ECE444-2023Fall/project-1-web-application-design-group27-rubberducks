@@ -34,6 +34,12 @@
   border-radius: 50%;
 }
 
+.edit--profile--pic {
+  position: absolute;
+  top: 30px; 
+  right: 30px; 
+}
+
 .sidebar .sidebar--user--name {
   text-align: center;
   font-size: 1.2rem;
