@@ -1,7 +1,8 @@
 /* Styles for the card container */
 .cards--wrapper {
   display: grid;
-  grid-template-columns: repeat(4, 220px); /* 4 columns in larger screens */
+  grid-template-columns: repeat(4, 1fr); /* 4 columns in larger screens */
+  grid-auto-rows: minmax(200px, auto);
   gap: 30px; /* Adjust the space between cards */
   padding: 20px; /* Padding around the grid */
 }
@@ -10,6 +11,7 @@
 @media screen and (max-width: 1024px) {
   .cards--wrapper {
     grid-template-columns: repeat(3,1fr); /* 3 columns for medium screens */
+    /* grid-auto-rows: minmax(180px, auto); */
   }
 }
 
@@ -44,6 +46,7 @@
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   overflow: hidden;
+  outline:none;
 }
 
 .cards--item--pic-wrap {

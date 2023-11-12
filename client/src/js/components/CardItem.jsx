@@ -8,13 +8,13 @@ function CardItem(props) {
     <>
       <li className="cards--item">
         <Link className="cards--item--link" to={props.path}>
-          <figure className="cards--item--pic-wrap" data-category={props.label}>
+          <div className="cards--item--pic-wrap">
             <img
               src={props.src}
               alt="Event Image"
               className="cards--item--img"
             />
-          </figure>
+          </div>
           <div className="cards--item--info">
             <h5 className="cards--item--text">{props.text}</h5>
             <div className="cards--item--subtitle">
