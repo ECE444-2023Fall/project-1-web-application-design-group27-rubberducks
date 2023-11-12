@@ -141,7 +141,7 @@ class Host(db.Model):
     pending_transfer = db.Column(db.Boolean, default=False, nullable=False)
     profile_pic = db.Column(db.Integer, nullable=False)
 
-    def __init__(self, name, email, bio, events, owner, pending_transfer, profile_pic):
+    def __init__(self, name, email, bio, events, owner, profile_pic, pending_transfer=False):
         self.name = name
         self.email = email
         self.bio = bio
