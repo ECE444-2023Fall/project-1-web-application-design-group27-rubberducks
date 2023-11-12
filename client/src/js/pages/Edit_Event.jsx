@@ -1,14 +1,13 @@
-import React, { useState, useEffect, useRef} from "react";
-import { useNavigate, useParams, useOutletContext } from "react-router-dom";
+import React, { useState, useEffect, useRef } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import TagSelect from "./host_profile/Tag_Select";
-import "../../css/pages/host_profile/Create_Event.css"
+import "../../css/pages/host_profile/Create_Event.css";
 import { convertTimetoString } from "./host_profile/Create_Event";
 import Navbar from "../components/Navbar";
 import HostSidebar from "../components/HostSidebar";
 import { bouncy } from "ldrs";
-import { set } from "react-hook-form";
 
 export default function Edit_Event() {
   const navigate = useNavigate();
@@ -28,7 +27,8 @@ export default function Edit_Event() {
   const [date, setDate] = useState(new Date());
   const [location, setLocation] = useState("");
   const [coords, setCoords] = useState([0, 0]); // [lat, lng]
-  //MAPS API
+
+  // Google Maps Autocomplete API
   const autoCompleteRef = useRef();
   const inputRef = useRef();
   const options = {
@@ -36,8 +36,9 @@ export default function Edit_Event() {
     fields: ["address_components", "name", "geometry"],
   };
   bouncy.register();
-  
+
   useEffect(() => {
+    // Function to load event information
     const loadEventInfo = async () => {
       try {
         const eventResponse = await fetch("/api/events/" + eventId);
@@ -74,35 +75,48 @@ export default function Edit_Event() {
         setError("Network error");
         console.error(err);
       } finally {
+        setLoading(false);
       }
     };
+
+    // Initialize Google Maps Autocomplete
     autoCompleteRef.current = new window.google.maps.places.Autocomplete(
       inputRef.current,
       options
     );
 
+    // Listen for place changes in the Autocomplete
     autoCompleteRef.current.addListener("place_changed", async function () {
       const place = await autoCompleteRef.current.getPlace();
       setLocation(place.name);
       setCoords([place.geometry.location.lat(), place.geometry.location.lng()]);
     });
+
+    // Load event information
     loadEventInfo();
   }, [eventId]);
-  
+
+  // Handle tag selection
   const handleTagChange = (tags) => {
     setSelectedTags(tags);
   };
+
+  // Handle reoccurring option selection
   const handleSelectReocurring = (e) => {
     setEventInfo({ ...eventInfo, reoccuring: e.target.value });
   };
+
+  // Handle cancellation of event editing
   const handleCancel = () => {
     navigate(`/events/${eventId}`);
   };
 
+  // Handle date change in DatePicker
   const handleDateChange = (newDate) => {
     setDate(newDate);
   };
 
+  // Update the hour1 and minute1 states when start_time changes
   useEffect(() => {
     setLoading(true);
     const [hourStr, minuteStr] = start_time.split(":");
@@ -113,6 +127,7 @@ export default function Edit_Event() {
     setLoading(false);
   }, [start_time]);
 
+  // Update the hour2 and minute2 states when end_time changes
   useEffect(() => {
     setLoading(true);
     const [hourStr, minuteStr] = end_time.split(":");
@@ -133,6 +148,7 @@ export default function Edit_Event() {
     setLoading(false);
   }, [end_time]);
 
+  // Handle the update of event information
   const handleUpdate = (e) => {
     e.preventDefault();
     const startTime = new Date(0, 0, 0, hour1, minute1);
@@ -142,19 +158,19 @@ export default function Edit_Event() {
       return;
     }
     const updatedEvent = {
-        name: eventInfo.name,
-        date: date,
-        description: eventInfo.description,
-        location: location,
-        coords: coords,
-        start_time: convertTimetoString(hour1, minute1),
-        end_time: convertTimetoString(hour2, minute2),
-        capacity: eventInfo.capacity,
-        reoccuring: eventInfo.reoccuring,
-        date_created: eventInfo.date_created,
-        attendees: eventInfo.attendees,
-        owner: eventInfo.owner,
-        tags: tags,
+      name: eventInfo.name,
+      date: date,
+      description: eventInfo.description,
+      location: location,
+      coords: coords,
+      start_time: convertTimetoString(hour1, minute1),
+      end_time: convertTimetoString(hour2, minute2),
+      capacity: eventInfo.capacity,
+      reoccuring: eventInfo.reoccuring,
+      date_created: eventInfo.date_created,
+      attendees: eventInfo.attendees,
+      owner: eventInfo.owner,
+      tags: tags,
     };
 
     fetch(`/api/events/${eventId}`, {
@@ -181,21 +197,21 @@ export default function Edit_Event() {
 
   if (loading) {
     return (
-        <>
-          <Navbar />
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              height: "100vh",
-            }}
-          >
-            <l-bouncy size="45" speed="1.75" color="#002452"></l-bouncy>
-          </div>
-        </>
-      );
-  } 
+      <>
+        <Navbar />
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "100vh",
+          }}
+        >
+          <l-bouncy size="45" speed="1.75" color="#002452"></l-bouncy>
+        </div>
+      </>
+    );
+  }
 
   return (
     <>

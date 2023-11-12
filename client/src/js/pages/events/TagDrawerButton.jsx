@@ -118,8 +118,8 @@ function TagDrawerButton({
                 </div>
                 ))}
             </div>
-            <button onClick={() => onClear()}>Clear</button>
-            <button onClick={() => onReload()}>Apply</button>
+            <button class="btn--new btn--create" onClick={() => onClear()}>Reset</button>
+            <button class="btn--new btn--create" onClick={() => onReload()}>Apply</button>
           </div>
         )}
     </>

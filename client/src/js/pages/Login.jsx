@@ -5,20 +5,27 @@ import "../../css/components/Button.css";
 import Navbar from "../components/Navbar";
 
 function Login() {
+  // State variables to manage form inputs and messages
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [remember, setRemember] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [loginSuccess, setLoginSuccess] = useState(false);
+
+  // React Router navigation hook
   const navigate = useNavigate();
 
+  // Function to handle form submission
   const submitLoginForm = (e) => {
     e.preventDefault();
+    // Check if the password meets a minimum length requirement
     if (password.length < 8) {
       setErrorMessage("Password must be at least 8 characters long.");
       return;
     }
+
+    // Send a POST request to the authentication API
     fetch("/api/auth/login", {
       method: "POST",
       headers: {
@@ -36,19 +43,23 @@ function Login() {
         return res.json();
       })
       .then((data) => {
+        // Store authentication tokens and user data in local storage
         localStorage.setItem("access_token", data.access_token);
         localStorage.setItem("refresh_token", data.refresh_token);
         localStorage.setItem("user", JSON.stringify(data.user));
 
+        // Accessing stored user email and id
         const user = JSON.parse(localStorage.getItem("user"));
-        console.log(user.email); // accessing stored user email
-        console.log(user.id); // accessing stored user id
+        console.log(user.email);
+        console.log(user.id);
 
+        // Clear form inputs and set login success state
         setEmail("");
         setPassword("");
         setLoginSuccess(true);
         setErrorMessage("");
 
+        // Navigate to the home page and trigger a login-success event
         navigate("/");
         window.dispatchEvent(new Event("login-success"));
       })
@@ -59,6 +70,7 @@ function Login() {
 
   return (
     <>
+      {/* Render the Navbar component */}
       <Navbar />
       <div className="login-container">
         <div className="login-card">
@@ -107,7 +119,9 @@ function Login() {
                 Forgot Password?
               </a>
             </div>
+            {/* Display error message if login fails */}
             {errorMessage && <p className="error-message">{errorMessage}</p>}
+            {/* Display success message if login succeeds */}
             {loginSuccess && (
               <p className="success-message" style={{ textAlign: "center" }}>
                 Login successful!
