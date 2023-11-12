@@ -18,13 +18,16 @@ function Home() {
   /* Configure Infinite Scroll */
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
+  const [hasMore, setHasMore] = useState(true);
 
+  /* Configure login state for favouriting system */
   const isLogged = JSON.parse(localStorage.getItem("user")) ? true : false; //find if user logged in
   const [favEvents, setFavEvents] = useState([]); //favourite events
   const [initialLoad, setInitialLoad] = useState(true); //initial load
 
   var spin_lock = false; // access control
 
+  // Fetch events from API
   const loadEvents = async (page) => {
     if (!spin_lock && !loading) {
       spin_lock = true;
@@ -32,16 +35,21 @@ function Home() {
       setLoading(true);
       try {
         // Configure the query attributes
-        var fetchQuery = `api/events/?page=1&limit=12&ft=1`;
-        fetchQuery = fetchQuery.concat(`&ord=4`);
+        var fetchQuery = `api/events/?page=1&limit=12&ft=1`; // Only fetch 12 events with dates in the future
+        fetchQuery = fetchQuery.concat(`&ord=4`); // Order by popularity
 
+        // Send request
         const response = await fetch(fetchQuery);
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
         }
+
+        // Receive response
         const data = await response.json();
         //console.log("Fetched data:", data);
         //console.log("Prev data", events);
+        
+        // Populate events array
         if (data.length) {
           setEvents((prevEvents) => [...prevEvents, ...data]);
         }
@@ -69,6 +77,7 @@ function Home() {
     loadEvents(1);
   }, []);
 
+  // Favouriting system initialization
   useEffect(() => {
     if (!initialLoad && favEvents.length > 0) {
       const body = {
@@ -103,6 +112,7 @@ function Home() {
     }
   }, [favEvents]);
 
+  // Dynamic billboard
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentBillboard((current) => (current + 1) % billboardImages.length);
@@ -111,6 +121,7 @@ function Home() {
     return () => clearInterval(interval);
   }, []);
 
+  // Favouriting click handler
   const handleStarClick = (clickedEvent) => {
     /* Favorite logic */
     if (isLogged) {
@@ -129,7 +140,8 @@ function Home() {
       alert("You must be logged in to favourite events.");
     }
   };
-  bouncy.register();
+
+  bouncy.register(); // Loading screen
 
   if (loading) {
     return (

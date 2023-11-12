@@ -16,6 +16,7 @@ function Events() {
   const [page, setPage] = useState(1);
   const [pageLimit, setPageLimit] = useState(20);
   const [loading, setLoading] = useState(false);
+  const [hasMore, setHasMore] = useState(true);
 
   /* Configure Tags */
   const [selectedTags, setSelectedTags] = useState([]);
@@ -33,15 +34,14 @@ function Events() {
   const [fUid, setfUid] = useState(null); // UserID <int>
   const [fOrd, setfOrd] = useState(0); // Sort order 0: Date asc 1: Date desc 2: Create asc 3: Create desc 4: Attend asc 5: Attend desc
 
+  /* Configure Favoriting System */
   const isLogged = JSON.parse(localStorage.getItem("user")) ? true : false; //find if user logged in
   const [favEvents, setFavEvents] = useState([]); //favourite events
   const [initialLoad, setInitialLoad] = useState(true); //initial load
 
   var spin_lock = false; // access control
 
-  //TODO double children under load events
-  //TODO reset button to reset all fields
-
+  /* API Fetch */
   const loadEvents = async (page) => {
     if (!spin_lock && !loading) {
       spin_lock = true;
@@ -96,6 +96,8 @@ function Events() {
         if (data.length) {
           setEvents((prevEvents) => [...prevEvents, ...data]);
           setPage((prevPage) => prevPage + 1);
+        } else {
+          setHasMore(false);
         }
 
         if (isLogged) {
@@ -116,11 +118,12 @@ function Events() {
     }
   };
 
-  // Initial load
+  // Initial events by getting first page
   useEffect(() => {
     loadEvents(1);
   }, []);
 
+  // Initialize favourites by getting user info
   useEffect(() => {
     if (!initialLoad && favEvents.length > 0) {
       const body = {
@@ -155,13 +158,13 @@ function Events() {
     }
   }, [favEvents]);
 
-  // Scroll listener (infinite scroll)
+  // Scroll listener for infinite scroll
   useEffect(() => {
     const handleScroll = () => {
       if (
         window.innerHeight + document.documentElement.scrollTop <
           document.documentElement.offsetHeight - 100 ||
-        loading
+        loading || !hasMore
       ) {
         return;
       } else {
@@ -175,36 +178,31 @@ function Events() {
     };
   }, [page, loading]);
 
+  // Handlers for various query attributes
   const handleTagsSelected = (selection) => {
     setSelectedTags(selection);
     //handleReload();
   };
-
   const handleSortChange = (value) => {
     setfOrd(value);
     //handleReload();
   };
-
   const handleNameSearch = (name) => {
     setfName(name);
     //handleReload();
   };
-
   const handleHostSearch = (host) => {
     setfHost(host);
     //handleReload();
   };
-
   const handleLocationSearch = (location) => {
     setfLoc(location);
     //handleReload();
   };
-
   const handleTimeSelect = (time) => {
     setfTimeS(time);
     //handleReload();
   };
-
   const handleEndTimeSelect = (time) => {
     if (!fTimeS || time > fTimeS) {
       setfTimeE(time);
@@ -213,7 +211,6 @@ function Events() {
       alert("End time must be later than start time.");
     }
   };
-
   const handleDateSelect = (date) => {
     setfDate(date);
     //handleReload();
@@ -223,23 +220,34 @@ function Events() {
     setfCap(number);
     //handleReload();
   };
-
   const handleCapacityReachedToggle = (reached) => {
     setfCapR(reached ? 1 : 0);
     //handleReload();
   };
-
   const handleRecurringSelect = (recurring) => {
     setfReo(recurring);
     //handleReload();
   };
-
+  const clearFilters = () => {
+    setfName(null);
+    setfLoc(null);
+    setfTimeS(null);
+    setfTimeE(null);
+    setfDate(null);
+    setfCap(null);
+    setfCapR(null);
+    setfReo(null);
+    setfHost(null);
+    setfUid(null)
+    setfOrd(null);
+  }
   const handleReload = () => {
     setPage(1);
     setEvents([]);
     loadEvents(1);
   };
 
+  // Favouriting event handler
   const handleStarClick = (clickedEvent) => {
     /* Favorite logic */
     if (isLogged) {
@@ -297,6 +305,7 @@ function Events() {
             onReload={handleReload}
             onSort={handleSortChange}
             curSort={fOrd}
+            onClear={clearFilters}
           />
         </span>
         <EventsGrid

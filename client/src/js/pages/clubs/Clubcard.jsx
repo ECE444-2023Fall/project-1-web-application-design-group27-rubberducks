@@ -5,6 +5,8 @@ import {
 } from "react-icons/fa";
 import "../../../css/pages/clubs/Clubcard.css";
 
+/* This is the individual cards that represent a club */
+
 function ClubCard({club}) {
   var label = null;
   if (club.events && club.events.length > 2) {

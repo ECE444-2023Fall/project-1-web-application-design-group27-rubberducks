@@ -6,6 +6,8 @@ import Navbar from "../../components/Navbar";
 import { bouncy } from "ldrs";
 import { set } from "react-hook-form";
 
+/* This is the club page itself */
+
 function Clubs() {
   /* Configure Clubs Collection */
   const [clubs, setClubs] = useState([]);
@@ -14,6 +16,7 @@ function Clubs() {
   const [page, setPage] = useState(1);
   const [pageLimit, setPageLimit] = useState(20);
   const [loading, setLoading] = useState(false);
+  const [hasMore, setHasMore] = useState(true);
 
   /* Configure Query */
   const [fOrd, setfOrd] = useState(0); // Sort order 0: Date asc 1: Date desc 2: Create asc 3: Create desc 4: Attend asc 5: Attend desc
@@ -22,6 +25,7 @@ function Clubs() {
 
   var spin_lock = false; // access control
 
+  /* Fetch clubs from API */
   const loadClubs = async (page) => {
     if (!spin_lock && !loading) {
       spin_lock = true;
@@ -41,6 +45,8 @@ function Clubs() {
         if (data.length) {
           setClubs((prevClubs) => [...prevClubs, ...data]);
           setPage((prevPage) => prevPage + 1);
+        } else {
+          setHasMore(false);
         }
       } catch (error) {
         console.error("Failed to fetch clubs:", error);
@@ -62,7 +68,7 @@ function Clubs() {
       if (
         window.innerHeight + document.documentElement.scrollTop <
           document.documentElement.offsetHeight - 100 ||
-        loading
+        loading || !hasMore
       ) {
         return;
       } else {
