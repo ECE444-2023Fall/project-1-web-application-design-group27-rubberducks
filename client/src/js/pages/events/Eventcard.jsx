@@ -11,18 +11,21 @@ import {
 import "../../../css/pages/events/Eventcard.css";
 
 function EventCard({ event, onStarClick, favEvents }) {
+  /* If event is created within last 3 days, assign "New" label */
   const eventDate = new Date(event.date_created);
   const currentDate = new Date();
   const threeDaysAgo = new Date();
   threeDaysAgo.setDate(currentDate.getDate() - 3);
-  const isLogged = JSON.parse(localStorage.getItem("user")) ? true : false; //find if user logged in
-
   var label = null;
   if (event.attendees && event.attendees.length > 20) {
     label = "Hot";
   } else if (eventDate >= threeDaysAgo && eventDate <= currentDate) {
     label = "New";
   }
+
+  const isLogged = JSON.parse(localStorage.getItem("user")) ? true : false; //find if user logged in
+
+  /* Event Card */
   return (
     <li title={`View ${event.name}`} className="eventCard">
       <Link className="eventLink" to={`/events/${event.eid}`}>

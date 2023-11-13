@@ -24,7 +24,8 @@ import Create_Event from "./js/pages/host_profile/Create_Event.jsx";
 import InboxPage from "./js/pages/Inbox.jsx";
 import Events from "./js/pages/events/Events.jsx";
 import EventDetailsPage from "./js/pages/EventDetails.jsx";
-import Home from "./js/pages/Home.jsx";
+import Home from "./js/pages/home/Home.jsx";
+import Clubs from "./js/pages/clubs/Clubs.jsx";
 import Login from "./js/pages/Login.jsx";
 import SignUp from "./js/pages/SignUp.jsx";
 import NotFound from "./js/pages/Not_Found.jsx";
@@ -80,6 +81,9 @@ const router = createBrowserRouter(
         <Route path=":eventId" element={<EventDetailsPage />} />
         <Route path=":eventId/attendees" element={<AttendeeList />} />
         <Route path=":eventId/edit_event" element={<Edit_Event />} />
+      </Route>
+      <Route path="clubs" errorElement={<ResourceError />}>
+        <Route element={<Clubs />} index />
       </Route>
       <Route path="inbox" element={<InboxPage />} />
       <Route path="404" element={<ResourceError />} />
