@@ -3,19 +3,19 @@ import { FaMapMarkerAlt, FaCalendar, FaClock } from "react-icons/fa";
 //import { useNavigate } from "react-router-dom";
 import { useParams, useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
-import EventHostSidebar from "../components/EventHostSideBar";
-// import { useGetHostInfo } from "../useGetHostInfo";
+import HostSidebar from "../components/HostSideBar";
 import { useGetEventInfo } from "../useGetEventInfo";
 import Map from "../components/Map";
 import { Button } from "../components/Button";
 import "../../css/components/EventDetails.css";
 import "../../css/components/Button.css";
-// import TagSelect from "./host_profile/Tag_Select";
 import AttendeeList from "./host_profile/Attendee";
 import { Loader } from "@googlemaps/js-api-loader";
-import HostSidebar from "../components/HostSidebar";
+import tagData from '../../../tags.json';
 import { Get_Img_Link } from "../components/Get_Img_Link";
+import { bouncy } from "ldrs";
 
+// format the imported time to display in AM/PM
 function formatTime(timeString) {
   // Use a regular expression to extract hours and minutes
   const timeParts = /^(\d+):(\d+):\d+$/.exec(timeString);
@@ -37,11 +37,13 @@ function formatTime(timeString) {
   return `${formattedHours}:${formattedMinutes} ${period}`;
 }
 
+// format the imported date to display as dd, month yyyy
 function formatDate(dateString) {
   const options = { year: "numeric", month: "long", day: "numeric" };
   return new Date(dateString).toLocaleDateString("en-US", options);
 }
 
+// return the string associated with the reoccurring integer
 function processReoccuring(reoccuring) {
   const label = ["Not Reoccuring", "Daily", "Weekly", "Bi-weekly", "Monthly"];
 
@@ -52,113 +54,72 @@ function processReoccuring(reoccuring) {
   }
 }
 
-// function translateTags(tags) {
+function convertTags(tagList) {
+  // Check if tagList is empty
+  if (!tagList || tagList.length === 0) {
+      return null;
+  }
 
-//   const tagNames = [
-//     "Zero", "One", "Two", "Three", "Four",
-//     "Five", "Six", "Seven", "Eight", "Nine"
-//   ];
+  // Create a mapping from numbers to words based on the tag data
+  const mapping = tagData.tags.reduce((acc, tag, index) => {
+      acc[(index + 1)] = tag.tag;
+      return acc;
+  }, {});
 
-//   const result = tags.map((num) => {
-//     if (num >= 0 && num < tagNames.length) {
-//       return tagNames[num];
-//     }
-//     return "";
-//   });
+  // Convert number strings to integers and then to words using the mapping
+  const result = [];
+  for (let i = 0; i < tagList.length; i++) {
+      const numStr = tagList[i];
+      const num = parseInt(numStr, 10);
+      result.push(mapping[num]);
+  }
 
-//   return result;
-// }
+  return result;
+}
 
 export default function EventDetailsPage() {
   const { eventId = "" } = useParams();
-  const [loading, setLoading] = useState(true);
-  const [eventInfo, setEventInfo] = useState({});
-  const [hostInfo, setHostInfo] = useState({});
-  const [error, setError] = useState(null);
-  const [user, setUser] = useState({});
+  const { eventInfo, hostInfo, userInfo, userLoggedIn, ownerLoggedIn, isAlreadyRegistered, loading } = useGetEventInfo(eventId);
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const loadEventInfo = async () => {
-      try {
-        const eventResponse = await fetch("/api/events/" + eventId);
-
-        if (eventResponse.status === 404) {
-          setError("Event not found");
-        } else if (eventResponse.ok) {
-          const eventData = await eventResponse.json();
-          setEventInfo(eventData);
-
-          const hostId = eventData.owner;
-
-          const hostResponse = await fetch("/api/hosts/" + hostId);
-
-          if (hostResponse.status === 404) {
-            setError("Host not found");
-          } else if (hostResponse.ok) {
-            const hostData = await hostResponse.json();
-            setHostInfo(hostData);
-          } else {
-            setError("Error fetching host information");
-            console.log(hostResponse.status);
-          }
-        } else {
-          setError("Error fetching event information");
-          console.log(eventResponse.status);
-        }
-      } catch (err) {
-        setError("Network error");
-        console.error(err);
-      } finally {
-        setLoading(false);
-      }
-    };
-    // get current user info for registration
-    const getUserInfo = async () => {
-      const get_user = JSON.parse(localStorage.getItem("user"));
-      if (!get_user || !get_user.id) {
-        console.error("No user id found");
-        setError("User not logged in");
-      } else {
-        const userResponse = await fetch(`/api/accounts/${get_user.id}`);
-        if (userResponse.status === 404) {
-          setError("User information not found");
-        } else if (userResponse.ok) {
-          const userData = await userResponse.json();
-          setUser(userData);
-        }
-      }
-    };
-    loadEventInfo();
-    getUserInfo();
-  }, [eventId]);
 
   const formattedDate = formatDate(eventInfo.date);
   const formattedStartTime = formatTime(eventInfo.start_time);
   const formattedEndTime = formatTime(eventInfo.end_time);
   const reoccurrence = processReoccuring(eventInfo.reoccuring);
-  // const tagArray = translateTags(eventInfo.tags);
+  const tagLabels = convertTags(eventInfo.tags);
 
-  const [button, setButton] = useState(true);
-  const isOwner = user.uid === hostInfo.owner;
+  const [checkRegistered, setCheckRegistered] = useState(isAlreadyRegistered);
 
-  const showButton = () => {
-    setButton(true);
+  const checkIfRegistered = () => {
+    if (!loading && userLoggedIn) {
+      console.log("user", userInfo);
+      if (eventInfo.attendees.includes(userInfo.uid)) {
+        setCheckRegistered(true);
+      } else {
+        setCheckRegistered(false);
+      }
+    } else {
+      setCheckRegistered(false);
+    }
   };
 
   useEffect(() => {
-    showButton();
-  }, []);
+    checkIfRegistered();
+  }, [userLoggedIn, eventInfo, userInfo]);
 
   const handleRegister = () => {
-    console.log("user", user);
+    // checkIfRegistered();
+    console.log("user", userInfo);
     //make sure there is still space left for the event
     if (eventInfo.attendees.length >= eventInfo.capacity) {
       setMessage("The event is at full capacity.");
-    } 
-    //check if user already registered
-    else if (eventInfo.attendees.includes(user.uid)) {
+      // if user isn't logged in, send them to login page
+    } else if (!userLoggedIn) {
+      setMessage("Please log in to register.")
+      navigate(`/login`);
+      // if user is already listed as attendee, 
+    } else if (eventInfo.attendees.includes(userInfo.uid)) {
       setMessage("You are already registered.");
     } else {
       //update attendees for event
@@ -171,6 +132,7 @@ export default function EventDetailsPage() {
           name: eventInfo.name,
           description: eventInfo.description,
           location: eventInfo.location,
+          coords: eventInfo.coords,
           date: eventInfo.date,
           start_time: eventInfo.start_time,
           end_time: eventInfo.end_time,
@@ -179,51 +141,151 @@ export default function EventDetailsPage() {
           date_created: eventInfo.date_created,
           owner: eventInfo.owner,
           tags: eventInfo.tags,
-          coords: eventInfo.coords,
-          attendees: [...eventInfo.attendees, user.uid],
+          attendees: [...eventInfo.attendees, userInfo.uid],
           profile_pic: eventInfo.profile_pic,
         }),
       }).then((response) => {
         if (response.ok) {
-          setMessage("You are successfully registered.");
           //update registered event in user's account
-          fetch(`/api/accounts/${user.uid}`, {
-            method: "PUT",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              name: user.name,
-              email: user.email,
-              events: [...user.events, eventId],
-              fav_events: user.fav_events,
-              orgs: user.orgs,
-              msgids: user.msgids,
-              profile_pic: user.profile_pic,
-            }),
-          }).then((response) => {
-            if (response.ok) {
-              console.log("User account updated successfully.");
-            } else {
-              // Handle errors, e.g., show an error message
-              console.error("User account update failed.");
-            }
-          });
+          if (userInfo.events.includes(eventId)) {
+            console.log("User's events already includes this event");
+          } else {
+            fetch(`/api/accounts/${userInfo.uid}`, {
+              method: "PUT",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                name: userInfo.name,
+                email: userInfo.email,
+                events: [...userInfo.events, eventId],
+                fav_events: userInfo.fav_events,
+                orgs: userInfo.orgs,
+                msgids: userInfo.msgids,
+                profile_pic: userInfo.profile_pic,
+              }),
+            }).then((response) => {
+              if (response.ok) {
+                console.log("User account updated successfully.");
+                setCheckRegistered(true);
+              } else {
+                // Handle errors, e.g., show an error message
+                console.error("User account update failed.");
+              }
+            });
+            setMessage("You are successfully registered.");
+          }
         } else {
           setMessage("Registration Failed.");
         }
       });
     }
+    checkIfRegistered();
   };
+
+  const handleUnregister = () => {
+    // checkIfRegistered();
+    console.log("user", userInfo);
+    //check that user is registered
+    if (eventInfo.attendees.includes(userInfo.uid)) {
+
+      console.log(`event attendees before: ${eventInfo.attendees}`)
+      const updated_attendees = eventInfo.attendees.filter((u) => u !== parseInt(userInfo.uid,10))
+      console.log(`event attendees after: ${updated_attendees}`)
+
+      fetch(`/api/events/${eventId}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: eventInfo.name,
+          description: eventInfo.description,
+          location: eventInfo.location,
+          coords: eventInfo.coords,
+          date: eventInfo.date,
+          start_time: eventInfo.start_time,
+          end_time: eventInfo.end_time,
+          capacity: eventInfo.capacity,
+          reoccuring: eventInfo.reoccuring,
+          date_created: eventInfo.date_created,
+          owner: eventInfo.owner,
+          tags: eventInfo.tags,
+          attendees: updated_attendees,
+          profile_pic: eventInfo.profile_pic,
+        }),
+      }).then((response) => {
+        if (response.ok) {
+          //remove event from user's account
+          console.log(`account events before: ${userInfo.events}`)
+          const updated_events = userInfo.events.filter((e) => e !== parseInt(eventId,10))
+          console.log(`account events before: ${updated_events}`)
+          
+          fetch(`/api/accounts/${userInfo.uid}`, {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              name: userInfo.name,
+              email: userInfo.email,
+              events: updated_events,
+              fav_events: userInfo.fav_events,
+              orgs: userInfo.orgs,
+              msgids: userInfo.msgids,
+              profile_pic: userInfo.profile_pic,
+            }),
+          }).then((response) => {
+            if (response.ok) {
+              console.log("User account updated successfully.");
+              setCheckRegistered(false);
+            } else {
+              // Handle errors, e.g., show an error message
+              console.error("User account update failed.");
+            }
+          });
+          setMessage("You are successfully unregistered.");
+        } else {
+          setMessage("Unregistration Failed.");
+        }
+      });
+    } else {
+      setMessage("You have not registered yet.");
+    }
+    checkIfRegistered();
+  };
+
+  const isOwner = userInfo.uid === hostInfo.owner;
 
   const handleEdit = () => {
     navigate(`/events/${eventId}/edit_event`);
   };
 
+  const imageUrl = Get_Img_Link(eventInfo.profile_pic);
+
+  if (loading) {
+    return (
+      <>
+        <Navbar />
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "100vh",
+          }}
+        >
+          <l-bouncy size="45" speed="1.75" color="#002452"></l-bouncy>
+        </div>
+      </>
+    );
+  }
+
   return (
     <>
       <Navbar />
       <HostSidebar
+        ownerLoggedIn={ownerLoggedIn}
         hid={hostInfo.hid}
         name={hostInfo.name}
         email={hostInfo.email}
@@ -232,20 +294,14 @@ export default function EventDetailsPage() {
       />
       <div className="event">
         <div className="event--base">
-          <div className="event--header-pic">
-            {/* <div className="event--header-pic" style={{ backgroundImage: 'url("images/placeholder.png"), linearGradient(rgba(0, 0, 0, 0.1))' }}> */}
-            <div className="event--header-pic">
-            <img src={Get_Img_Link(eventInfo.profile_pic)}/>
-              </div>
+          <div className="event--header">
+            <img className="event--bg" src={imageUrl}/>
             <div className="event--header-bar">
               <h1 className="event--header-text">{eventInfo.name}</h1>
+              <ul className="event-subtitle">{hostInfo.name}</ul>
               {/* display event button only if current user is the owner of the event host */}
               {isOwner && (
-              <Button
-                onClick={handleEdit}
-                buttonStyle=".btn--grey"
-                buttonSize="btn--large"
-              >
+              <Button onClick={handleEdit} buttonStyle="event--edit-btn" buttonSize="btn--large">
                 Edit Event
               </Button>
               )}
@@ -262,9 +318,7 @@ export default function EventDetailsPage() {
                     </ul>
                     <ul className="event--item-center">
                       <FaClock className="event--icon" />
-                      <ul>{formattedStartTime}</ul>
-                      <ul>{"-  "}</ul>
-                      <ul>{formattedEndTime}</ul>
+                      <ul>{`${formattedStartTime} - ${formattedEndTime}`}</ul>
                     </ul>
                     <ul className="event--item-center">
                       <FaMapMarkerAlt className="event--icon" />
@@ -280,45 +334,41 @@ export default function EventDetailsPage() {
                 <div className="event--two-columns-left-offset">
                   <div className="event--register">
                     <div className="event--button">
-                      {button && (
-                        <Button
-                          onClick={handleRegister}
-                          buttonStyle="btn--register"
-                          buttonSize="btn--large"
-                        >
+                      {ownerLoggedIn ? ( 
+                        <Button to={`/events/${eventId}/attendees`} buttonStyle="btn--register" buttonSize="btn--large">
+                          Attendee Info
+                        </Button>
+                        ) : checkRegistered ? (
+                        <Button onClick={handleUnregister} buttonStyle="btn--register" buttonSize="btn--large">
+                          Unregister
+                        </Button>
+                        ) : (
+                        <Button onClick={handleRegister} buttonStyle="btn--register" buttonSize="btn--large">
                           Register
                         </Button>
                       )}
                     </div>
                     {message && <p>{message}</p>}
-                    <div className="event--button">
-                      {button && (
-                        <Button
-                          to={`/events/${eventId}/attendees`}
-                          buttonStyle="btn--register"
-                          buttonSize="btn--large"
-                        >
-                          Attendee Info
-                        </Button>
-                      )}
-                    </div>
                   </div>
                   <div className="event--additional-info">
                     <div className="event--item">
-                      <div className="label">{"Event Tags"}</div>
-                      {/* <div className="text">
-                        {tagArray.map((tag, index) => (
-                          <span key={index} className="event-tag">{tag}</span>
-                        ))}
-                      </div> */}
-                      <div className="text">{eventInfo.tags}</div>
+                      <div className="label">{"Event Tags:"}</div>
+                      {!loading && tagLabels !== null ? (
+                        tagLabels.map(tagLabel => (
+                        <div key={tagLabel} className="event-tag">
+                          {tagLabel}
+                        </div>
+                      ))
+                      ) : (
+                        <div className="text">{""}</div>
+                      )}  
                     </div>
                     <div className="event--item">
-                      <div className="label">{"Reoccurrence"}</div>
+                      <div className="label">{"Reoccurrence:"}</div>
                       <div className="text">{reoccurrence}</div>
                     </div>
                     <div className="event--item">
-                      <div className="label">{"Event Capacity"}</div>
+                      <div className="label">{"Event Capacity:"}</div>
                       <div className="text">{eventInfo.capacity}</div>
                     </div>
                   </div>
@@ -337,24 +387,3 @@ export default function EventDetailsPage() {
   );
 }
 
-// const [event, setEvent] = useState("");
-
-// useEffect(() => {
-
-//   fetch("/api/events/${eid}")
-//     .then((response) => response.json())
-//     .then((data) => {
-//       const jsonString = JSON.stringify(data, null, 2);
-//       setEvent(jsonString);
-//     })
-//     .catch((error) => console.error("Failed to fetch event", error));
-
-// }, [eid]);
-
-// return (
-//   <div>
-//       {events.map(event => (
-//         <EventDetails key={eid} event={event}/>
-//       ))}
-//   </div>
-// );

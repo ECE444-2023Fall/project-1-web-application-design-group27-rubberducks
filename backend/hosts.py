@@ -15,13 +15,13 @@ hosts_ns = Namespace("hosts", description="Host operations")
 host_model = hosts_ns.model(
     "Host",
     {
-        "hid": fields.Integer,
-        "name": fields.String,
-        "email": fields.String,
-        "bio": fields.String,
-        "events": fields.List(fields.Integer),
-        "owner": fields.Integer,
-        "pending_transfer": fields.Boolean,
+        "hid": fields.Integer,  # Unique host identifier
+        "name": fields.String,  # Host name
+        "email": fields.String,  # Host email address
+        "bio": fields.String,  # Brief biography of the host
+        "events": fields.List(fields.Integer),  # List of event IDs associated with the host
+        "owner": fields.Integer,  # Owner's user ID
+        "pending_transfer": fields.Boolean,  # Status flag for pending ownership transfer
         "profile_pic": fields.Integer,
     },
 )

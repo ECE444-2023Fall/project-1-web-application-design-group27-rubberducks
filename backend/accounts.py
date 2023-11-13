@@ -12,16 +12,15 @@ accounts_ns = Namespace("accounts", description="Account operations")
 account_model = accounts_ns.model(
     "Account",
     {
-        "uid": fields.Integer,
-        "name": fields.String,
-        "email": fields.String,
-        "password": fields.String,
-        "events": fields.List(fields.Integer),
-        "fav_events": fields.List(fields.Integer),
-        "orgs": fields.List(fields.Integer),
-        "msgids": fields.List(fields.Integer),
+        "uid": fields.Integer,           # Unique identifier for the account
+        "name": fields.String,           # Account holder's name
+        "email": fields.String,          # Account holder's email
+        "password": fields.String,       # Account password (hashed)
+        "events": fields.List(fields.Integer),    # List of event IDs associated with the account
+        "fav_events": fields.List(fields.Integer),    # List of favorite event IDs
+        "orgs": fields.List(fields.Integer),         # List of organization IDs associated with the account
+        "msgids": fields.List(fields.Integer),       # List of message IDs related to the account
         "profile_pic": fields.Integer
-
     },
 )
 

@@ -67,7 +67,7 @@ export default function Create_Event() {
     setReoccuring(event.target.value);
   };
 
-
+  //fetch host info for later put request
   const handlePictureSelect = (index) => {
     setSelectedPictureIndex(index);
   };

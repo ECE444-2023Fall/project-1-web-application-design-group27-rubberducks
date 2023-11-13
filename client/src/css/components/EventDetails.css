@@ -6,6 +6,10 @@
 
 .event {
   background: #fff;
+  display: inline-block;
+  margin: 0;
+  padding: 0;
+  width: 100%;
 }
 
 .event--base {
@@ -15,63 +19,12 @@
   background: #fff;
 }
 
-.event--sidebar {
-  /* flex: 0 0 30%; */
-  display: inline-block;
-  max-width: 300px;
-  width: 300px;
-  position: fixed;
-  background-color: #f1f1f1;
-  align-items: flex-start;
-  height: 100%;
-  padding: 20px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  overflow: auto;
-}
 
 .event--main {
   padding: 2rem;
   background: #fff;
 }
 
-.event--sidebar img {
-  display: block;
-  margin: 20px auto;
-  width: 80%;
-  max-width: 200px;
-  border-radius: 50%;
-}
-
-.event--sidebar .host--name {
-  text-align: center;
-  font-size: 1.2rem;
-  font-weight: bold;
-  margin-top: 10px;
-}
-
-.event--sidebar .host--email {
-  text-align: center;
-  font-size: 1rem;
-  margin-top: 5px;
-  color: #666;
-}
-
-/* .event--sidebar .host--bio {
-  margin-top: 20px;
-  padding: 10px;
-  background-color: transparent;
-  border-radius: 5px;
-}
-
-.event--sidebar .host--tags {
-  font-size: 12px;
-  margin-top: 30px;
-  margin-left: 30px;
-  padding: 10px;
-  border-radius: 5px;
-  width: 100%;
-  box-sizing: border-box;
-} */
 
 h1 {
   text-align: center;
@@ -84,31 +37,43 @@ h1 {
   max-width: 1120px;
   width: 90%;
   margin: 0 auto;
-  height: 100px;
+  min-height: 100px;
+  position: relative;
 }
 
-.event--header-pic {
-  background-size: 100% auto;
-  background-position: center center;
-  background-repeat: no-repeat;
-  background-color: rgb(149, 181, 241);
+
+.event--header {
   height: 200px;
   overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-flow: column;
+  position: relative;
+}
+
+.event--bg {
+  position: absolute;
+  width: 100%;
+  height: auto;
+  opacity: 0.2;
 }
 
 .event--header-text {
   color: #252e48;
-  font-size: 50px;
-  justify-self: center;
+  font-size: 3em;
+  justify-content: center;
+  margin-bottom: 10px;
   /* line-height: 24px; */
 }
 
 .event-subtitle {
   text-align: center;
+  font-size: 1.5rem;
+}
+
+.event--edit-btn {
+  border:1px solid #002452;
 }
 
 .event--icon {
@@ -157,9 +122,13 @@ h1 {
   text-align: center;
 }
 
+.event--time {
+  padding: 0px 7px;
+}
+
 .event--item-center {
   display: flex;
-  justify-content: space-evenly;
+  /* justify-content: space-evenly; */
   flex: 1;
   margin: 0.5rem 1rem;
   border-radius: 10px;

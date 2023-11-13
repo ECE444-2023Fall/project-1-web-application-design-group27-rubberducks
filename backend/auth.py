@@ -62,6 +62,7 @@ class SignUp(Resource):
             name=data["name"],
             email=email,
             password=generate_password_hash(data["password"]),
+            # Additional fields like events, fav_events, etc., can be initialized here
             events=[],
             fav_events=[],
             orgs=[],
