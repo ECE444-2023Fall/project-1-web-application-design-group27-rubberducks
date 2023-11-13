@@ -136,7 +136,7 @@ function CreateHostProfile() {
   return (
     <div className="container">
       <div className="create-host-title">
-        <h2>Create Host Profile</h2>
+        <h2>Crea</h2>
       </div>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="form-group">
