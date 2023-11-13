@@ -723,3 +723,282 @@ export function Profile_edit() {
     </>
   );
 }
+
+
+export function Club_Edit() {
+  const [userInfo] = useOutletContext();
+
+  const [showDelete, setShowDelete] = useState(false);
+  const handleCloseDelete = () => setShowDelete(false);
+  const handleShowDelete = () => setShowDelete(true);
+  const [loading, setLoading] = useState(false);
+
+  const handleAccountDelete = useCallback(async () => {
+    setLoading(true);
+    for (let org of userInfo.orgs) {
+      //get all the orgs the user has
+      const orgInfo = await fetch(`/api/hosts/${org}`).then((res) =>
+        res.json()
+      );
+
+      for (let event of orgInfo.events) {
+        //get all the events the org has
+        const eventInfo = await fetch(`/api/events/${event}`).then((res) =>
+          res.json()
+        );
+
+        for (let attendee of eventInfo.attendees) {
+          //get all the attendees of the event
+          const attendeeInfo = await fetch(`/api/accounts/${attendee}`).then(
+            (res) => res.json()
+          );
+          //remove the event from the attendees' events and fav_events
+          const attendeeRes = await fetch(`/api/accounts/${attendee}`, {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              events: attendeeInfo.events.filter((e) => e !== event),
+              fav_events: attendeeInfo.fav_events.filter((e) => e !== event),
+            }),
+          });
+        }
+
+        //delete the event
+        const eventRes = await fetch(`/api/events/${event}`, {
+          method: "DELETE",
+        });
+
+        if (!eventRes.ok) {
+          throw new Error("Failed to delete event");
+        }
+      }
+      //delete the org
+      const orgRes = await fetch(`/api/hosts/${org}`, {
+        method: "DELETE",
+      });
+
+      if (!orgRes.ok) {
+        throw new Error("Failed to delete org");
+      }
+    }
+    //delete the account
+    const accountRes = await fetch(`/api/accounts/${userInfo.uid}`, {
+      method: "DELETE",
+    });
+
+    setLoading(false);
+
+    if (accountRes.ok) {
+      localStorage.removeItem("access_token");
+      localStorage.removeItem("refresh_token");
+      localStorage.removeItem("user");
+      navigate("/login");
+    } else {
+      throw new Error("Failed to delete account");
+    }
+  }, []);
+
+  const navigate = useNavigate();
+  const {
+    register,
+    reset,
+    formState: { errors },
+    handleSubmit,
+  } = useForm();
+
+  const submitForm = (data) => {
+    if (data.password === data.confirmPassword) {
+      checkPassword(userInfo.email, data.oldPassword)
+        .then((isValid) => {
+          if (isValid) {
+            if (data.username === "") {
+              data.username = userInfo.name;
+            }
+            if (data.password === "") {
+              data.password = data.oldPassword;
+            }
+            const body = {
+              name: data.username,
+              password: data.password,
+              email: userInfo.email,
+              events: userInfo.events,
+              fav_events: userInfo.fav_events,
+              orgs: userInfo.orgs,
+              msgids: userInfo.msgids,
+            };
+
+            const accessToken = localStorage.getItem("access_token");
+
+            const headers = {
+              Authorization: `Bearer ${accessToken}`,
+              "Content-Type": "application/json",
+            };
+
+            const requestOptions = {
+              method: "PUT",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${accessToken}`,
+              },
+              body: JSON.stringify(body),
+            };
+
+            fetch("/api/accounts/" + userInfo.uid, requestOptions)
+              .then((res) => {
+                if (!res.ok) {
+                  throw new Error(res.statusText);
+                }
+                return res.json();
+              })
+              .then((data) => {
+                navigate("/profile/clubs");
+              })
+              .catch((error) => {
+                console.error(
+                  "There has been a problem with your put operation:",
+                  error
+                );
+              });
+            reset();
+          } else {
+            alert("Previous password incorrect");
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    } else {
+      alert("Passwords do not match");
+    }
+  };
+
+  bouncy.register();
+
+  if (loading) {
+    return (
+      <>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "100vh",
+          }}
+        >
+          <l-bouncy size="45" speed="1.75" color="#002452"></l-bouncy>
+        </div>
+      </>
+    );
+  }
+
+  return (
+    <>
+      <div className="form">
+        <h1 className="edit_header">Edit Profile</h1>
+        <br />
+        <Form>
+          <Form.Group>
+            <Form.Label>New Name</Form.Label>
+            <br />
+            <Form.Control
+              type="text"
+              placeholder="New Name"
+              {...register("username", { maxLength: 50 })}
+            />
+            {errors.username?.type === "maxLength" && (
+              <p style={{ color: "red" }}>
+                <small>Name cannot exceed 50 characters</small>
+              </p>
+            )}
+          </Form.Group>
+          <br />
+          <Form.Group>
+            <Form.Label>Previous Password</Form.Label>
+            <Form.Control
+              required
+              type="password"
+              placeholder="Previous Password"
+              {...register("oldPassword", { required: true })}
+            />
+            {errors.oldPassword?.type === "required" && (
+              <p style={{ color: "red" }}>
+                <small>Previous password is required</small>
+              </p>
+            )}
+          </Form.Group>
+          <br />
+          <Form.Group>
+            <Form.Label>New Password</Form.Label>
+            <Form.Control
+              type="password"
+              placeholder="New Password"
+              {...register("password", {
+                minLength: 8,
+              })}
+            />
+            {errors.password?.type === "minLength" && (
+              <p style={{ color: "red" }}>
+                <small>Password must be at least 8 characters</small>
+              </p>
+            )}
+          </Form.Group>
+          <br />
+          <Form.Group>
+            <Form.Label>Confirm New Password</Form.Label>
+            <Form.Control
+              type="password"
+              placeholder="Confirm New Password"
+              {...register("confirmPassword", {
+                minLength: 8,
+              })}
+            />
+            {errors.confirmPassword?.type === "minLength" && (
+              <p style={{ color: "red" }}>
+                <small>Password must be at least 8 characters</small>
+              </p>
+            )}
+          </Form.Group>
+          <br />
+          <Form.Group>
+            <Button variant="primary" onClick={handleSubmit(submitForm)}>
+              Submit
+            </Button>
+            {"  "}
+            <Link to="/profile/clubs">
+              <Button variant="primary">Cancel</Button>
+            </Link>
+          </Form.Group>
+          <br />
+          <Form.Group>
+            <Button variant="danger" onClick={handleShowDelete}>
+              Delete Account
+            </Button>
+
+            <Modal show={showDelete} onHide={handleCloseDelete}>
+              <Modal.Header closeButton>
+                <Modal.Title>Confirm Delete</Modal.Title>
+              </Modal.Header>
+              <br />
+              <Modal.Body>
+                Are you sure you want to delete your account? All of your data
+                will be lost.
+              </Modal.Body>
+              <br />
+              <Modal.Footer>
+                <Button variant="danger" onClick={handleAccountDelete}>
+                  Delete
+                </Button>{" "}
+                {"  "}
+                <Button variant="secondary" onClick={handleCloseDelete}>
+                  Close
+                </Button>
+              </Modal.Footer>
+            </Modal>
+          </Form.Group>
+        </Form>
+      </div>
+    </>
+  );
+}

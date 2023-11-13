@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import MyClubCards from "../../components/MyClubCard";
+import { Outlet, useNavigate, Link, useOutletContext } from "react-router-dom";
 import ClubSidebar from "../../components/ClubSidebar";
 import "../../../css/pages/user_profile/Profile_upcoming.css";
 //This file implements My Club page, it will fetch current user's clubs and display on the page, each club card will lead to a host profile
@@ -107,3 +108,4 @@ export default function My_Clubs() {
     </>
   );
 }
+

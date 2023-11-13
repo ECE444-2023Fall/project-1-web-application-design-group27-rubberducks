@@ -9,6 +9,7 @@ import {
 import Profile_root, {
   Profile,
   Profile_edit,
+  Club_Edit,
   Profile_favourites,
   Profile_previous,
   Profile_upcoming,
@@ -38,6 +39,7 @@ import ViewAttributions from "./js/pages/View_Attributions.jsx";
 import EditProfilePic from "./js/pages/user_profile/Edit_Profile_Pic.jsx";
 import EditClubProfilePic from "./js/pages/user_profile/Edit_Profile_Pic_in_Club.jsx";
 
+
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" errorElement={<ResourceError />}>
@@ -54,6 +56,7 @@ const router = createBrowserRouter(
         <Route path="favourite" element={<Profile_favourites />} />
         <Route path="previous" element={<Profile_previous />} />
         <Route path="edit" element={<Profile_edit />} />
+        <Route path="edit_club" element={<Club_Edit />} />
         <Route path="edit_pic" element={<EditProfilePic />} />
         <Route path="edit_pic_club" element={<EditClubProfilePic />} />
         <Route path="create_host" element={<Create_Host_Profile />} />
