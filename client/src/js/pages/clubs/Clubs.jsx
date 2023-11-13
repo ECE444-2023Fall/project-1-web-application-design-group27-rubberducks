@@ -41,9 +41,8 @@ function Clubs() {
         var fetchQuery = `api/hosts/?page=${page}&limit=${pageLimit}`;
 
         if (fname) {
-          fetchQuery.concat(`&name=${fname}`);
+          fetchQuery=fetchQuery.concat(`&name=${fname}`);
         }
-
         // Conduct the query
         const response = await fetch(fetchQuery);
         if (!response.ok) {
