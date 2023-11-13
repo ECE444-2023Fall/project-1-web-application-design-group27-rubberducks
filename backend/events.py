@@ -49,7 +49,7 @@ tags_model = events_ns.model(
     }
 )
 
-@events_ns.route("/all")
+# @events_ns.route("/all")
 class EventsAll(Resource):
     @events_ns.marshal_list_with(event_model)
     def get(self):

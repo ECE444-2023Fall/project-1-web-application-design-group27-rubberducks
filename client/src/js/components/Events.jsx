@@ -10,7 +10,7 @@ function Events() {
   useEffect(() => {
     async function fetchEvents() {
         try {
-            const response = await fetch("api/events/");
+            const response = await fetch("/api/events/", {method: "GET"});
             if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
             }
@@ -51,7 +51,7 @@ const [tags, setTags] = useState([]);
 const handleFilter = async (filterTags) => {
   async function fetchFilteredEvents() {
       try {
-          const response = await fetch("api/events/filtered", {
+          const response = await fetch("/api/events/filtered", {
               method: "POST",
               headers: {
                   "Content-Type": "application/json",
