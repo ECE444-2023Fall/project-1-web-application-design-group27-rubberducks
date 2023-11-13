@@ -32,21 +32,21 @@ const EditProfilePic = () => {
       };
       getUserInfo();
     }, []);
-  const profilePictures = [
-    '../../../profile_pictures/placeholder.png',
-    '../../../profile_pictures/img1.jpg',
-    '../../../profile_pictures/img2.jpg',
-    '../../../profile_pictures/img3.jpg',
-    '../../../profile_pictures/img4.jpg',
-    '../../../profile_pictures/img5.jpg',
-    '../../../profile_pictures/img6.jpg',
-    '../../../profile_pictures/img7.jpg',
-    '../../../profile_pictures/img8.jpg',
-    '../../../profile_pictures/img9.jpg',
-    '../../../profile_pictures/img10.jpg',
-    '../../../profile_pictures/img11.jpg',
-    '../../../profile_pictures/img12.jpg',
-  ];
+    const profilePictures = [
+      '/images/profile_pictures/placeholder.png',
+      '/images/profile_pictures/img1.jpg',
+      '/images/profile_pictures/img2.jpg',
+      '/images/profile_pictures/img3.jpg',
+      '/images/profile_pictures/img4.jpg',
+      '/images/profile_pictures/img5.jpg',
+      '/images/profile_pictures/img6.jpg',
+      '/images/profile_pictures/img7.jpg',
+      '/images/profile_pictures/img8.jpg',
+      '/images/profile_pictures/img9.jpg',
+      '/images/profile_pictures/img10.jpg',
+      '/images/profile_pictures/img11.jpg',
+      '/images/profile_pictures/img12.jpg',
+    ];
 
   const handlePictureClick = (index) => {
     setSelectedPictureIndex(index);
