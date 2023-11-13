@@ -2,8 +2,8 @@ from flask import request
 from flask_restx import Namespace, Resource
 import os
 import boto3
-#from backend.config import Config
-from config import Config
+from backend.config import Config
+#from config import Config
 from werkzeug.utils import secure_filename
 
 s3_ns = Namespace("s3", description="Storage operations")

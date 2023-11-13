@@ -36,12 +36,20 @@ class Hosts(Resource):
         page = int(request.args.get('page', 1))
         limit = int(request.args.get('limit', 20))
         offset = (page - 1) * limit
+
+        # Filter
+        name = str(request.args.get('name'))
         #Sorting
         order = str(request.args.get('ord', 0)) # order (sorting) 0: alpha 1: events
+
         if order == 1:
             query = Host.query.order_by(func.cardinality(Host.events).desc(), Host.name.asc()).group_by(Host.hid, Host.name) # Count Order
         else:
             query = Host.query.order_by(Host.name.asc()) # Alphabetical Order
+
+        if name and name != 'None': # Name
+            query = query.filter(Host.name.ilike(f"%{name}%"))
+            
         # print(str(query.statement.compile(compile_kwargs={"literal_binds": True})))
         hosts = query.offset(offset).limit(limit).all()
 
