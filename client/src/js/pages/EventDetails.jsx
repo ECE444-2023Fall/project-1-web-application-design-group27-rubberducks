@@ -201,6 +201,10 @@ export default function EventDetailsPage() {
           setMessage("You are successfully unregistered.");
           setIsRegistered(false);
           //remove event from user's account
+          console.log(`account events before: ${userInfo.events}`)
+          const updated_events = userInfo.events.filter((e) => e !== parseInt(eventId,10))
+          console.log(`account events before: ${updated_events}`)
+
           fetch(`/api/accounts/${userInfo.uid}`, {
             method: "PUT",
             headers: {
@@ -209,7 +213,7 @@ export default function EventDetailsPage() {
             body: JSON.stringify({
               name: userInfo.name,
               email: userInfo.email,
-              events: userInfo.events.filter((e) => e !== eventId),
+              events: updated_events,
               fav_events: userInfo.fav_events,
               orgs: userInfo.orgs,
               msgids: userInfo.msgids,
