@@ -9,12 +9,13 @@ import Map from "../components/Map";
 import { Button } from "../components/Button";
 import "../../css/components/EventDetails.css";
 import "../../css/components/Button.css";
-// import TagSelect from "./host_profile/Tag_Select";
 import AttendeeList from "./host_profile/Attendee";
 import { Loader } from "@googlemaps/js-api-loader";
-import TagSelect from "./host_profile/Tag_Select";
+import tagData from '../../../tags.json';
 import { Get_Img_Link } from "../components/Get_Img_Link";
+import { bouncy } from "ldrs";
 
+// format the imported time to display in AM/PM
 function formatTime(timeString) {
   // Use a regular expression to extract hours and minutes
   const timeParts = /^(\d+):(\d+):\d+$/.exec(timeString);
@@ -36,11 +37,13 @@ function formatTime(timeString) {
   return `${formattedHours}:${formattedMinutes} ${period}`;
 }
 
+// format the imported date to display as dd, month yyyy
 function formatDate(dateString) {
   const options = { year: "numeric", month: "long", day: "numeric" };
   return new Date(dateString).toLocaleDateString("en-US", options);
 }
 
+// return the string associated with the reoccurring integer
 function processReoccuring(reoccuring) {
   const label = ["Not Reoccuring", "Daily", "Weekly", "Bi-weekly", "Monthly"];
 
@@ -51,26 +54,32 @@ function processReoccuring(reoccuring) {
   }
 }
 
-// function translateTags(tags) {
+function convertTags(tagList) {
+  // Check if tagList is empty
+  if (!tagList || tagList.length === 0) {
+      return null;
+  }
 
-//   const tagNames = [
-//     "Zero", "One", "Two", "Three", "Four",
-//     "Five", "Six", "Seven", "Eight", "Nine"
-//   ];
+  // Create a mapping from numbers to words based on the tag data
+  const mapping = tagData.tags.reduce((acc, tag, index) => {
+      acc[(index + 1)] = tag.tag;
+      return acc;
+  }, {});
 
-//   const result = tags.map((num) => {
-//     if (num >= 0 && num < tagNames.length) {
-//       return tagNames[num];
-//     }
-//     return "";
-//   });
+  // Convert number strings to integers and then to words using the mapping
+  const result = [];
+  for (let i = 0; i < tagList.length; i++) {
+      const numStr = tagList[i];
+      const num = parseInt(numStr, 10);
+      result.push(mapping[num]);
+  }
 
-//   return result;
-// }
+  return result;
+}
 
 export default function EventDetailsPage() {
   const { eventId = "" } = useParams();
-  const { eventInfo, hostInfo, userInfo, userLoggedIn, ownerLoggedIn, loading } = useGetEventInfo(eventId);
+  const { eventInfo, hostInfo, userInfo, userLoggedIn, ownerLoggedIn, isAlreadyRegistered, loading } = useGetEventInfo(eventId);
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
 
@@ -78,39 +87,40 @@ export default function EventDetailsPage() {
   const formattedStartTime = formatTime(eventInfo.start_time);
   const formattedEndTime = formatTime(eventInfo.end_time);
   const reoccurrence = processReoccuring(eventInfo.reoccuring);
-  // const tagArray = translateTags(eventInfo.tags);
+  const tagLabels = convertTags(eventInfo.tags);
 
-  const [isRegistered, setIsRegistered] = useState();
+  const [checkRegistered, setCheckRegistered] = useState(isAlreadyRegistered);
 
   const checkIfRegistered = () => {
-    if (userLoggedIn) {
+    if (!loading && userLoggedIn) {
       console.log("user", userInfo);
       if (eventInfo.attendees.includes(userInfo.uid)) {
-        setIsRegistered(true);
+        setCheckRegistered(true);
       } else {
-        setIsRegistered(false);
+        setCheckRegistered(false);
       }
     } else {
-      setIsRegistered(false);
+      setCheckRegistered(false);
     }
   };
 
   useEffect(() => {
     checkIfRegistered();
-  }, []);
+  }, [userLoggedIn, eventInfo, userInfo]);
 
   const handleRegister = () => {
-    checkIfRegistered();
+    // checkIfRegistered();
     console.log("user", userInfo);
     //make sure there is still space left for the event
     if (eventInfo.attendees.length >= eventInfo.capacity) {
       setMessage("The event is at full capacity.");
+      // if user isn't logged in, send them to login page
     } else if (!userLoggedIn) {
       setMessage("Please log in to register.")
       navigate(`/login`);
+      // if user is already listed as attendee, 
     } else if (eventInfo.attendees.includes(userInfo.uid)) {
       setMessage("You are already registered.");
-      setIsRegistered(true);
     } else {
       //update attendees for event
       fetch(`/api/events/${eventId}`, {
@@ -136,34 +146,37 @@ export default function EventDetailsPage() {
         }),
       }).then((response) => {
         if (response.ok) {
-          setMessage("You are successfully registered.");
-          setIsRegistered(true);
           //update registered event in user's account
-          fetch(`/api/accounts/${userInfo.uid}`, {
-            method: "PUT",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              name: userInfo.name,
-              email: userInfo.email,
-              events: [...userInfo.events, eventId],
-              fav_events: userInfo.fav_events,
-              orgs: userInfo.orgs,
-              msgids: userInfo.msgids,
-              profile_pic: userInfo.profile_pic,
-            }),
-          }).then((response) => {
-            if (response.ok) {
-              console.log("User account updated successfully.");
-            } else {
-              // Handle errors, e.g., show an error message
-              console.error("User account update failed.");
-            }
-          });
+          if (userInfo.events.includes(eventId)) {
+            console.log("User's events already includes this event");
+          } else {
+            fetch(`/api/accounts/${userInfo.uid}`, {
+              method: "PUT",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                name: userInfo.name,
+                email: userInfo.email,
+                events: [...userInfo.events, eventId],
+                fav_events: userInfo.fav_events,
+                orgs: userInfo.orgs,
+                msgids: userInfo.msgids,
+                profile_pic: userInfo.profile_pic,
+              }),
+            }).then((response) => {
+              if (response.ok) {
+                console.log("User account updated successfully.");
+                setCheckRegistered(true);
+              } else {
+                // Handle errors, e.g., show an error message
+                console.error("User account update failed.");
+              }
+            });
+            setMessage("You are successfully registered.");
+          }
         } else {
           setMessage("Registration Failed.");
-          setIsRegistered(false);
         }
       });
     }
@@ -171,10 +184,15 @@ export default function EventDetailsPage() {
   };
 
   const handleUnregister = () => {
-    checkIfRegistered();
+    // checkIfRegistered();
     console.log("user", userInfo);
     //check that user is registered
     if (eventInfo.attendees.includes(userInfo.uid)) {
+
+      console.log(`event attendees before: ${eventInfo.attendees}`)
+      const updated_attendees = eventInfo.attendees.filter((u) => u !== parseInt(userInfo.uid,10))
+      console.log(`event attendees after: ${updated_attendees}`)
+
       fetch(`/api/events/${eventId}`, {
         method: "PUT",
         headers: {
@@ -193,14 +211,16 @@ export default function EventDetailsPage() {
           date_created: eventInfo.date_created,
           owner: eventInfo.owner,
           tags: eventInfo.tags,
-          attendees: eventInfo.attendees.filter((id) => id !== userInfo.uid),
+          attendees: updated_attendees,
           profile_pic: eventInfo.profile_pic,
         }),
       }).then((response) => {
         if (response.ok) {
-          setMessage("You are successfully unregistered.");
-          setIsRegistered(false);
           //remove event from user's account
+          console.log(`account events before: ${userInfo.events}`)
+          const updated_events = userInfo.events.filter((e) => e !== parseInt(eventId,10))
+          console.log(`account events before: ${updated_events}`)
+          
           fetch(`/api/accounts/${userInfo.uid}`, {
             method: "PUT",
             headers: {
@@ -209,7 +229,7 @@ export default function EventDetailsPage() {
             body: JSON.stringify({
               name: userInfo.name,
               email: userInfo.email,
-              events: userInfo.events.filter((e) => e !== eventId),
+              events: updated_events,
               fav_events: userInfo.fav_events,
               orgs: userInfo.orgs,
               msgids: userInfo.msgids,
@@ -218,19 +238,19 @@ export default function EventDetailsPage() {
           }).then((response) => {
             if (response.ok) {
               console.log("User account updated successfully.");
+              setCheckRegistered(false);
             } else {
               // Handle errors, e.g., show an error message
               console.error("User account update failed.");
             }
           });
+          setMessage("You are successfully unregistered.");
         } else {
           setMessage("Unregistration Failed.");
-          setIsRegistered(true);
         }
       });
     } else {
       setMessage("You have not registered yet.");
-      setIsRegistered(false);
     }
     checkIfRegistered();
   };
@@ -242,6 +262,24 @@ export default function EventDetailsPage() {
   };
 
   const imageUrl = Get_Img_Link(eventInfo.profile_pic);
+
+  if (loading) {
+    return (
+      <>
+        <Navbar />
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "100vh",
+          }}
+        >
+          <l-bouncy size="45" speed="1.75" color="#002452"></l-bouncy>
+        </div>
+      </>
+    );
+  }
 
   return (
     <>
@@ -300,7 +338,7 @@ export default function EventDetailsPage() {
                         <Button to={`/events/${eventId}/attendees`} buttonStyle="btn--register" buttonSize="btn--large">
                           Attendee Info
                         </Button>
-                        ) : isRegistered ? (
+                        ) : checkRegistered ? (
                         <Button onClick={handleUnregister} buttonStyle="btn--register" buttonSize="btn--large">
                           Unregister
                         </Button>
@@ -315,8 +353,15 @@ export default function EventDetailsPage() {
                   <div className="event--additional-info">
                     <div className="event--item">
                       <div className="label">{"Event Tags:"}</div>
-                      {/* <TagSelect> selectedTags={eventInfo.tags} onTagChange={}</TagSelect> */}
-                      <div className="text">{eventInfo.tags}</div>
+                      {!loading && tagLabels !== null ? (
+                        tagLabels.map(tagLabel => (
+                        <div key={tagLabel} className="event-tag">
+                          {tagLabel}
+                        </div>
+                      ))
+                      ) : (
+                        <div className="text">{""}</div>
+                      )}  
                     </div>
                     <div className="event--item">
                       <div className="label">{"Reoccurrence:"}</div>
