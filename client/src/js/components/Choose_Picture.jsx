@@ -1,20 +1,20 @@
 import React, { useState } from 'react';
 import "../../css/components/Choose_Picture.css";
-
+// import "../../../public/images/event_pictures/pic1"
 const Choose_Picture = ({ onPictureSelect }) => {
   const [selectedPictureIndex, setSelectedPictureIndex] = useState(0);
   const [showPictures, setShowPictures] = useState(false);
   const eventPictures = [
-    '../../../event_pictures/pic1.jpg',
-    '../../../event_pictures/pic2.jpg',
-    '../../../event_pictures/pic3.jpg',
-    '../../../event_pictures/pic4.jpg',
-    '../../../event_pictures/pic5.jpg',
-    '../../../event_pictures/pic6.jpg',
-    '../../../event_pictures/pic7.jpg',
-    '../../../event_pictures/pic8.jpg',
-    '../../../event_pictures/pic9.jpg',
-    '../../../event_pictures/pic10.jpg',
+    '../../../public/images/event_pictures/pic1.jpg',
+    '../../../public/images/event_pictures/pic2.jpg',
+    '../../../public/images/event_pictures/pic3.jpg',
+    '../../../public/images/event_pictures/pic4.jpg',
+    '../../../public/images/event_pictures/pic5.jpg',
+    '../../../public/images/event_pictures/pic6.jpg',
+    '../../../public/images/event_pictures/pic7.jpg',
+    '../../../public/images/event_pictures/pic8.jpg',
+    '../../../public/images/event_pictures/pic9.jpg',
+    '../../../public/images/event_pictures/pic10.jpg',
   ];
 
   const handlePictureClick = (index) => {
