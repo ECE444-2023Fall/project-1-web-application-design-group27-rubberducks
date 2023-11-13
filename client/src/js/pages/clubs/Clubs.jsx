@@ -94,7 +94,6 @@ function Clubs() {
   const handleSearch = (value) => {
     if (value) {
       setfName(value);
-      handleReload();
     }
   }
 
