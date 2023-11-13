@@ -53,6 +53,7 @@ export function Profile() {
   const [favorites, setFavorites] = useState([]);
   const [upcomingEvents, setUpcomingEvents] = useState([]);
   const [previousEvents, setPreviousEvents] = useState([]);
+  const [userInfo, setUserInfo] = useState({ name: "", email: "", profile_pic: "" });
   const [isLoading, setIsLoading] = useState(true);
 
   const fetchUserFavEvents = async () => {
@@ -70,6 +71,11 @@ export function Profile() {
       }
 
       const data = await response.json();
+      setUserInfo({ 
+        name: data.name,
+        email: data.email,
+        profile_pic: data.profile_pic
+      });
       if (data.fav_events) {
         await fetchEvents(data.fav_events);
       }
@@ -158,6 +164,7 @@ export function Profile() {
 
   return (
     <>
+      <UserSidebar name={userInfo.name} email={userInfo.email} profile_pic={userInfo.profile_pic} />
       <div className="user--events">
         <ProfileCategory
           title="Favourite Events"
