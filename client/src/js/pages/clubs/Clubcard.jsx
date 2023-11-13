@@ -4,6 +4,7 @@ import {
   FaRegEdit
 } from "react-icons/fa";
 import "../../../css/pages/clubs/Clubcard.css";
+import { Get_Profile_Img_Link } from "../../components/Get_Img_Link";
 
 /* This is the individual cards that represent a club */
 
@@ -20,7 +21,7 @@ function ClubCard({club}) {
           data-category={label ? label : null}
         >
           <img
-            src={club.img ? club.img : "images/placeholder.png"}
+            src={club.profile_pic ? Get_Profile_Img_Link(club.profile_pic) : "images/placeholder.png"}
             alt="Club Image"
             className="clubImg"
           />
@@ -29,7 +30,7 @@ function ClubCard({club}) {
           <h5 className="clubName">{club.name}</h5>
           <div className="clubSubtitle">
             <FaRegEdit className="clubIcon"/>
-              {club.bio}
+              {club.bio ? club.bio : "This club has not set a bio."}
           </div>
         </div>
       </Link>

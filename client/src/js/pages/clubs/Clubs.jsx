@@ -5,6 +5,9 @@ import ClubsGrid from "./Clubsgrid";
 import Navbar from "../../components/Navbar";
 import { bouncy } from "ldrs";
 import { set } from "react-hook-form";
+import {
+  FaSearch
+} from "react-icons/fa";
 
 /* This is the club page itself */
 
@@ -17,6 +20,8 @@ function Clubs() {
   const [pageLimit, setPageLimit] = useState(20);
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
+
+  const [fname, setfName] = useState(null);
 
   /* Configure Query */
   const [fOrd, setfOrd] = useState(0); // Sort order 0: Date asc 1: Date desc 2: Create asc 3: Create desc 4: Attend asc 5: Attend desc
@@ -34,6 +39,10 @@ function Clubs() {
       try {
         // Configure the query attributes
         var fetchQuery = `api/hosts/?page=${page}&limit=${pageLimit}`;
+
+        if (fname) {
+          fetchQuery.concat(`&name=${fname}`);
+        }
 
         // Conduct the query
         const response = await fetch(fetchQuery);
@@ -82,6 +91,17 @@ function Clubs() {
     };
   }, [page, loading]);
 
+  const handleSearch = (value) => {
+    if (value) {
+      setfName(value);
+      handleReload();
+    }
+  }
+
+  const handleResetSearch = () => {
+    setfName(null);
+    handleReload();
+ }
   const handleReload = () => {
     setPage(1);
     setClubs([]);
@@ -111,6 +131,16 @@ function Clubs() {
     <>
       <Navbar />
       <div className="clubsPage">
+        <div className="club-search">
+          <div className="input-icon-wrapper">
+            <FaSearch className="input-icon" />
+            <input type="text" placeholder="Search by name" onChange={(e) => handleSearch(e.target.value)} />
+          </div>
+          <div className="apply-buttons">
+            <button class="btn--new btn--create" onClick={() => handleResetSearch()}>Reset</button>
+            <button class="btn--new btn--create" onClick={() => handleReload()}>Apply</button>
+          </div>
+        </div>
         <ClubsGrid
           clubs={clubs}
         />
