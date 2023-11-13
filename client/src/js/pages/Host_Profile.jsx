@@ -20,7 +20,7 @@ import { bouncy } from "ldrs";
 import Favorites from "../components/Favorite";
 import ProfileCategory from "../components/Profile_Category";
 import Choose_Picture from "../components/Choose_Picture";
-
+//This file creates a host profile page
 export default function Host_root() {
   const { hostId = "" } = useParams();
   const { hostInfo, ownerLoggedIn, loading } = useGetHostInfo(hostId);
@@ -60,6 +60,8 @@ export default function Host_root() {
   );
 }
 
+//This function display first four cards in upcoming/previous events and create a button 
+//for "Create event" Favorites events will not be available in host profile, since it is other people's privacy
 export function Host_profile() {
   const [upcomingEvents, setUpcomingEvents] = useState([]);
   const [previousEvents, setPreviousEvents] = useState([]);
@@ -153,6 +155,8 @@ export function Host_profile() {
   );
 }
 
+//This function will compare all the created events's starting time and current time,
+//if it is a reoccuring event, it will always be an upcoming event
 export function Host_upcoming() {
   const [upcomingEvents, setUpcomingEvents] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -226,9 +230,7 @@ export function Host_upcoming() {
             </span>
           </div>
           {upcomingEvents.length > 0 ? (
-            upcomingEvents.map((event) => (
-              <Favorites key={event.eid} event={event} /> // Using Favorites component to render each event, favorites/upcoming/previous are all the same
-            ))
+            <Favorites events={upcomingEvents} />
           ) : (
             <p>You do not have any upcoming events yet.</p>
           )}
@@ -238,6 +240,7 @@ export function Host_upcoming() {
   );
 }
 
+//This function will compare all the registered events's starting time and current time to see if it was in the past
 export function Host_previous() {
   const [previousEvents, setPreviousEvents] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -313,9 +316,7 @@ export function Host_previous() {
             </span>
           </div>
           {previousEvents.length > 0 ? (
-            previousEvents.map((event) => (
-              <Favorites key={event.eid} event={event} /> // Using Favorites component to render each event, favorites/previous/previous are all the same
-            ))
+            <Favorites events={previousEvents} /> // Using Favorites component to render each event, favorites/previous/previous are all the same
           ) : (
             <p>You do not have any previous events yet.</p>
           )}

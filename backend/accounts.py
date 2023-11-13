@@ -1,6 +1,7 @@
 from flask import request, jsonify
 from flask_restx import Namespace, Resource, fields
 from backend.models import Account
+#from models import Account
 from flask_jwt_extended import jwt_required
 from werkzeug.security import generate_password_hash
 

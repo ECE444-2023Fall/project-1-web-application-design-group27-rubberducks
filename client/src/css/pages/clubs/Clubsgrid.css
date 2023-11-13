@@ -1,4 +1,4 @@
-.eventsGrid {
+.clubsGrid {
     display: grid;
     gap: 15px;
     padding: 15px;
@@ -9,13 +9,13 @@
 }
 
 @media screen and (min-width: 420px) {
-    .eventsGrid {
+    .clubsGrid {
         grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
     }
 }
 
 @media screen and (min-width: 680px) {
-    .eventsGrid {
+    .clubsGrid {
         grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
     }
 }

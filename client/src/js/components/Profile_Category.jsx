@@ -1,7 +1,8 @@
 import React from "react";
 import ProfileCards from "./Profile_Cards";
 import "../../css/components/ProfileCategory.css";
-
+//This file is used in My Profile and Host Profile, it will display different categories
+//such as favorite/upcoming/previous events. 
 function ProfileCategory(props) {
   if (!props.events || props.events.length === 0) {
     return (
@@ -13,7 +14,7 @@ function ProfileCategory(props) {
           </span>
         </div>
         <div className="profile--category--empty">
-          You do not have any events. <a href="/events"> Find Events</a>
+                You do not have any events. <a href="/events"> Find Events</a>
         </div>
       </div>
     );

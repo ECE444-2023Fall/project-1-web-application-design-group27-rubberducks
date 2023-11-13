@@ -128,6 +128,9 @@ export default function Edit_Event() {
     setSelectedPictureIndex(index);
   };
 
+
+  //display start and end times in integer hours and minutes
+
   useEffect(() => {
     setLoading(true);
     const [hourStr, minuteStr] = start_time.split(":");

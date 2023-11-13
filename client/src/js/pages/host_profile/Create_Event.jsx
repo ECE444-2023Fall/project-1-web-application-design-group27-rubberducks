@@ -72,6 +72,9 @@ export default function Create_Event() {
     setSelectedPictureIndex(index);
   };
 
+
+  //fetch host info for later put request
+
   useEffect(() => {
     fetch(`/api/hosts/${hostId}`)
       .then((res) => res.json())

@@ -1,4 +1,5 @@
 from backend.exts import db
+#from exts import db
 from sqlalchemy.dialects.postgresql import JSON
 from flask_login import UserMixin
 from datetime import datetime
