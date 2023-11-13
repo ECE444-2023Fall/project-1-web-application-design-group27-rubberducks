@@ -5,6 +5,7 @@ import "../../css/components/App.css";
 import "../../css/pages/Create_Host_Profile.css";
 // import { useNavigate } from "react-router-dom";
 import { bouncy } from "ldrs";
+import Choose_Picture from "../components/Choose_Picture";
 
 function CreateHostProfile() {
   const {
@@ -12,19 +13,18 @@ function CreateHostProfile() {
     formState: { errors },
     handleSubmit,
   } = useForm();
-  const [profilePhoto, setProfilePhoto] = useState(null);
   const [errorMessage, setErrorMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   bouncy.register();
+  const [selectedPictureIndex, setSelectedPictureIndex] = useState(0);
 
-  const handleProfilePhotoChange = (e) => {
-    const file = e.target.files[0];
-    setProfilePhoto(file);
+  const handlePictureSelect = (index) => {
+    setSelectedPictureIndex(index);
   };
 
   const onSubmit = (data) => {
-    setLoading(true);
+    // setLoading(true);
     // Get the current account from local storage
     if (localStorage.getItem("user")) {
       const curr_account = JSON.parse(localStorage.getItem("user"));
@@ -35,6 +35,7 @@ function CreateHostProfile() {
         bio: data.bio,
         events: [],
         owner: curr_account.id,
+        profile_pic: selectedPictureIndex,
       };
 
       // Create the new host
@@ -74,6 +75,7 @@ function CreateHostProfile() {
                   fav_events: data2.fav_events,
                   orgs: data2.orgs.concat(data.hid),
                   msgids: data2.msgids,
+                  profile_pic: data2.profile_pic,
                 };
 
                 // Update the orgs of the current account
@@ -93,9 +95,6 @@ function CreateHostProfile() {
                   .then((data3) => {
                     setLoading(false);
                     navigate(`/hosts/${data.hid}`);
-
-                    // Clear form fields
-                    setProfilePhoto(null);
                   })
                   .catch((err) => {
                     setErrorMessage(err.message);
@@ -203,6 +202,10 @@ function CreateHostProfile() {
         </div>
 
         <div className="form-group">
+          <Choose_Picture onPictureSelect={handlePictureSelect}/>
+          </div>
+
+        {/* <div className="form-group">
           <label htmlFor="profilePhoto" id="photo_label">
             Club Photo
           </label>
@@ -221,7 +224,7 @@ function CreateHostProfile() {
             alt="Selected Profile Photo"
             style={{ maxWidth: "100px", maxHeight: "100px" }}
           />
-        )}
+        )} */}
         {errorMessage && (
           <div className="club-error-message">{errorMessage}</div>
         )}

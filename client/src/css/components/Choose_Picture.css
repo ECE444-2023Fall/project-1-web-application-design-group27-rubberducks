@@ -1,0 +1,18 @@
+.selected {
+    border: 2px solid blue;
+  }
+  
+  .event-pictures img {
+    width: 150px;
+    height: 100px;
+    margin: 10px;
+    border-radius: 5px;
+  }
+
+  .profile-pictures img {
+    width: 150px;
+    height: 150px;
+    margin: 10px;
+    border-radius: 5px;
+  }
+  

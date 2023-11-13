@@ -38,6 +38,7 @@ event_model = events_ns.model(
         "owner": fields.Integer,
         "tags": fields.List(fields.Integer),
         "owner_name": fields.String,
+        "profile_pic": fields.Integer,
     },
 )
 
@@ -176,6 +177,7 @@ class Events(Resource):
                 'owner': event.owner,
                 'tags': event.tags,
                 'owner_name': owner_name,
+                'profile_pic':event.profile_pic,
             }
             for event, owner_name in events
         ], 200

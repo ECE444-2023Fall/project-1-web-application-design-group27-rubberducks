@@ -27,8 +27,9 @@ class Account(UserMixin, db.Model):
     fav_events = db.Column(db.ARRAY(db.Integer))
     orgs = db.Column(db.ARRAY(db.Integer))
     msgids = db.Column(db.ARRAY(db.Integer))
+    profile_pic = db.Column(db.Integer, nullable=False)
 
-    def __init__(self, name, email, password, events, fav_events, orgs, msgids):
+    def __init__(self, name, email, password, events, fav_events, orgs, msgids, profile_pic):
         self.name = name
         self.email = email
         self.password = password
@@ -36,10 +37,11 @@ class Account(UserMixin, db.Model):
         self.fav_events = fav_events
         self.orgs = orgs
         self.msgids = msgids
+        self.profile_pic = profile_pic
 
 
     def __repr__(self):
-        return f"<Account {self.uid} {self.name} {self.email} {self.password} {self.events} {self.fav_events} {self.orgs} {self.msgids}>"
+        return f"<Account {self.uid} {self.name} {self.email} {self.password} {self.events} {self.fav_events} {self.orgs} {self.msgids} {self.profile_pic}>"
 
     def save(self):
         db.session.add(self)
@@ -49,7 +51,7 @@ class Account(UserMixin, db.Model):
         db.session.delete(self)
         db.session.commit()
 
-    def update(self, name=None, email=None, events=None, fav_events=None, orgs=None, msgids=None, password=None):
+    def update(self, name=None, email=None, events=None, fav_events=None, orgs=None, msgids=None, password=None, profile_pic=None):
         if name is not None:
             self.name = name
         if email is not None:
@@ -64,6 +66,8 @@ class Account(UserMixin, db.Model):
             self.orgs = orgs
         if msgids is not None:
             self.msgids = msgids
+        if profile_pic is not None:
+            self.profile_pic = profile_pic
         db.session.commit()
     
     @property
@@ -136,17 +140,19 @@ class Host(db.Model):
     events = db.Column(db.ARRAY(db.Integer))
     owner = db.Column(db.Integer, db.ForeignKey("account.uid"), nullable=False)
     pending_transfer = db.Column(db.Boolean, default=False, nullable=False)
+    profile_pic = db.Column(db.Integer, nullable=False)
 
-    def __init__(self, name, email, bio, events, owner, pending_transfer=False):
+    def __init__(self, name, email, bio, events, owner, profile_pic, pending_transfer=False):
         self.name = name
         self.email = email
         self.bio = bio
         self.events = events
         self.owner = owner
         self.pending_transfer = pending_transfer
+        self.profile_pic = profile_pic
 
     def __repr__(self):
-        return f"<Host {self.hid} {self.name} {self.email} {self.bio} {self.events} {self.owner} {self.pending_transfer}>"
+        return f"<Host {self.hid} {self.name} {self.email} {self.bio} {self.events} {self.owner} {self.pending_transfer} {self.profile_pic}>"
 
     def save(self):
         db.session.add(self)
@@ -156,7 +162,7 @@ class Host(db.Model):
         db.session.delete(self)
         db.session.commit()
 
-    def update(self, name=None, email=None, bio=None, events=None, owner=None, pending_transfer=False):
+    def update(self, name=None, email=None, bio=None, events=None, owner=None, pending_transfer=False, profile_pic=None):
         if name is not None:
             self.name = name
         if email is not None:
@@ -168,6 +174,8 @@ class Host(db.Model):
         if owner is not None:
             self.owner = owner
         self.pending_transfer = pending_transfer
+        if profile_pic is not None:
+            self.profile_pic = profile_pic
         db.session.commit()
 
 
@@ -205,8 +213,9 @@ class Event(db.Model):
     date_created = db.Column(db.Date, nullable=False)
     owner = db.Column(db.Integer, db.ForeignKey("host.hid"), nullable=False)
     tags = db.Column(db.ARRAY(db.Integer))
+    profile_pic = db.Column(db.Integer, nullable=False)
 
-    def __init__(self, name, location, coords, description, date, start_time, end_time, capacity, attendees, reoccuring, date_created, owner, tags):
+    def __init__(self, name, location, coords, description, date, start_time, end_time, capacity, attendees, reoccuring, date_created, owner, tags, profile_pic):
         self.name = name
         self.location = location
         self.coords = coords
@@ -220,9 +229,10 @@ class Event(db.Model):
         self.date_created = date_created
         self.owner = owner
         self.tags = tags
+        self.profile_pic = profile_pic
 
     def __repr__(self):
-        return f"<Event {self.eid} {self.name} {self.location} {self.coords} {self.description} {self.date} {self.start_time} {self.end_time} {self.capacity} {self.attendees} {self.reoccuring} {self.date_created} {self.owner} {self.tags}>"
+        return f"<Event {self.eid} {self.name} {self.location} {self.coords} {self.description} {self.date} {self.start_time} {self.end_time} {self.capacity} {self.attendees} {self.reoccuring} {self.date_created} {self.owner} {self.tags} {self.profile_pic}>"
 
     def save(self):
         db.session.add(self)
@@ -232,7 +242,7 @@ class Event(db.Model):
         db.session.delete(self)
         db.session.commit()
 
-    def update(self, name, location, coords, description, date, start_time, end_time, capacity, attendees, reoccuring, date_created, owner, tags):
+    def update(self, name, location, coords, description, date, start_time, end_time, capacity, attendees, reoccuring, date_created, owner, tags, profile_pic):
         self.name = name
 
         self.location = location
@@ -247,6 +257,7 @@ class Event(db.Model):
         self.date_created = date_created
         self.owner = owner
         self.tags = tags
+        self.profile_pic = profile_pic
         db.session.commit()
 
     def serialize(self):
@@ -264,7 +275,8 @@ class Event(db.Model):
             "date_created": self.date_created,
             "attendees": self.attendees,
             "owner": self.owner,
-            "tags": self.tags
+            "tags": self.tags,
+            "profile_pic":self.profile_pic
         }
 
 """

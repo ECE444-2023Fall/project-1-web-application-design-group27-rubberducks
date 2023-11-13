@@ -8,6 +8,9 @@ import { convertTimetoString } from "./host_profile/Create_Event";
 import Navbar from "../components/Navbar";
 import HostSidebar from "../components/HostSidebar";
 import { bouncy } from "ldrs";
+import { set } from "react-hook-form";
+import Choose_Picture from "../components/Choose_Picture";
+
 
 export default function Edit_Event() {
   const navigate = useNavigate();
@@ -25,6 +28,7 @@ export default function Edit_Event() {
   const [tags, setSelectedTags] = useState([]);
   const currentDate = new Date();
   const [date, setDate] = useState(new Date());
+  const [selectedPictureIndex, setSelectedPictureIndex] = useState(0);
   const [location, setLocation] = useState("");
   const [coords, setCoords] = useState([0, 0]); // [lat, lng]
 
@@ -38,7 +42,10 @@ export default function Edit_Event() {
   bouncy.register();
 
   useEffect(() => {
-    // Function to load event information
+    // load event info and host info
+    //display all event fields to start with for user to edit
+    // display host info in sidebar
+
     const loadEventInfo = async () => {
       try {
         const eventResponse = await fetch("/api/events/" + eventId);
@@ -55,6 +62,7 @@ export default function Edit_Event() {
           setStartTime(eventData.start_time);
           setEndTime(eventData.end_time);
           setLocation(eventData.location);
+          // setSelectedPictureIndex(eventData.profile_pic);
 
           const hostResponse = await fetch("/api/hosts/" + hostId);
 
@@ -116,7 +124,14 @@ export default function Edit_Event() {
     setDate(newDate);
   };
 
-  // Update the hour1 and minute1 states when start_time changes
+
+  const handlePictureSelect = (index) => {
+    setSelectedPictureIndex(index);
+  };
+
+
+  //display start and end times in integer hours and minutes
+
   useEffect(() => {
     setLoading(true);
     const [hourStr, minuteStr] = start_time.split(":");
@@ -139,7 +154,7 @@ export default function Edit_Event() {
       inputRef.current,
       options
     );
-
+    //needed to load map api twice due to unknown error of api loading
     autoCompleteRef.current.addListener("place_changed", async function () {
       const place = await autoCompleteRef.current.getPlace();
       setLocation(place.name);
@@ -153,10 +168,12 @@ export default function Edit_Event() {
     e.preventDefault();
     const startTime = new Date(0, 0, 0, hour1, minute1);
     const endTime = new Date(0, 0, 0, hour2, minute2);
+    //check if start time and end time reasonable
     if (startTime > endTime) {
       setError("End time must be after start time");
       return;
     }
+    //make payload to update event
     const updatedEvent = {
       name: eventInfo.name,
       date: date,
@@ -171,6 +188,7 @@ export default function Edit_Event() {
       attendees: eventInfo.attendees,
       owner: eventInfo.owner,
       tags: tags,
+      profile_pic: selectedPictureIndex,
     };
 
     fetch(`/api/events/${eventId}`, {
@@ -194,7 +212,7 @@ export default function Edit_Event() {
         console.error("Error updating event:", err);
       });
   };
-
+//loading animation
   if (loading) {
     return (
       <>
@@ -221,6 +239,7 @@ export default function Edit_Event() {
         name={hostInfo.name}
         email={hostInfo.email}
         bio={hostInfo.bio}
+        profile_pic={hostInfo.profile_pic}
       />
       <div className="form_block_event">
         <h1>Edit Event</h1>
@@ -362,6 +381,11 @@ export default function Edit_Event() {
               <option value="3">Bi-weekly</option>
               <option value="4">Monthly</option>
             </select>
+          </div>
+
+          <div className="form-group">
+          <label>Choose Event Picture</label>
+          <Choose_Picture onPictureSelect={handlePictureSelect}/>
           </div>
 
           <div className="button-group">

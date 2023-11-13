@@ -14,7 +14,7 @@ import { checkPassword } from "../confirmPassword";
 import Favorites from "../components/Favorite";
 import { bouncy } from "ldrs";
 import ProfileCategory from "../components/Profile_Category";
-
+//This file creates a "My profile" page
 export default function Profile_root() {
   //gets and saves the user info
   const { userInfo, loading } = useGetUserInfo();
@@ -42,12 +42,13 @@ export default function Profile_root() {
     //if not loading, show the user profile
     <>
       <Navbar />
-      <UserSidebar name={userInfo.name} email={userInfo.email} />
+      <UserSidebar name={userInfo.name} email={userInfo.email} profile_pic={userInfo.profile_pic}/>
       <Outlet context={[userInfo]} />
     </>
   );
 }
 
+//This function displays the first four events in favorites/upcoming/previous events
 export function Profile() {
   const [favorites, setFavorites] = useState([]);
   const [upcomingEvents, setUpcomingEvents] = useState([]);
@@ -170,6 +171,8 @@ export function Profile() {
           events={upcomingEvents.slice(0, 4)}
         />
         <hr />
+      </div>
+      <div className="previous--events">
         <ProfileCategory
           title="Previous Events"
           link="/profile/previous"
@@ -180,6 +183,8 @@ export function Profile() {
   );
 }
 
+//This functions fecth all the registered events, compare their starting times and current time
+//to see if it is an upcoming event
 export function Profile_upcoming() {
   const [upcomingEvents, setUpcomingEvents] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -260,9 +265,7 @@ export function Profile_upcoming() {
             </span>
           </div>
           {upcomingEvents.length > 0 ? (
-            upcomingEvents.map((event) => (
-              <Favorites key={event.eid} event={event} /> // Using Favorites component to render each event, favorites/upcoming/previous are all the same
-            ))
+             <Favorites events={upcomingEvents} /> // Using Favorites component to render each event, favorites/upcoming/previous are all the same
           ) : (
             <p className="empty-event-field">
               You do not have any upcoming events yet.
@@ -274,6 +277,8 @@ export function Profile_upcoming() {
   );
 }
 
+//This functions fecth all the registered events, compare their starting times and current time
+//to see if it is a previous event
 export function Profile_previous() {
   const [previousEvents, setPreviousEvents] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -355,9 +360,7 @@ export function Profile_previous() {
             </span>
           </div>
           {previousEvents.length > 0 ? (
-            previousEvents.map((event) => (
-              <Favorites key={event.eid} event={event} /> // Using Favorites component to render each event, favorites/upcoming/previous are all the same
-            ))
+            <Favorites events={previousEvents} />// Using Favorites component to render each event, favorites/upcoming/previous are all the same
           ) : (
             <p className="empty-event-field">
               You do not have any previous events yet.
@@ -368,7 +371,7 @@ export function Profile_previous() {
     </>
   );
 }
-
+//If you favorite a event in the event page, it will display here
 export function Profile_favourites() {
   const [favorite, setFavorite] = useState([]);
 
@@ -424,9 +427,7 @@ export function Profile_favourites() {
             </span>
           </div>
           {favorite.length > 0 ? (
-            favorite.map((event) => (
-              <Favorites key={event.eid} event={event} /> // Using Favorites component to render each event
-            ))
+            <Favorites events={favorite} />// Using Favorites component to render each event
           ) : (
             <p className="empty-event-field">
               You do not have any favorite events yet.

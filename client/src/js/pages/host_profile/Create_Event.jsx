@@ -7,7 +7,9 @@ import "react-datepicker/dist/react-datepicker.css";
 import { useNavigate, useOutletContext } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { set } from "react-hook-form";
+import Choose_Picture from "../../components/Choose_Picture";
 
+// Converts integer hours and minutes selected to formatted time to be stored in the database
 export function convertTimetoString(hour, minute) {
   const formattedHour = `${hour}`.padStart(2, "0");
   const formattedMinute = `${minute}`.padStart(2, "0");
@@ -18,6 +20,7 @@ export default function Create_Event() {
   const navigate = useNavigate();
   const [hostInfo, ownerLoggedIn] = useOutletContext();
 
+  //only the owner of the host can create event for the host
   useEffect(() => {
     if (!ownerLoggedIn) {
       navigate("/login-error");
@@ -45,8 +48,11 @@ export default function Create_Event() {
   const [bio, setBio] = useState("");
   const [owner, setOwner] = useState(-1);
   const [events, setEvents] = useState([]);
+  const [host_pic, setHostPic] = useState(0);
   const [error, setError] = useState("");
+  const [selectedPictureIndex, setSelectedPictureIndex] = useState(0);
 
+  //some handle change functions for some more complicated fields
   const handleTagChange = (tags) => {
     setSelectedTags(tags);
   };
@@ -55,12 +61,19 @@ export default function Create_Event() {
     setEventPhoto(file);
   };
   const handleDateChange = (newDate) => {
-    const currentDate = new Date();
     setDate(newDate);
   };
   const handleSelectReocurring = (event) => {
     setReoccuring(event.target.value);
   };
+
+
+  const handlePictureSelect = (index) => {
+    setSelectedPictureIndex(index);
+  };
+
+
+  //fetch host info for later put request
 
   useEffect(() => {
     fetch(`/api/hosts/${hostId}`)
@@ -71,17 +84,21 @@ export default function Create_Event() {
         setBio(data.bio);
         setOwner(data.owner);
         setEvents(data.events);
+        setHostPic(data.profile_pic);
       });
   }, [hostId]);
 
+  //submit create event
   const handleSubmit = (e) => {
     e.preventDefault();
     const dateCreated = currentDate.toISOString();
     const startTime = new Date(0, 0, 0, hour1, minute1);
     const endTime = new Date(0, 0, 0, hour2, minute2);
+    //event times should make sense
     if (startTime > endTime) {
       setError("End time must be after start time");
     } else {
+      //build the event payload
       const event = {
         name: name,
         description: description,
@@ -96,11 +113,11 @@ export default function Create_Event() {
         attendees: [],
         owner: hostId,
         tags: tags,
-        //eventPhoto, //event photo not in models yet
+        profile_pic: selectedPictureIndex,
       };
       console.log("Event Data:", event);
 
-      //create new event
+      //create new event through post request
       fetch("/api/events/all", {
         method: "POST",
         headers: {
@@ -116,12 +133,14 @@ export default function Create_Event() {
         })
         .then((data) => {
           console.log(events);
+          // update host info with the new event
           const new_events = {
             events: [...events, data.eid],
             name: hostname,
             email: email,
             bio: bio,
             owner: owner,
+            profile_pic: host_pic,
           };
           console.log(new_events);
           if (data && data.eid) {
@@ -156,11 +175,12 @@ export default function Create_Event() {
     }
   };
 
+  //cancel create event
   const handleCancel = () => {
     navigate(`/hosts/${hostId}`);
   };
 
-  //MAPS API
+  //MAPS API. Autofill for location and get longitude and latitude for the location
   const autoCompleteRef = useRef();
   const inputRef = useRef();
   const options = {
@@ -180,6 +200,10 @@ export default function Create_Event() {
       setCoords([place.geometry.location.lat(), place.geometry.location.lng()]);
     });
   }, []);
+
+  const handleAttributions = () => {
+    navigate(`/attributions`);
+  };
 
   return (
     <>
@@ -325,8 +349,11 @@ export default function Create_Event() {
               <option value="4">Monthly</option>
             </select>
           </div>
-
           <div className="form-group">
+            <label>Choose Event Picture</label>
+          <Choose_Picture onPictureSelect={handlePictureSelect}/>
+          </div>
+          {/* <div className="form-group">
             <label htmlFor="eventPhoto" className="button_event">
               Upload Photo
             </label>
@@ -346,7 +373,7 @@ export default function Create_Event() {
                 />
               )}
             </div>
-          </div>
+          </div> */}
           <div className="button-group">
             <button onClick={handleCancel} className="cancel-button">
               Cancel
@@ -356,6 +383,7 @@ export default function Create_Event() {
             </button>
           </div>
         </form>
+        <button onClick={handleAttributions}>ViewAttributions</button>
       </div>
     </>
   );
