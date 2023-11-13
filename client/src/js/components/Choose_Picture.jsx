@@ -1,20 +1,20 @@
 import React, { useState } from 'react';
 import "../../css/components/Choose_Picture.css";
-// import "../../../public/images/event_pictures/pic1"
+
 const Choose_Picture = ({ onPictureSelect }) => {
   const [selectedPictureIndex, setSelectedPictureIndex] = useState(0);
   const [showPictures, setShowPictures] = useState(false);
   const eventPictures = [
-    '../../../public/images/event_pictures/pic1.jpg',
-    '../../../public/images/event_pictures/pic2.jpg',
-    '../../../public/images/event_pictures/pic3.jpg',
-    '../../../public/images/event_pictures/pic4.jpg',
-    '../../../public/images/event_pictures/pic5.jpg',
-    '../../../public/images/event_pictures/pic6.jpg',
-    '../../../public/images/event_pictures/pic7.jpg',
-    '../../../public/images/event_pictures/pic8.jpg',
-    '../../../public/images/event_pictures/pic9.jpg',
-    '../../../public/images/event_pictures/pic10.jpg',
+    '/images/event_pictures/pic1.jpg',
+    '/images/event_pictures/pic2.jpg',
+    '/images/event_pictures/pic3.jpg',
+    '/images/event_pictures/pic4.jpg',
+    '/images/event_pictures/pic5.jpg',
+    '/images/event_pictures/pic6.jpg',
+    '/images/event_pictures/pic7.jpg',
+    '/images/event_pictures/pic8.jpg',
+    '/images/event_pictures/pic9.jpg',
+    '/images/event_pictures/pic10.jpg',
   ];
 
   const handlePictureClick = (index) => {
@@ -24,10 +24,6 @@ const Choose_Picture = ({ onPictureSelect }) => {
 
   return (
     <div>
-      {/* <button onClick={() => setShowPictures(!showPictures)}>
-        Select Event Picture
-      </button>
-      {showPictures && ( */}
       <div className="event-pictures">
         {eventPictures.map((picture, index) => (
           <img
@@ -39,7 +35,6 @@ const Choose_Picture = ({ onPictureSelect }) => {
           />
         ))}
       </div>
-      {/* )} */}
     </div>
   );
 };
