@@ -68,6 +68,7 @@ export function Host_profile() {
   const [isLoading, setIsLoading] = useState(true);
   const { hostId } = useParams();
   const [hostInfo, ownerLoggedIn] = useOutletContext();
+  const [hostInfomation, setHostInfomation] = useState({});
   console.log("The host ID from the URL is:", hostId);
 
   // Function to fetch event details by ID
@@ -91,6 +92,7 @@ export function Host_profile() {
       }
 
       const data = await response.json();
+      setHostInfomation(data);
       const eventsPromises = data.events.map(fetchEventDetails); //fetch the current user's events details
       const eventsDetails = await Promise.all(eventsPromises);
       // Filter for upcoming events
@@ -125,6 +127,14 @@ export function Host_profile() {
 
   return (
     <>
+      <HostSidebar
+        ownerLoggedIn={ownerLoggedIn}
+        hid={hostInfomation.hid}
+        name={hostInfomation.name}
+        email={hostInfomation.email}
+        bio={hostInfomation.bio}
+        profile_pic={hostInfomation.profile_pic}
+      />
       <div>
         {ownerLoggedIn ? (
           <div className="createEventBtnContainer">
