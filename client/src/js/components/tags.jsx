@@ -7,7 +7,7 @@ function TagSelector({ onTagSelect }) {
   useEffect(() => {
     async function fetchTags() {
         try {
-            const response = await fetch("api/tags/");
+            const response = await fetch("api/events/tags/");
             if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
             }
