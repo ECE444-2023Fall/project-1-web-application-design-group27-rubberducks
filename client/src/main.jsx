@@ -36,6 +36,7 @@ import AttendeeList from "./js/pages/host_profile/Attendee.jsx";
 import Edit_Event from "./js/pages/Edit_Event.jsx";
 import ViewAttributions from "./js/pages/View_Attributions.jsx";
 import EditProfilePic from "./js/pages/user_profile/Edit_Profile_Pic.jsx";
+import EditClubProfilePic from "./js/pages/user_profile/Edit_Profile_Pic_in_Club.jsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -54,6 +55,7 @@ const router = createBrowserRouter(
         <Route path="previous" element={<Profile_previous />} />
         <Route path="edit" element={<Profile_edit />} />
         <Route path="edit_pic" element={<EditProfilePic />} />
+        <Route path="edit_pic_club" element={<EditClubProfilePic />} />
         <Route path="create_host" element={<Create_Host_Profile />} />
         <Route path="clubs" element={<My_Clubs />} />
       </Route>
