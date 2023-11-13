@@ -239,7 +239,7 @@ function Events() {
     setfReo(null);
     setfHost(null);
     setfUid(null)
-    setfOrd(null);
+    setfOrd(0);
   }
   const handleReload = () => {
     setPage(1);
@@ -290,7 +290,7 @@ function Events() {
     <>
       <Navbar />
       <div className="eventsPage">
-        <span className="eventTagDrawer">
+        <div className="eventTagDrawer">
           <TagDrawerButton
             onTagSelection={handleTagsSelected}
             onNameSearch={handleNameSearch}
@@ -307,7 +307,7 @@ function Events() {
             curSort={fOrd}
             onClear={clearFilters}
           />
-        </span>
+        </div>
         <EventsGrid
           events={events}
           onStarClick={handleStarClick}

@@ -9,6 +9,9 @@ import {
   FaRegUserCircle,
 } from "react-icons/fa";
 import "../../../css/pages/events/Eventcard.css";
+import { Get_Img_Link } from "../../components/Get_Img_Link";
+
+/* This is the individual event card */
 
 function EventCard({ event, onStarClick, favEvents }) {
   /* If event is created within last 3 days, assign "New" label */
@@ -34,7 +37,7 @@ function EventCard({ event, onStarClick, favEvents }) {
           data-category={label ? label : null}
         >
           <img
-            src={event.img ? event.img : "images/placeholder.png"}
+            src={event.profile_pic ? Get_Img_Link(event.profile_pic) : "images/placeholder.png"}
             alt="Event Image"
             className="eventImg"
           />

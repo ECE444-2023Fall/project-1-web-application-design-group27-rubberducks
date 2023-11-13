@@ -10,6 +10,7 @@ import { set } from "react-hook-form";
 function Home() {
   /* Configure Events Collection */
   const [events, setEvents] = useState([]);
+  const [clubs, setClubs] = useState([]);
 
   /* Image Billboard */
   const [currentBillboard, setCurrentBillboard] = useState(0);
@@ -65,6 +66,22 @@ function Home() {
         }
       } catch (error) {
         console.error("Failed to fetch events:", error);
+      } 
+      try {
+        var fetchQuery2 = `api/hosts/?page=1&limit=12&ord=1`;
+
+        // Conduct the query
+        const response = await fetch(fetchQuery2);
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        const data2 = await response.json();
+
+        if (data2.length) {
+          setClubs((prevClubs) => [...prevClubs, ...data2]);
+        }
+      } catch (error) {
+        console.error("Failed to fetch clubs:", error);
       } finally {
         setLoading(false);
         spin_lock = false;
@@ -175,6 +192,12 @@ function Home() {
           events={events}
           onStarClick={handleStarClick}
           favEvents={favEvents}
+        />
+        <div className="banner">
+            <div className="eventsBanner">Most Active Clubs</div>
+        </div>
+        <ClubsGrid
+          clubs={clubs}
         />
       </div>
     </>
