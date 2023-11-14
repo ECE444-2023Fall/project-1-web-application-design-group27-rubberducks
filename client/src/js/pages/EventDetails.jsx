@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { FaMapMarkerAlt, FaCalendar, FaClock } from "react-icons/fa";
 import { useParams, useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
-import HostSidebar from "../components/HostSideBar";
+import HostSidebar from "../components/HostSidebar";
 import { useGetEventInfo } from "../useGetEventInfo";
 import Map from "../components/Map";
 import { Button } from "../components/Button";
