@@ -51,7 +51,7 @@ const router = createBrowserRouter(
         path="profile"
         element={<Profile_root />}
         errorElement={<ResourceError />}
-      >
+      >    
         <Route element={<Profile />} index />
         <Route path="upcoming" element={<Profile_upcoming />} />
         <Route path="favourite" element={<Profile_favourites />} />
