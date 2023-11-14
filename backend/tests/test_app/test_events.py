@@ -214,3 +214,12 @@ def test_sort_by_attendees_ascending(client):
     for i, event in enumerate(events):
         assert len(event['attendees']) == sorted_attendees[i]
 """
+
+def test_get_all_event_tags(client): #lily li
+    response = client.get("events/tags")
+    assert response.status_code == 200
+
+def test_get_event_tags_by_etid(client, add_event_tag_to_db): #lily li
+    response = client.get("events/tags/1")
+    assert response.status_code == 200
+    

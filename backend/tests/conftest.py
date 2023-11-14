@@ -265,3 +265,16 @@ def sample_event_data():
     data["owner"] = int(data["owner"])
 
     return data
+
+@pytest.fixture
+def add_event_tag_to_db(app): 
+    with app.app_context():
+        event_tag1 = Event(
+            name="Sample Event Tag",
+            description="Sample Description",
+        )
+        db.session.add(event_tag1)
+        db.session.commit()
+
+        return event_tag1  
+    
