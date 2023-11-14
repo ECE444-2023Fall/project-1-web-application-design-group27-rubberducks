@@ -63,7 +63,7 @@ def create_app(config=DevConfig):
     api.add_resource(MessagesByAccount, '/api/messages/account/<int:account_id>')
     api.add_resource(LatestMessageByAccount, '/api/messages/account/<int:account_id>/latest')
     api.add_resource(Hosts, '/api/hosts/')
-    api.add_resource(Hosts, '/api/hosts/all')
+    api.add_resource(HostsAll, '/api/hosts/all')
     api.add_resource(HostById, '/api/hosts/<int:hid>')
     api.add_resource(HostByName, '/api/hosts/<string:name>')
     
