@@ -21,7 +21,7 @@ function ClubCard({club}) {
           data-category={label ? label : null}
         >
           <img
-            src={club.profile_pic ? Get_Profile_Img_Link(club.profile_pic) : "images/placeholder.png"}
+            src={club.profile_pic = Get_Img_Link(club.profile_pic)}
             alt="Club Image"
             className="clubImg"
           />
