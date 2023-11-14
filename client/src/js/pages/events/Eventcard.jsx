@@ -37,7 +37,7 @@ function EventCard({ event, onStarClick, favEvents }) {
           data-category={label ? label : null}
         >
           <img
-            src={event.profile_pic ? Get_Img_Link(event.profile_pic) : "images/placeholder.png"}
+            src={event.profile_pic = Get_Img_Link(event.profile_pic) }
             alt="Event Image"
             className="eventImg"
           />
