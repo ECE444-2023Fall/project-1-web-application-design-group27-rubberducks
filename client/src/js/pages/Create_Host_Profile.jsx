@@ -39,7 +39,7 @@ function CreateHostProfile() {
       };
 
       // Create the new host
-      fetch("/api/hosts", {
+      fetch("/api/hosts/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -202,8 +202,8 @@ function CreateHostProfile() {
         </div>
 
         <div className="form-group">
-          <Choose_Picture onPictureSelect={handlePictureSelect}/>
-          </div>
+          <Choose_Picture onPictureSelect={handlePictureSelect} />
+        </div>
 
         {/* <div className="form-group">
           <label htmlFor="profilePhoto" id="photo_label">
