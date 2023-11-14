@@ -34,7 +34,7 @@ class Hosts(Resource):
         offset = (page - 1) * limit
 
         # Filter
-        name = str(request.args.get('name'))
+        fname = str(request.args.get('name'))
         #Sorting
         order = str(request.args.get('ord', 0)) # order (sorting) 0: alpha 1: events
 
@@ -43,8 +43,8 @@ class Hosts(Resource):
         else:
             query = Host.query.order_by(Host.name.asc()) # Alphabetical Order
 
-        if name and name != 'None': # Name
-            query = query.filter(Host.name.ilike(f"%{name}%"))
+        if fname and fname != 'None': # Name
+            query = query.filter(Host.name.ilike(f"%{fname}%"))
 
         # print(str(query.statement.compile(compile_kwargs={"literal_binds": True})))
         hosts = query.offset(offset).limit(limit).all()
