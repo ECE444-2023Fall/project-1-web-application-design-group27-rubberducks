@@ -192,18 +192,18 @@ function CreateHostProfile() {
           <textarea
             className="form-control"
             id="club_bio"
-            {...register("bio", { maxLength: 120 })}
+            {...register("bio", { maxLength: 500 })}
           />
           {errors.bio?.type === "maxLength" && (
             <p style={{ color: "red" }}>
-              <small>Bio cannot exceed 120 characters</small>
+              <small>Bio cannot exceed 500 characters</small>
             </p>
           )}
         </div>
 
         <div className="form-group">
-          <Choose_Picture onPictureSelect={handlePictureSelect}/>
-          </div>
+          <Choose_Picture onPictureSelect={handlePictureSelect} />
+        </div>
 
         {/* <div className="form-group">
           <label htmlFor="profilePhoto" id="photo_label">

@@ -531,11 +531,11 @@ export function Host_edit() {
             <Form.Control
               type="text"
               placeholder="New Bio"
-              {...register("bio", { maxLength: 120 })}
+              {...register("bio", { maxLength: 500 })}
             />
             {errors.bio?.type === "maxLength" && (
               <p style={{ color: "red" }}>
-                <small>Bio cannot exceed 120 characters</small>
+                <small>Bio cannot exceed 500 characters</small>
               </p>
             )}
           </Form.Group>

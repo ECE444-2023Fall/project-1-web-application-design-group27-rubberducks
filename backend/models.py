@@ -135,7 +135,7 @@ class Host(db.Model):
     hid = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), nullable=False, unique=True)
     email = db.Column(db.String(50), nullable=False)
-    bio = db.Column(db.String(120), nullable=False)
+    bio = db.Column(db.String(500), nullable=False)
     events = db.Column(db.ARRAY(db.Integer))
     owner = db.Column(db.Integer, db.ForeignKey("account.uid"), nullable=False)
     pending_transfer = db.Column(db.Boolean, default=False, nullable=False)
