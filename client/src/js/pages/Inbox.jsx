@@ -154,17 +154,24 @@ function InboxPage() {
   // Simulate fetching messages from an API
   useEffect(() => {
     fetch(`/api/messages/account/${curr_account.id}`)
-      .then((response) => response.json())
+      .then((response) => {
+        if (response.status === 404){
+          return [];
+        }
+        else if (response.ok){
+          return response.json();
+        }
+        else{
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+      })
       .then((data) => {
         // Sort messages by "created_at" in descending order
         if (Array.isArray(data)) {
           // Check if data is an array
           data.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
           setMessages(data);
-        } else {
-          console.error("Data is not an array");
-        }
-      })
+      }})
       .catch((error) => {
         console.error("Error fetching messages:", error);
       });

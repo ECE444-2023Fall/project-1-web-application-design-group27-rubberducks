@@ -22,10 +22,8 @@ import ProfileCategory from "../components/Profile_Category";
 import Choose_Picture from "../components/Choose_Picture";
 //This file creates a host profile page
 export default function Host_root() {
-  const [isLoading, setIsLoading] = useState(true);
   const { hostId = "" } = useParams();
   const { hostInfo, ownerLoggedIn, loading } = useGetHostInfo(hostId);
-  const [hostInfomation, setHostInfomation] = useState({});
   bouncy.register();
 
   if (loading) {
@@ -62,7 +60,7 @@ export default function Host_root() {
   );
 }
 
-//This function display first four cards in upcoming/previous events and create a button 
+//This function display first four cards in upcoming/previous events and create a button
 //for "Create event" Favorites events will not be available in host profile, since it is other people's privacy
 export function Host_profile() {
   const [upcomingEvents, setUpcomingEvents] = useState([]);
@@ -70,6 +68,7 @@ export function Host_profile() {
   const [isLoading, setIsLoading] = useState(true);
   const { hostId } = useParams();
   const [hostInfo, ownerLoggedIn] = useOutletContext();
+  const [hostInfomation, setHostInfomation] = useState({});
   console.log("The host ID from the URL is:", hostId);
 
   // Function to fetch event details by ID
@@ -91,8 +90,9 @@ export function Host_profile() {
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
-      setHostInfomation(data);
+
       const data = await response.json();
+      setHostInfomation(data);
       const eventsPromises = data.events.map(fetchEventDetails); //fetch the current user's events details
       const eventsDetails = await Promise.all(eventsPromises);
       // Filter for upcoming events
@@ -127,7 +127,7 @@ export function Host_profile() {
 
   return (
     <>
-     <HostSidebar
+      <HostSidebar
         ownerLoggedIn={ownerLoggedIn}
         hid={hostInfomation.hid}
         name={hostInfomation.name}
@@ -242,7 +242,9 @@ export function Host_upcoming() {
           {upcomingEvents.length > 0 ? (
             <Favorites events={upcomingEvents} />
           ) : (
-            <p>You do not have any upcoming events yet.</p>
+            <p className="empty-event-field">
+              This club does not have any upcoming events.
+            </p>
           )}
         </div>
       </div>
@@ -328,7 +330,9 @@ export function Host_previous() {
           {previousEvents.length > 0 ? (
             <Favorites events={previousEvents} /> // Using Favorites component to render each event, favorites/previous/previous are all the same
           ) : (
-            <p>You do not have any previous events yet.</p>
+            <p className="empty-event-field">
+              This club does not have any previous events.
+            </p>
           )}
         </div>
       </div>
@@ -552,8 +556,8 @@ export function Host_edit() {
           </Form.Group>
           <br />
           <Form.Group>
-          <label>Choose Club Picture</label>
-          <Choose_Picture onPictureSelect={handlePictureSelect}/>
+            <label>Choose Club Picture</label>
+            <Choose_Picture onPictureSelect={handlePictureSelect} />
           </Form.Group>
           <br />
           <Form.Group>

@@ -14,7 +14,12 @@ function Home() {
 
   /* Image Billboard */
   const [currentBillboard, setCurrentBillboard] = useState(0);
-  const billboardImages = ['images/banner1.png', 'images/banner2.png', 'images/banner3.png', 'images/banner4.png'];
+  const billboardImages = [
+    "images/banner1.png",
+    "images/banner2.png",
+    "images/banner3.png",
+    "images/banner4.png",
+  ];
 
   /* Configure Infinite Scroll */
   const [page, setPage] = useState(1);
@@ -66,7 +71,7 @@ function Home() {
         }
       } catch (error) {
         console.error("Failed to fetch events:", error);
-      } 
+      }
       try {
         var fetchQuery2 = `api/hosts/?page=1&limit=12&ord=1`;
 
@@ -183,10 +188,14 @@ function Home() {
       <Navbar />
       <div className="homePage">
         <div className="billboard">
-            <img src={billboardImages[currentBillboard]} alt="Event Billboard" />
+          <img
+            className="billboard-picture"
+            src={billboardImages[currentBillboard]}
+            alt="Event Billboard"
+          />
         </div>
         <div className="banner">
-            <div className="eventsBanner">Hottest Events</div>
+          <div className="eventsBanner">Hottest Events</div>
         </div>
         <EventsGrid
           events={events}
@@ -194,11 +203,9 @@ function Home() {
           favEvents={favEvents}
         />
         <div className="banner">
-            <div className="eventsBanner">Most Active Clubs</div>
+          <div className="eventsBanner">Most Active Clubs</div>
         </div>
-        <ClubsGrid
-          clubs={clubs}
-        />
+        <ClubsGrid clubs={clubs} />
       </div>
     </>
   );
