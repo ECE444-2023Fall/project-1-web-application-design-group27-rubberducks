@@ -156,7 +156,7 @@ export default function EventDetailsPage() {
     //make sure there is still space left for the event
     if (eventInfo.attendees.length >= eventInfo.capacity) {
       setMessage("The event is at full capacity.");
-    } 
+    }
     //check if user already registered
     else if (eventInfo.attendees.includes(user.uid)) {
       setMessage("You are already registered.");
@@ -232,22 +232,25 @@ export default function EventDetailsPage() {
       />
       <div className="event">
         <div className="event--base">
-          <div className="event--header-pic">
+          <div className="event--header-container">
             {/* <div className="event--header-pic" style={{ backgroundImage: 'url("images/placeholder.png"), linearGradient(rgba(0, 0, 0, 0.1))' }}> */}
-            <div className="event--header-pic">
-            <img src={Get_Img_Link(eventInfo.profile_pic)}/>
-              </div>
+            <div className="event--header-pic-container">
+              <img
+                className="event--header-pic"
+                src={Get_Img_Link(eventInfo.profile_pic)}
+              />
+            </div>
             <div className="event--header-bar">
               <h1 className="event--header-text">{eventInfo.name}</h1>
               {/* display event button only if current user is the owner of the event host */}
               {isOwner && (
-              <Button
-                onClick={handleEdit}
-                buttonStyle=".btn--grey"
-                buttonSize="btn--large"
-              >
-                Edit Event
-              </Button>
+                <Button
+                  onClick={handleEdit}
+                  buttonStyle=".btn--grey"
+                  buttonSize="btn--large"
+                >
+                  Edit Event
+                </Button>
               )}
             </div>
           </div>

@@ -1,3 +1,16 @@
+.event--header-pic {
+  width: 100%;
+  height: 400px;
+  object-fit: cover;
+}
+
+.event--header-pic-container {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+}
+
 .map--container {
   position: relative;
   left: 50%;
@@ -19,12 +32,10 @@
   background: #fff;
 }
 
-
 .event--main {
   padding: 2rem;
   background: #fff;
 }
-
 
 h1 {
   text-align: center;
@@ -40,7 +51,6 @@ h1 {
   min-height: 100px;
   position: relative;
 }
-
 
 .event--header {
   height: 200px;
@@ -73,7 +83,7 @@ h1 {
 }
 
 .event--edit-btn {
-  border:1px solid #002452;
+  border: 1px solid #002452;
 }
 
 .event--icon {
