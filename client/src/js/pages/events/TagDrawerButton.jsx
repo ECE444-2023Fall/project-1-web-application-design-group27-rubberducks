@@ -10,7 +10,8 @@ function TagDrawerButton({
   onRecurringSelect, onReload, onSort, curSort, onClear
   }) {
   const [tags, setTags] = useState([]);
-
+  const [nameSearch, setNameSearch] = useState('');
+  const [hostSearch, setHostSearch] = useState('');
   useEffect(() => {
     async function fetchTags() {
         try {
@@ -38,6 +39,12 @@ function TagDrawerButton({
 
     setSelectedTags(newSelection);
     onTagSelection(newSelection);
+  };
+  const handleClear = () => {
+    setSelectedTags([]);
+    setNameSearch('');
+    setHostSearch('');
+    onClear(); 
   };
 
   return (
@@ -119,10 +126,10 @@ function TagDrawerButton({
                 ))}
             </div>
             <div className="apply-buttons">
-              <button className="btn--new btn--create" onClick={() => onClear()}>Reset</button>
+              <button className="btn--new btn--create" onClick={handleClear}>Reset</button>
               <button className="btn--new btn--create" onClick={() => onReload()}>Apply</button>
             </div>
-            <button class="btn--new btn--create" onClick={() => onReload()}>Apply</button>
+            {/* <button class="btn--new btn--create" onClick={() => onReload()}>Apply</button> */}
           </div>
         )}
     </>
