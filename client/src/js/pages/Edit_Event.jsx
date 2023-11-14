@@ -11,7 +11,6 @@ import { bouncy } from "ldrs";
 import { set } from "react-hook-form";
 import Choose_Picture from "../components/Choose_Picture";
 
-
 export default function Edit_Event() {
   const navigate = useNavigate();
   const { eventId = "" } = useParams();
@@ -124,7 +123,7 @@ export default function Edit_Event() {
     setDate(newDate);
   };
 
-
+  //display start and end times in integer hours and minutes
   const handlePictureSelect = (index) => {
     setSelectedPictureIndex(index);
   };

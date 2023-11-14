@@ -20,7 +20,7 @@ import { bouncy } from "ldrs";
 import Favorites from "../components/Favorite";
 import ProfileCategory from "../components/Profile_Category";
 import Choose_Picture from "../components/Choose_Picture";
-
+//This file creates a host profile page
 export default function Host_root() {
   const { hostId = "" } = useParams();
   const { hostInfo, ownerLoggedIn, loading } = useGetHostInfo(hostId);
@@ -60,12 +60,15 @@ export default function Host_root() {
   );
 }
 
+//This function display first four cards in upcoming/previous events and create a button 
+//for "Create event" Favorites events will not be available in host profile, since it is other people's privacy
 export function Host_profile() {
   const [upcomingEvents, setUpcomingEvents] = useState([]);
   const [previousEvents, setPreviousEvents] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const { hostId } = useParams();
   const [hostInfo, ownerLoggedIn] = useOutletContext();
+  const [hostInfomation, setHostInfomation] = useState({});
   console.log("The host ID from the URL is:", hostId);
 
   // Function to fetch event details by ID
@@ -89,6 +92,7 @@ export function Host_profile() {
       }
 
       const data = await response.json();
+      setHostInfomation(data);
       const eventsPromises = data.events.map(fetchEventDetails); //fetch the current user's events details
       const eventsDetails = await Promise.all(eventsPromises);
       // Filter for upcoming events
@@ -123,6 +127,14 @@ export function Host_profile() {
 
   return (
     <>
+      <HostSidebar
+        ownerLoggedIn={ownerLoggedIn}
+        hid={hostInfomation.hid}
+        name={hostInfomation.name}
+        email={hostInfomation.email}
+        bio={hostInfomation.bio}
+        profile_pic={hostInfomation.profile_pic}
+      />
       <div>
         {ownerLoggedIn ? (
           <div className="createEventBtnContainer">
@@ -153,6 +165,8 @@ export function Host_profile() {
   );
 }
 
+//This function will compare all the created events's starting time and current time,
+//if it is a reoccuring event, it will always be an upcoming event
 export function Host_upcoming() {
   const [upcomingEvents, setUpcomingEvents] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -227,9 +241,6 @@ export function Host_upcoming() {
           </div>
           {upcomingEvents.length > 0 ? (
             <Favorites events={upcomingEvents} />
-            // upcomingEvents.map((event) => (
-            //   <Favorites key={event.eid} event={event} /> // Using Favorites component to render each event, favorites/upcoming/previous are all the same
-            // ))
           ) : (
             <p>You do not have any upcoming events yet.</p>
           )}
@@ -239,6 +250,7 @@ export function Host_upcoming() {
   );
 }
 
+//This function will compare all the registered events's starting time and current time to see if it was in the past
 export function Host_previous() {
   const [previousEvents, setPreviousEvents] = useState([]);
   const [isLoading, setIsLoading] = useState(true);

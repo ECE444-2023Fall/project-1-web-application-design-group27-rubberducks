@@ -1,6 +1,7 @@
 from flask import request
 from flask_restx import Namespace, Resource, fields
 from backend.models import Account
+#from models import Account
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_jwt_extended import (
     JWTManager,
@@ -61,6 +62,7 @@ class SignUp(Resource):
             name=data["name"],
             email=email,
             password=generate_password_hash(data["password"]),
+            # Additional fields like events, fav_events, etc., can be initialized here
             events=[],
             fav_events=[],
             orgs=[],

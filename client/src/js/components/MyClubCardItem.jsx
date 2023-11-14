@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-
+import "../../css/components/CardItem.css"
+//This file is used for MyClubCard,add path,name in to the card
 function MyClubCardItem(props) {
   return (
     <li className="cards--item">

@@ -37,6 +37,7 @@ def add_host_to_db(app):
             fav_events= [],
             orgs = [],
             msgids = [],
+            profile_pic=0,
         )
         db.session.add(account1)
         db.session.commit()
@@ -45,7 +46,8 @@ def add_host_to_db(app):
             owner=account1.uid, 
             email="test1@example.com",
             events= [],
-            bio="Host bio 1")
+            bio="Host bio 1",
+            profile_pic=0,)
         db.session.add(host1)
         db.session.commit()
 
@@ -72,7 +74,8 @@ def add_event_to_db(app, add_host_to_db):
             tags=[1, 2],
             reoccuring=0,
             date_created="2023-10-29",
-            owner=host.hid  
+            owner=host.hid,
+            profile_pic=0,  
         )
         db.session.add(event1)
         db.session.commit()
@@ -90,6 +93,7 @@ def add_account_to_db(app):
             fav_events= [],
             orgs = [],
             msgids = [],
+            profile_pic=0,
         )
         db.session.add(account1)
         db.session.commit()
@@ -123,6 +127,7 @@ def add_multiple_messages_to_db(app):
             fav_events= [],
             orgs = [],
             msgids = [],
+            profile_pic=0,
         )
         db.session.add(account1)
         db.session.commit()
@@ -135,6 +140,7 @@ def add_multiple_messages_to_db(app):
             fav_events= [],
             orgs = [],
             msgids = [],
+            profile_pic=0,
         )
         db.session.add(account2)
         db.session.commit()
@@ -192,6 +198,7 @@ def account():
             "fav_events": [],
             "orgs": [],
             "msgids": [],
+            "profile_pic":0,
 
         })
 
@@ -215,7 +222,8 @@ def host():
         'bio': 'Host bio 1', 
         'events': [], 
         'owner': 1,
-        'pending_transfer': False}
+        'pending_transfer': False,
+        'profile_pic':0,}
         )
 
 @pytest.fixture
@@ -250,7 +258,8 @@ def sample_event_data():
         "tags": [1, 2],
         "reoccuring": 0,
         "date_created": "2023-10-29", 
-        "owner": 1  
+        "owner": 1,
+        "profile_pic":0,  
     }
     
     data["owner"] = int(data["owner"])

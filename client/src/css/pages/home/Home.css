@@ -1,0 +1,25 @@
+.eventsBanner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+    color: #252e48;
+    background-color: rgba(56, 125, 255, 0.1);
+    border-radius: 10px;
+    margin: 1rem 1rem 0 1rem;
+    padding: 10px;
+    box-shadow: 0 6px 20px rgba(56, 125, 255, 0.17);
+}
+
+.billboard {
+    width: 100%;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px;
+  
+  .billboard img {
+    max-width: 100%;
+    transition: opacity 0.5s ease-in-out;
+  }
+}
