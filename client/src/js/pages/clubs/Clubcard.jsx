@@ -4,7 +4,7 @@ import {
   FaRegEdit
 } from "react-icons/fa";
 import "../../../css/pages/clubs/Clubcard.css";
-import { Get_Profile_Img_Link } from "../../components/Get_Img_Link";
+import { Get_Img_Link } from "../../components/Get_Img_Link";
 
 /* This is the individual cards that represent a club */
 
