@@ -107,14 +107,17 @@
 
 .starIcon:hover {
   transform: scale(1.2);
+  filter: drop-shadow(1px 1px 1px black);
 }
 
 .starIcon .defaultStar {
   color: #fff;
+  filter: drop-shadow(1px 1px 1px black);
 }
 
 .starIcon .filledStar {
   color: gold;
+  filter: drop-shadow(1px 1px 1px black);
 }
 
 .redoIconSpan {
