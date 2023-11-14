@@ -88,6 +88,7 @@ class Events(Resource):
         host = str(request.args.get('host')) #host
         uid = str(request.args.get('uid')) # user_id
         tags_filter = str(request.args.get('tags')) # tags
+        ft = str(request.args.get('ft')) # future events only
 
         """
         # Debug Prints
@@ -133,6 +134,9 @@ class Events(Resource):
         if uid and uid != 'None': # Uid
             user_id = int(uid)
             query = query.filter(Event.attendees.any(user_id))
+        if ft and ft == '1': # future events only
+            today = datetime.today().strftime('%Y-%m-%d')
+            query = query.filter(Event.date >= today)
             
         # Tags
         if (tags_filter and tags_filter != 'None'):

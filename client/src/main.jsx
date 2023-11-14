@@ -9,6 +9,7 @@ import {
 import Profile_root, {
   Profile,
   Profile_edit,
+  Club_Edit,
   Profile_favourites,
   Profile_previous,
   Profile_upcoming,
@@ -24,7 +25,8 @@ import Create_Event from "./js/pages/host_profile/Create_Event.jsx";
 import InboxPage from "./js/pages/Inbox.jsx";
 import Events from "./js/pages/events/Events.jsx";
 import EventDetailsPage from "./js/pages/EventDetails.jsx";
-import Home from "./js/pages/Home.jsx";
+import Home from "./js/pages/home/Home.jsx";
+import Clubs from "./js/pages/clubs/Clubs.jsx";
 import Login from "./js/pages/Login.jsx";
 import SignUp from "./js/pages/SignUp.jsx";
 import NotFound from "./js/pages/Not_Found.jsx";
@@ -36,6 +38,8 @@ import AttendeeList from "./js/pages/host_profile/Attendee.jsx";
 import Edit_Event from "./js/pages/Edit_Event.jsx";
 import ViewAttributions from "./js/pages/View_Attributions.jsx";
 import EditProfilePic from "./js/pages/user_profile/Edit_Profile_Pic.jsx";
+import EditClubProfilePic from "./js/pages/user_profile/Edit_Profile_Pic_in_Club.jsx";
+
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -53,7 +57,9 @@ const router = createBrowserRouter(
         <Route path="favourite" element={<Profile_favourites />} />
         <Route path="previous" element={<Profile_previous />} />
         <Route path="edit" element={<Profile_edit />} />
+        <Route path="edit_club" element={<Club_Edit />} />
         <Route path="edit_pic" element={<EditProfilePic />} />
+        <Route path="edit_pic_club" element={<EditClubProfilePic />} />
         <Route path="create_host" element={<Create_Host_Profile />} />
         <Route path="clubs" element={<My_Clubs />} />
       </Route>
@@ -80,6 +86,9 @@ const router = createBrowserRouter(
         <Route path=":eventId" element={<EventDetailsPage />} />
         <Route path=":eventId/attendees" element={<AttendeeList />} />
         <Route path=":eventId/edit_event" element={<Edit_Event />} />
+      </Route>
+      <Route path="clubs" errorElement={<ResourceError />}>
+        <Route element={<Clubs />} index />
       </Route>
       <Route path="inbox" element={<InboxPage />} />
       <Route path="404" element={<ResourceError />} />

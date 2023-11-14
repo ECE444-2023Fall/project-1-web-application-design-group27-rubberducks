@@ -86,6 +86,11 @@ function Navbar() {
               Events
             </Link>
           </li>
+          <li className="nav-item">
+            <Link to="/clubs" className="nav-links" onClick={closeMobileMenu}>
+              Clubs
+            </Link>
+          </li>
           {isLoggedIn && (
             <li className={`nav-item ${dropdownOpen ? "active" : ""}`}>
               <div className="nav-links" onClick={toggleDropdown}>

@@ -7,7 +7,7 @@ import "../../../css/components/App.css";
 function TagDrawerButton({
   onTagSelection, onNameSearch, onHostSearch, onLocationSearch, onStartTimeSelect, 
   onEndTimeSelect, onDateSelect, onMaxAttendeesSelect, onCapacityReachedToggle, 
-  onRecurringSelect, onReload, onSort, curSort
+  onRecurringSelect, onReload, onSort, curSort, onClear
   }) {
   const [tags, setTags] = useState([]);
 
@@ -94,9 +94,9 @@ function TagDrawerButton({
                   <select onChange={(e) => onRecurringSelect(e.target.value)}>
                     <option value="0">Not Recurring</option>
                     <option value="1">Daily</option>
-                    <option value="2">Bi-Daily</option>
-                    <option value="3">Weekly</option>
-                    <option value="4">Bi-Weekly</option>
+                    <option value="2">Weekly</option>
+                    <option value="3">Bi-Weekly</option>
+                    <option value="4">Monthly</option>
                   </select>
                 </div>
               </div>
@@ -118,7 +118,10 @@ function TagDrawerButton({
                 </div>
                 ))}
             </div>
-            
+            <div className="apply-buttons">
+              <button className="btn--new btn--create" onClick={() => onClear()}>Reset</button>
+              <button className="btn--new btn--create" onClick={() => onReload()}>Apply</button>
+            </div>
             <button class="btn--new btn--create" onClick={() => onReload()}>Apply</button>
           </div>
         )}

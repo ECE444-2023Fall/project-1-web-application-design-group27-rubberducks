@@ -7,7 +7,7 @@ from flask_jwt_extended import JWTManager
 from backend.messages import messages_ns, Messages, MessagesById, MessagesByAccount, LatestMessageByAccount
 from backend.events import events_ns, Events, EventById, Event_tags, EventTagId, EventsAll
 from backend.accounts import accounts_ns, Accounts, AccountById, AccountByEmail
-from backend.hosts import hosts_ns, Hosts, HostById, HostByName
+from backend.hosts import hosts_ns, Hosts, HostById, HostByName, HostsAll
 from backend.auth import auth_ns, principal, SignUp, Login, Refresh
 from backend.s3 import s3_ns
 
@@ -62,7 +62,8 @@ def create_app(config=DevConfig):
     api.add_resource(MessagesById, '/api/messages/<int:msgid>')
     api.add_resource(MessagesByAccount, '/api/messages/account/<int:account_id>')
     api.add_resource(LatestMessageByAccount, '/api/messages/account/<int:account_id>/latest')
-    api.add_resource(Hosts, '/api/hosts')
+    api.add_resource(Hosts, '/api/hosts/')
+    api.add_resource(Hosts, '/api/hosts/all')
     api.add_resource(HostById, '/api/hosts/<int:hid>')
     api.add_resource(HostByName, '/api/hosts/<string:name>')
     
