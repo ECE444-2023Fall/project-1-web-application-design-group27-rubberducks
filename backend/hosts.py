@@ -66,18 +66,10 @@ class HostsAll(Resource):
     def get(self):
         # Query all hosts and return them
         return Host.query.all(), 200
-
-    # POST endpoint to create a new host
-    @hosts_ns.expect(host_model)
-    @hosts_ns.marshal_with(host_model)
-    def post(self):
-        # Create a Host object from the provided payload and save it to the database
-        host = Host(**hosts_ns.payload)
-        host.save()
-        return host, 201
+    
 
 # Route for operations on a specific host identified by its ID
-@hosts_ns.route("/<int:hid>")
+# @hosts_ns.route("/<int:hid>")
 class HostById(Resource):
     # GET endpoint to retrieve a host by its ID
     @hosts_ns.marshal_with(host_model)
@@ -103,7 +95,7 @@ class HostById(Resource):
         return {"message": "host deleted"}, 200
 
 # Route for operations on a host identified by name
-@hosts_ns.route("/<string:name>")
+# @hosts_ns.route("/<string:name>")
 class HostByName(Resource):
     # GET endpoint to retrieve a host by name
     @hosts_ns.marshal_with(host_model)
