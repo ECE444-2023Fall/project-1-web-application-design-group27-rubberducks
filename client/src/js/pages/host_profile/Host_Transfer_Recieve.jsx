@@ -9,7 +9,7 @@ function HostTransferRecieve() {
   const [hostInfo, ownerLoggedIn] = useOutletContext();
 
   const changeMsgType = (id, new_type) => {
-    const updateTypeUrl = `/api/messages/${id}`;
+    const updateTypeUrl = `/api/messages/${id}/`;
 
     // Send a PUT request to mark the message as read
     fetch(updateTypeUrl, {
@@ -46,7 +46,7 @@ function HostTransferRecieve() {
   const [hostEvent, setHostEvent] = useState([]);
 
   useEffect(() => {
-    fetch(`/api/hosts/${hostId}`)
+    fetch(`/api/hosts/${hostId}/`)
       .then((res) => res.json())
       .then((data) => {
         setContent(
@@ -67,7 +67,7 @@ function HostTransferRecieve() {
     // make it so you cant open the message again
     changeMsgType(msgid, -1);
     
-    fetch(`/api/accounts/${curr_account.id}`, {
+    fetch(`/api/accounts/${curr_account.id}/`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -91,7 +91,7 @@ function HostTransferRecieve() {
           msgids: curr_account_data.msgids,
         };
 
-        fetch(`/api/accounts/${curr_account.id}`, {
+        fetch(`/api/accounts/${curr_account.id}/`, {
           method: "PUT", // Use PUT to update the account
           headers: {
             "Content-Type": "application/json",
@@ -109,7 +109,7 @@ function HostTransferRecieve() {
             console.log(data3);
 
             // Update orgs field of sending account
-            fetch(`/api/accounts/${sending_uid}`, {
+            fetch(`/api/accounts/${sending_uid}/`, {
               method: "GET",
               headers: {
                 "Content-Type": "application/json",
@@ -139,7 +139,7 @@ function HostTransferRecieve() {
                   msgids: sending_account_data.msgids,
                 };
 
-                fetch(`/api/accounts/${sending_uid}`, {
+                fetch(`/api/accounts/${sending_uid}/`, {
                   method: "PUT", // Use PUT to update the account
                   headers: {
                     "Content-Type": "application/json",
@@ -155,7 +155,7 @@ function HostTransferRecieve() {
                   .then((data3) => {
                     console.log("successfully updated account orgs");
                     console.log(data3);
-                    fetch(`/api/hosts/${hostId}`, {
+                    fetch(`/api/hosts/${hostId}/`, {
                       method: "PUT", // Use PUT to update the account
                       headers: {
                         "Content-Type": "application/json",
@@ -191,7 +191,7 @@ function HostTransferRecieve() {
     // Handle message rejection logic
     // make it so you cant open the message again
     changeMsgType(msgid, -1);
-    fetch(`/api/hosts/${hostId}`, {
+    fetch(`/api/hosts/${hostId}/`, {
       method: "PUT", // Use PUT to update the account
       headers: {
         "Content-Type": "application/json",

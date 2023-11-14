@@ -9,7 +9,7 @@ export const useGetUserInfo = () => {
   const loadUserInfo = useCallback(async () => {
     if (id) {
       setUserInfo(
-        await fetch("/api/accounts/" + id)
+        await fetch("/api/accounts/" + id + "/")
           .then((res) => res.json())
           .then((data) => data)
       );

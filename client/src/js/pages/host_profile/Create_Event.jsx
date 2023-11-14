@@ -76,7 +76,7 @@ export default function Create_Event() {
   //fetch host info for later put request
 
   useEffect(() => {
-    fetch(`/api/hosts/${hostId}`)
+    fetch(`/api/hosts/${hostId}/`)
       .then((res) => res.json())
       .then((data) => {
         setHostName(data.name);
@@ -118,7 +118,7 @@ export default function Create_Event() {
       console.log("Event Data:", event);
 
       //create new event through post request
-      fetch("/api/events/all", {
+      fetch("/api/events/all/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -145,7 +145,7 @@ export default function Create_Event() {
           console.log(new_events);
           if (data && data.eid) {
             // Update host data
-            fetch(`/api/hosts/${hostId}`, {
+            fetch(`/api/hosts/${hostId}/`, {
               method: "PUT",
               headers: {
                 "Content-Type": "application/json",

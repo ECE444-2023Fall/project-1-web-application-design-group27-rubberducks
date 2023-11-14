@@ -11,7 +11,7 @@ export const useGetHostInfo = (hostId) => {
 
   useEffect(() => {
     loadUserInfo();
-    fetch("/api/hosts/" + hostId)
+    fetch("/api/hosts/" + hostId + "/")
       .then((res) => {
         if (!res.ok) {
           window.location.href = "/404";
@@ -26,7 +26,7 @@ export const useGetHostInfo = (hostId) => {
 
   const loadUserInfo = useCallback(async () => {
     if (id) {
-      fetch("/api/accounts/" + id)
+      fetch("/api/accounts/" + id + "/")
         .then((res) => res.json())
         .then((data) => {
           setUserInfo(data);

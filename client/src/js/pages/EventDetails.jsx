@@ -122,7 +122,7 @@ export default function EventDetailsPage() {
       setMessage("You are already registered.");
     } else {
       //update attendees for event
-      fetch(`/api/events/${eventId}`, {
+      fetch(`/api/events/${eventId}/`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -149,7 +149,7 @@ export default function EventDetailsPage() {
           if (userInfo.events.includes(eventId)) {
             console.log("User's events already includes this event");
           } else {
-            fetch(`/api/accounts/${userInfo.uid}`, {
+            fetch(`/api/accounts/${userInfo.uid}/`, {
               method: "PUT",
               headers: {
                 "Content-Type": "application/json",
@@ -192,7 +192,7 @@ export default function EventDetailsPage() {
       const updated_attendees = eventInfo.attendees.filter((u) => u !== parseInt(userInfo.uid,10))
       console.log(`event attendees after: ${updated_attendees}`)
 
-      fetch(`/api/events/${eventId}`, {
+      fetch(`/api/events/${eventId}/`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -220,7 +220,7 @@ export default function EventDetailsPage() {
           const updated_events = userInfo.events.filter((e) => e !== parseInt(eventId,10))
           console.log(`account events before: ${updated_events}`)
           
-          fetch(`/api/accounts/${userInfo.uid}`, {
+          fetch(`/api/accounts/${userInfo.uid}/`, {
             method: "PUT",
             headers: {
               "Content-Type": "application/json",

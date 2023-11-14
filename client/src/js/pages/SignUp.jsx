@@ -37,7 +37,7 @@ function SignUp() {
     }
 
     // Send a POST request to the signup API
-    fetch("/api/auth/signup", {
+    fetch("/api/auth/signup/", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

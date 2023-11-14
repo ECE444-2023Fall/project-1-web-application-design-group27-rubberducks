@@ -65,7 +65,7 @@ export function Profile() {
         return;
       }
 
-      const response = await fetch(`/api/accounts/${user.id}`);
+      const response = await fetch(`/api/accounts/${user.id}/`);
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
@@ -88,7 +88,7 @@ export function Profile() {
   const fetchEvents = async (fav_events) => {
     try {
       const eventDetailsPromises = fav_events.map((eventId) =>
-        fetch(`/api/events/${eventId}`).then((res) => res.json())
+        fetch(`/api/events/${eventId}/`).then((res) => res.json())
       );
 
       const eventsDetails = await Promise.all(eventDetailsPromises);
@@ -106,14 +106,14 @@ export function Profile() {
         throw new Error("No user id found");
       }
 
-      const response = await fetch(`/api/accounts/${user.id}`);
+      const response = await fetch(`/api/accounts/${user.id}/`);
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
 
       const data = await response.json();
       const eventsDetailsPromises = data.events.map((eid) =>
-        fetch(`/api/events/${eid}`).then((res) => res.json())
+        fetch(`/api/events/${eid}/`).then((res) => res.json())
       );
 
       const eventsDetails = await Promise.all(eventsDetailsPromises);
@@ -199,7 +199,7 @@ export function Profile_upcoming() {
 
   // Function to fetch event details by ID
   const fetchEventDetails = async (eid) => {
-    const response = await fetch(`/api/events/${eid}`);
+    const response = await fetch(`/api/events/${eid}/`);
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
     }
@@ -217,7 +217,7 @@ export function Profile_upcoming() {
         return;
       }
 
-      const response = await fetch(`/api/accounts/${user.id}`); //fetch the current user
+      const response = await fetch(`/api/accounts/${user.id}/`); //fetch the current user
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
@@ -292,7 +292,7 @@ export function Profile_previous() {
 
   // Function to fetch event details by ID
   const fetchEventDetails = async (eid) => {
-    const response = await fetch(`/api/events/${eid}`);
+    const response = await fetch(`/api/events/${eid}/`);
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
     }
@@ -310,7 +310,7 @@ export function Profile_previous() {
         return;
       }
 
-      const response = await fetch(`/api/accounts/${user.id}`); //fetch the current user
+      const response = await fetch(`/api/accounts/${user.id}/`); //fetch the current user
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
@@ -391,7 +391,7 @@ export function Profile_favourites() {
         return;
       }
 
-      const response = await fetch(`/api/accounts/${user.id}`);
+      const response = await fetch(`/api/accounts/${user.id}/`);
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
@@ -409,7 +409,7 @@ export function Profile_favourites() {
   const fetchEvents = async (fav_events) => {
     try {
       const eventDetailsPromises = fav_events.map((eventId) =>
-        fetch(`/api/events/${eventId}`).then((res) => res.json())
+        fetch(`/api/events/${eventId}/`).then((res) => res.json())
       );
 
       const eventsDetails = await Promise.all(eventDetailsPromises);
@@ -458,23 +458,23 @@ export function Profile_edit() {
     setLoading(true);
     for (let org of userInfo.orgs) {
       //get all the orgs the user has
-      const orgInfo = await fetch(`/api/hosts/${org}`).then((res) =>
+      const orgInfo = await fetch(`/api/hosts/${org}/`).then((res) =>
         res.json()
       );
 
       for (let event of orgInfo.events) {
         //get all the events the org has
-        const eventInfo = await fetch(`/api/events/${event}`).then((res) =>
+        const eventInfo = await fetch(`/api/events/${event}/`).then((res) =>
           res.json()
         );
 
         for (let attendee of eventInfo.attendees) {
           //get all the attendees of the event
-          const attendeeInfo = await fetch(`/api/accounts/${attendee}`).then(
+          const attendeeInfo = await fetch(`/api/accounts/${attendee}/`).then(
             (res) => res.json()
           );
           //remove the event from the attendees' events and fav_events
-          const attendeeRes = await fetch(`/api/accounts/${attendee}`, {
+          const attendeeRes = await fetch(`/api/accounts/${attendee}/`, {
             method: "PUT",
             headers: {
               "Content-Type": "application/json",
@@ -487,7 +487,7 @@ export function Profile_edit() {
         }
 
         //delete the event
-        const eventRes = await fetch(`/api/events/${event}`, {
+        const eventRes = await fetch(`/api/events/${event}/`, {
           method: "DELETE",
         });
 
@@ -496,7 +496,7 @@ export function Profile_edit() {
         }
       }
       //delete the org
-      const orgRes = await fetch(`/api/hosts/${org}`, {
+      const orgRes = await fetch(`/api/hosts/${org}/`, {
         method: "DELETE",
       });
 
@@ -505,7 +505,7 @@ export function Profile_edit() {
       }
     }
     //delete the account
-    const accountRes = await fetch(`/api/accounts/${userInfo.uid}`, {
+    const accountRes = await fetch(`/api/accounts/${userInfo.uid}/`, {
       method: "DELETE",
     });
 
@@ -566,7 +566,7 @@ export function Profile_edit() {
               body: JSON.stringify(body),
             };
 
-            fetch("/api/accounts/" + userInfo.uid, requestOptions)
+            fetch("/api/accounts/" + userInfo.uid +"/", requestOptions)
               .then((res) => {
                 if (!res.ok) {
                   throw new Error(res.statusText);
@@ -737,23 +737,23 @@ export function Club_Edit() {
     setLoading(true);
     for (let org of userInfo.orgs) {
       //get all the orgs the user has
-      const orgInfo = await fetch(`/api/hosts/${org}`).then((res) =>
+      const orgInfo = await fetch(`/api/hosts/${org}/`).then((res) =>
         res.json()
       );
 
       for (let event of orgInfo.events) {
         //get all the events the org has
-        const eventInfo = await fetch(`/api/events/${event}`).then((res) =>
+        const eventInfo = await fetch(`/api/events/${event}/`).then((res) =>
           res.json()
         );
 
         for (let attendee of eventInfo.attendees) {
           //get all the attendees of the event
-          const attendeeInfo = await fetch(`/api/accounts/${attendee}`).then(
+          const attendeeInfo = await fetch(`/api/accounts/${attendee}/`).then(
             (res) => res.json()
           );
           //remove the event from the attendees' events and fav_events
-          const attendeeRes = await fetch(`/api/accounts/${attendee}`, {
+          const attendeeRes = await fetch(`/api/accounts/${attendee}/`, {
             method: "PUT",
             headers: {
               "Content-Type": "application/json",
@@ -766,7 +766,7 @@ export function Club_Edit() {
         }
 
         //delete the event
-        const eventRes = await fetch(`/api/events/${event}`, {
+        const eventRes = await fetch(`/api/events/${event}/`, {
           method: "DELETE",
         });
 
@@ -775,7 +775,7 @@ export function Club_Edit() {
         }
       }
       //delete the org
-      const orgRes = await fetch(`/api/hosts/${org}`, {
+      const orgRes = await fetch(`/api/hosts/${org}/`, {
         method: "DELETE",
       });
 
@@ -784,7 +784,7 @@ export function Club_Edit() {
       }
     }
     //delete the account
-    const accountRes = await fetch(`/api/accounts/${userInfo.uid}`, {
+    const accountRes = await fetch(`/api/accounts/${userInfo.uid}/`, {
       method: "DELETE",
     });
 
@@ -845,7 +845,7 @@ export function Club_Edit() {
               body: JSON.stringify(body),
             };
 
-            fetch("/api/accounts/" + userInfo.uid, requestOptions)
+            fetch("/api/accounts/" + userInfo.uid + "/", requestOptions)
               .then((res) => {
                 if (!res.ok) {
                   throw new Error(res.statusText);

@@ -42,7 +42,7 @@ function Home() {
       try {
         // Configure the query attributes
         var fetchQuery = `api/events/?page=1&limit=12&ft=1`; // Only fetch 12 events with dates in the future
-        fetchQuery = fetchQuery.concat(`&ord=4`); // Order by popularity
+        fetchQuery = fetchQuery.concat(`&ord=4/`); // Order by popularity
 
         // Send request
         const response = await fetch(fetchQuery);
@@ -63,7 +63,7 @@ function Home() {
         if (isLogged) {
           //if user logged in, load fav events
           const userRes = await fetch(
-            "/api/accounts/" + JSON.parse(localStorage.getItem("user")).id
+            "/api/accounts/" + JSON.parse(localStorage.getItem("user")).id + "/"
           )
             .then((res) => res.json())
             .then((data) => data);
@@ -73,7 +73,7 @@ function Home() {
         console.error("Failed to fetch events:", error);
       }
       try {
-        var fetchQuery2 = `api/hosts/?page=1&limit=12&ord=1`;
+        var fetchQuery2 = `api/hosts/?page=1&limit=12&ord=1/`;
 
         // Conduct the query
         const response = await fetch(fetchQuery2);
@@ -114,7 +114,7 @@ function Home() {
       };
 
       fetch(
-        `/api/accounts/${JSON.parse(localStorage.getItem("user")).id}`,
+        `/api/accounts/${JSON.parse(localStorage.getItem("user")).id}/`,
         requestOptions
       )
         .then((res) => {

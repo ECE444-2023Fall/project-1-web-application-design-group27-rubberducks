@@ -48,7 +48,7 @@ export default function Edit_Event() {
 
     const loadEventInfo = async () => {
       try {
-        const eventResponse = await fetch("/api/events/" + eventId);
+        const eventResponse = await fetch("/api/events/" + eventId +"/");
 
         if (eventResponse.status === 404) {
           setError("Event not found");
@@ -64,7 +64,7 @@ export default function Edit_Event() {
           setLocation(eventData.location);
           // setSelectedPictureIndex(eventData.profile_pic);
 
-          const hostResponse = await fetch("/api/hosts/" + hostId);
+          const hostResponse = await fetch("/api/hosts/" + hostId + "/");
 
           if (hostResponse.status === 404) {
             setError("Host not found");
@@ -191,7 +191,7 @@ export default function Edit_Event() {
       profile_pic: selectedPictureIndex,
     };
 
-    fetch(`/api/events/${eventId}`, {
+    fetch(`/api/events/${eventId}/`, {
       method: "PUT", // Update the method to PUT
       headers: {
         "Content-Type": "application/json",

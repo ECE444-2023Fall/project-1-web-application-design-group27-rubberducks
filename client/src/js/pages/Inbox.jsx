@@ -11,7 +11,7 @@ function InboxPage() {
   const curr_account = JSON.parse(localStorage.getItem("user"));
 
   const markAsRead = (id) => {
-    const updateReadUrl = `/api/messages/${id}`;
+    const updateReadUrl = `/api/messages/${id}/`;
 
     // Send a PUT request to mark the message as read
     fetch(updateReadUrl, {
@@ -36,7 +36,7 @@ function InboxPage() {
 
   const getMessageLink = (id) => {
     // Fetch the message data
-    fetch(`/api/messages/${id}`)
+    fetch(`/api/messages/${id}/`)
       .then((response) => {
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
@@ -84,7 +84,7 @@ function InboxPage() {
 
   const handleDelete = (id) => {
     // Send a DELETE request to remove the message
-    fetch(`/api/accounts/${curr_account.id}`, {
+    fetch(`/api/accounts/${curr_account.id}/`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -110,7 +110,7 @@ function InboxPage() {
           orgs: curr_account_data.orgs,
           msgids: updatedMsgids,
         };
-        fetch(`/api/accounts/${curr_account.id}`, {
+        fetch(`/api/accounts/${curr_account.id}/`, {
           method: "PUT", // Use PUT to update the account
           headers: {
             "Content-Type": "application/json",
@@ -127,7 +127,7 @@ function InboxPage() {
             console.log("successfully updated account orgs");
             console.log(data3);
 
-            fetch(`/api/messages/${id}`, {
+            fetch(`/api/messages/${id}/`, {
               method: "DELETE",
             })
               .then((response) => {
@@ -153,7 +153,7 @@ function InboxPage() {
 
   // Simulate fetching messages from an API
   useEffect(() => {
-    fetch(`/api/messages/account/${curr_account.id}`)
+    fetch(`/api/messages/account/${curr_account.id}/`)
       .then((response) => {
         if (response.status === 404){
           return [];

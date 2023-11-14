@@ -1,5 +1,5 @@
 export const confirmPassword = async (email, password) => {
-  const res = await fetch("/api/auth/login", {
+  const res = await fetch("/", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

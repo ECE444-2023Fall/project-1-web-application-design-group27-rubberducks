@@ -26,7 +26,7 @@ export default function My_Clubs() {
         return;
       }
 
-      const response = await fetch(`/api/accounts/${user.id}`, {
+      const response = await fetch(`/api/accounts/${user.id}/`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -55,7 +55,7 @@ export default function My_Clubs() {
   // Function to fetch host details for each org
   const fetchHostDetailsForOrgs = async (orgs) => {
     const hostFetchPromises = orgs.map((org) =>
-      fetch(`/api/hosts/${org}`).then((res) => res.json())
+      fetch(`/api/hosts/${org}/`).then((res) => res.json())
     );
 
     try {

@@ -16,7 +16,7 @@ export const useGetEventInfo = (eventId) => {
     setLoading(true);
 
     // fetch event information for given eventId
-    fetch("/api/events/" + eventId) 
+    fetch("/api/events/" + eventId + "/") 
       .then((res) => {
         if (!res.ok) {
           window.location.href = "/404";
@@ -26,7 +26,7 @@ export const useGetEventInfo = (eventId) => {
       .then((eventData) => {
         setEventInfo(eventData);
         // fetch host info for host of given event
-        fetch("/api/hosts/" + eventData.owner)
+        fetch("/api/hosts/" + eventData.owner + "/")
           .then((res) => {
             if (!res.ok) {
               window.location.href = "/404";
@@ -44,7 +44,7 @@ export const useGetEventInfo = (eventId) => {
   // if there is a user logged in, fetch the user info
   const loadUserInfo = useCallback(async () => {
     if (id) {
-      fetch("/api/accounts/" + id)
+      fetch("/api/accounts/" + id + "/")
         .then((res) => res.json())
         .then((data) => {
           setUserInfo(data);

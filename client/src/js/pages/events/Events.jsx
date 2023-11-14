@@ -103,7 +103,7 @@ function Events() {
         if (isLogged) {
           //if user logged in, load fav events
           const userRes = await fetch(
-            "/api/accounts/" + JSON.parse(localStorage.getItem("user")).id
+            "/api/accounts/" + JSON.parse(localStorage.getItem("user")).id + "/"
           )
             .then((res) => res.json())
             .then((data) => data);
@@ -138,7 +138,7 @@ function Events() {
       };
 
       fetch(
-        `/api/accounts/${JSON.parse(localStorage.getItem("user")).id}`,
+        `/api/accounts/${JSON.parse(localStorage.getItem("user")).id}/`,
         requestOptions
       )
         .then((res) => {

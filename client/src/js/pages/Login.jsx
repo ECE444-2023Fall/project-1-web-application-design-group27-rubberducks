@@ -26,7 +26,7 @@ function Login() {
     }
 
     // Send a POST request to the authentication API
-    fetch("/api/auth/login", {
+    fetch("/api/auth/login/", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

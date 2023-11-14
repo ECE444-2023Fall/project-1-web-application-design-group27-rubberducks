@@ -39,7 +39,7 @@ function CreateHostProfile() {
       };
 
       // Create the new host
-      fetch("/api/hosts", {
+      fetch("/api/hosts/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -55,7 +55,7 @@ function CreateHostProfile() {
         .then((data) => {
           if (data && data.hid) {
             // Get all current user data
-            fetch(`/api/accounts/${curr_account.id}`, {
+            fetch(`/api/accounts/${curr_account.id}/`, {
               method: "GET",
               headers: {
                 "Content-Type": "application/json",
@@ -79,7 +79,7 @@ function CreateHostProfile() {
                 };
 
                 // Update the orgs of the current account
-                fetch(`/api/accounts/${curr_account.id}`, {
+                fetch(`/api/accounts/${curr_account.id}/`, {
                   method: "PUT",
                   headers: {
                     "Content-Type": "application/json",

@@ -19,7 +19,7 @@ const EditClubProfilePic = () => {
           console.error("No user id found");
           setError("User not logged in");
         } else {
-          const userResponse = await fetch(`/api/accounts/${get_user.id}`);
+          const userResponse = await fetch(`/api/accounts/${get_user.id}/`);
           if (userResponse.status === 404) {
             setError("User information not found");
           } else if (userResponse.ok) {
@@ -65,7 +65,7 @@ const EditClubProfilePic = () => {
         msgids: userInfo.msgids,
         profile_pic: selectedPictureIndex,
     }
-    fetch(`/api/accounts/${userInfo.uid}`, {
+    fetch(`/api/accounts/${userInfo.uid}/`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

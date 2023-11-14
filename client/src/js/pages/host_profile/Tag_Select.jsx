@@ -7,7 +7,7 @@ import Select from "react-select";
 const TagSelect = ({ selectedTags, onTagChange }) => {
   const [tagOptions, setTagOptions] = useState([]);
   useEffect(() => {
-    fetch(`/api/events/tags`, {method: "GET"})
+    fetch(`/api/events/tags/`, {method: "GET"})
     .then((res) => res.json())
     .then((data) => {
       const options = data.map((tag) => ({

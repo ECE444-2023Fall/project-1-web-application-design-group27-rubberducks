@@ -45,7 +45,7 @@ function Profile_edit() {
       Authorization: `Bearer ${accessToken}`,
     };
 
-    fetch("/api/accounts/2")
+    fetch("/api/accounts/2/")
       // .then((res) => {
       //   if (res.status === 401) {
       //     // Handle unauthorized access here, e.g., redirect to the login page
@@ -115,7 +115,7 @@ function Profile_edit() {
         body: JSON.stringify(body),
       };
 
-      fetch("/api/accounts/2", requestOptions)
+      fetch("/api/accounts/2/", requestOptions)
         .then((res) => {
           if (!res.ok) {
             throw new Error(res.statusText);

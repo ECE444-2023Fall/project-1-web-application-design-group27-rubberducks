@@ -15,7 +15,7 @@ const AttendeeList = ({}) => {
       setIsLoading(true);
       try {
         // Fetch the event to get the list of attendee IDs
-        const eventResponse = await fetch(`/api/events/${eventId}`);
+        const eventResponse = await fetch(`/api/events/${eventId}/`);
         // const eventResponse = await fetch("/api/events/9");
         if (!eventResponse.ok) {
           throw new Error('Network response was not ok for fetching event');
@@ -25,7 +25,7 @@ const AttendeeList = ({}) => {
 
         // Now, fetch details for each attendee0
         const attendeeDetailsPromises = attendeeIds.map((uid) =>
-          fetch(`/api/accounts/${uid}`).then(response => {
+          fetch(`/api/accounts/${uid}/`).then(response => {
             if (!response.ok) {
               throw new Error('Network response was not ok for fetching attendee');
             }

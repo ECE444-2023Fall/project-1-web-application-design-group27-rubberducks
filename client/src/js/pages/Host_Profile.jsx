@@ -73,7 +73,7 @@ export function Host_profile() {
 
   // Function to fetch event details by ID
   const fetchEventDetails = async (eid) => {
-    const response = await fetch(`/api/events/${eid}`);
+    const response = await fetch(`/api/events/${eid}/`);
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
     }
@@ -84,7 +84,7 @@ export function Host_profile() {
   const fetchUserEvents = async () => {
     setIsLoading(true);
     try {
-      const response = await fetch(`/api/hosts/${hostId}`); //fetch the current user
+      const response = await fetch(`/api/hosts/${hostId}/`); //fetch the current user
       console.log("Host ID:", hostId); // Check if the host ID is retrieved correctly
 
       if (!response.ok) {
@@ -174,7 +174,7 @@ export function Host_upcoming() {
 
   // Function to fetch event details by ID
   const fetchEventDetails = async (eid) => {
-    const response = await fetch(`/api/events/${eid}`);
+    const response = await fetch(`/api/events/${eid}/`);
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
     }
@@ -185,7 +185,7 @@ export function Host_upcoming() {
   const fetchUserEvents = async () => {
     setIsLoading(true);
     try {
-      const response = await fetch(`/api/hosts/${hostId}`); //fetch the current user
+      const response = await fetch(`/api/hosts/${hostId}/`); //fetch the current user
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
@@ -260,7 +260,7 @@ export function Host_previous() {
 
   // Function to fetch event details by ID
   const fetchEventDetails = async (eid) => {
-    const response = await fetch(`/api/events/${eid}`);
+    const response = await fetch(`/api/events/${eid}/`);
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
     }
@@ -271,7 +271,7 @@ export function Host_previous() {
   const fetchUserEvents = async () => {
     setIsLoading(true);
     try {
-      const response = await fetch(`/api/hosts/${hostId}`); //fetch the current user
+      const response = await fetch(`/api/hosts/${hostId}/`); //fetch the current user
       console.log("Host ID:", hostId); // Check if the host ID is retrieved correctly
 
       if (!response.ok) {
@@ -364,7 +364,7 @@ export function Host_edit() {
   };
 
   const getOwnerInfo = async () => {
-    const res = await fetch(`/api/accounts/${hostInfo.owner}`);
+    const res = await fetch(`/api/accounts/${hostInfo.owner}/`);
     const data = await res.json();
     setOwnerInfo(data);
   };
@@ -382,17 +382,17 @@ export function Host_edit() {
     setLoading(true);
     for (let event of hostInfo.events) {
       //get all the events the org has
-      const eventInfo = await fetch(`/api/events/${event}`).then((res) =>
+      const eventInfo = await fetch(`/api/events/${event}/`).then((res) =>
         res.json()
       );
 
       for (let attendee of eventInfo.attendees) {
         //get all the attendees of the event
-        const attendeeInfo = await fetch(`/api/accounts/${attendee}`).then(
+        const attendeeInfo = await fetch(`/api/accounts/${attendee}/`).then(
           (res) => res.json()
         );
         //remove the event from the attendees' events and fav_events
-        const attendeeRes = await fetch(`/api/accounts/${attendee}`, {
+        const attendeeRes = await fetch(`/api/accounts/${attendee}/`, {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
@@ -405,7 +405,7 @@ export function Host_edit() {
       }
 
       //delete the event
-      const eventRes = await fetch(`/api/events/${event}`, {
+      const eventRes = await fetch(`/api/events/${event}/`, {
         method: "DELETE",
       });
 
@@ -415,7 +415,7 @@ export function Host_edit() {
     }
 
     //delete club from owner
-    const ownerRes = await fetch(`/api/accounts/${ownerInfo.uid}`, {
+    const ownerRes = await fetch(`/api/accounts/${ownerInfo.uid}/`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -430,7 +430,7 @@ export function Host_edit() {
     }
 
     //delete the org
-    const orgRes = await fetch(`/api/hosts/${hostInfo.hid}`, {
+    const orgRes = await fetch(`/api/hosts/${hostInfo.hid}/`, {
       method: "DELETE",
     });
 
@@ -461,7 +461,7 @@ export function Host_edit() {
             body: JSON.stringify(body),
           };
 
-          fetch(`/api/hosts/${hostInfo.hid}`, requestOptions)
+          fetch(`/api/hosts/${hostInfo.hid}/`, requestOptions)
             .then((res) => {
               if (!res.ok) {
                 console.log("error:", err);
@@ -469,7 +469,7 @@ export function Host_edit() {
             })
             .then((data) => {
               setLoading(false);
-              navigate(`/hosts/${hostInfo.hid}`);
+              navigate(`/hosts/${hostInfo.hid}/`);
             })
             .catch((error) => {
               console.error(

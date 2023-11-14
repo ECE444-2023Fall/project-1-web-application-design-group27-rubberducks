@@ -28,7 +28,7 @@ function Host_transfer_send() {
   const user = JSON.parse(localStorage.getItem("user"));
 
   useEffect(() => {
-    fetch(`/api/hosts/${hostId}`)
+    fetch(`/api/hosts/${hostId}/`)
       .then((res) => res.json())
       .then((data) => {
         setName(data.name);
@@ -52,7 +52,7 @@ function Host_transfer_send() {
     if (pendingTransfer) {
       setErrorMessage(`Transfer Request already pending`);
     } else {
-      fetch(`/api/accounts/${data.email}`)
+      fetch(`/api/accounts/${data.email}/`)
         .then((res) => {
           if (!res.ok) {
             setErrorMessage(`HTTP error! Status: ${res.status}`);
@@ -99,7 +99,7 @@ function Host_transfer_send() {
                 msgids: recieving_account.msgids.concat(request_sent.msgid),
               };
 
-              fetch(`/api/accounts/${recieving_account.uid}`, {
+              fetch(`/api/accounts/${recieving_account.uid}/`, {
                 method: "PUT", // Use PUT to update the account
                 headers: {
                   "Content-Type": "application/json",
@@ -118,7 +118,7 @@ function Host_transfer_send() {
                   console.log(data3);
                   // Redirect to the created page or handle as needed
                   // set hostID to pending
-                  fetch(`/api/hosts/${hostId}`, {
+                  fetch(`/api/hosts/${hostId}/`, {
                     method: "PUT", // Use PUT to update the account
                     headers: {
                       "Content-Type": "application/json",

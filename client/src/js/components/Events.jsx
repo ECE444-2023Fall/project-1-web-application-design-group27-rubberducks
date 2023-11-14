@@ -51,7 +51,7 @@ const [tags, setTags] = useState([]);
 const handleFilter = async (filterTags) => {
   async function fetchFilteredEvents() {
       try {
-          const response = await fetch("/api/events/filtered", {
+          const response = await fetch("/api/events/filtered/", {
               method: "POST",
               headers: {
                   "Content-Type": "application/json",
