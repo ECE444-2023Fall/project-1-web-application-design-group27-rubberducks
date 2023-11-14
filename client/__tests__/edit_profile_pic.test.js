@@ -1,9 +1,8 @@
 import React from 'react';
 import { render, waitFor, screen, act } from '@testing-library/react';
-import { MemoryRouter,  useParams, useNavigate } from 'react-router-dom';
+import { MemoryRouter} from 'react-router-dom';
 import EditProfilePic from '../src/js/pages/user_profile/Edit_Profile_Pic'; 
 import '@testing-library/jest-dom';
-import 'jest-localstorage-mock';
 
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),
