@@ -99,6 +99,7 @@ function TagDrawerButton({
                 <div className="input-icon-wrapper">
                   <FaRedo className="input-icon" />
                   <select onChange={(e) => onRecurringSelect(e.target.value)}>
+                    <option value=""> -- </option>
                     <option value="0">Not Recurring</option>
                     <option value="1">Daily</option>
                     <option value="2">Weekly</option>
