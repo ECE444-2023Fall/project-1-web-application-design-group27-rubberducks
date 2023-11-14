@@ -22,8 +22,10 @@ import ProfileCategory from "../components/Profile_Category";
 import Choose_Picture from "../components/Choose_Picture";
 //This file creates a host profile page
 export default function Host_root() {
+  const [isLoading, setIsLoading] = useState(true);
   const { hostId = "" } = useParams();
   const { hostInfo, ownerLoggedIn, loading } = useGetHostInfo(hostId);
+  const [hostInfomation, setHostInfomation] = useState({});
   bouncy.register();
 
   if (loading) {
@@ -89,7 +91,7 @@ export function Host_profile() {
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
-
+      setHostInfomation(data);
       const data = await response.json();
       const eventsPromises = data.events.map(fetchEventDetails); //fetch the current user's events details
       const eventsDetails = await Promise.all(eventsPromises);
@@ -125,6 +127,14 @@ export function Host_profile() {
 
   return (
     <>
+     <HostSidebar
+        ownerLoggedIn={ownerLoggedIn}
+        hid={hostInfomation.hid}
+        name={hostInfomation.name}
+        email={hostInfomation.email}
+        bio={hostInfomation.bio}
+        profile_pic={hostInfomation.profile_pic}
+      />
       <div>
         {ownerLoggedIn ? (
           <div className="createEventBtnContainer">

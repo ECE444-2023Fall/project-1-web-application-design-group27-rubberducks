@@ -200,3 +200,19 @@
     justify-content: flex-start;
   }
 }
+
+
+.apply-buttons {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+
+.apply-buttons .btn--new.btn--create {
+  min-width: 100px;
+  padding: 8px 15px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

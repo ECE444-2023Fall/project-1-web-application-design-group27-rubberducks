@@ -1,0 +1,40 @@
+.club-search {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px 15%;
+    margin-bottom: 20px;
+}
+
+.club-search .input-icon-wrapper {
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+
+.club-search input[type="text"] {
+    border: 1px solid #999;
+    border-radius: 12px;
+    padding: 8px 10px;
+    width: calc(100% - 30px);
+    box-sizing: border-box;
+}
+
+.club-search .input-icon {
+    margin-right: 10px;
+    color: #666;
+}
+
+.button-container {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.club-search .btn--new.btn--create {
+    min-width: 100px;
+    padding: 8px 15px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
