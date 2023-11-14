@@ -4,7 +4,7 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 import logging
 import pytest
-from backend.models import Account, Host, Event, Message
+from backend.models import Account, Host, Event, Message, Event_tag
 from backend.main import create_app
 from backend.config import TestConfig
 from backend.exts import db
@@ -265,3 +265,17 @@ def sample_event_data():
     data["owner"] = int(data["owner"])
 
     return data
+
+@pytest.fixture
+def add_event_tag_to_db(app): 
+    with app.app_context():
+        event_tag1 = Event_tag(
+            etid="1",
+            name="Sample Event Tag",
+            description="Sample Description",
+        )
+        db.session.add(event_tag1)
+        db.session.commit()
+
+        return event_tag1  
+    
