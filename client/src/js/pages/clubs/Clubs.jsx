@@ -22,6 +22,7 @@ function Clubs() {
   const [hasMore, setHasMore] = useState(true);
 
   const [fname, setfName] = useState(null);
+  const [searchTerm, setSearchTerm] = useState(null);
 
   /* Configure Query */
   const [fOrd, setfOrd] = useState(0); // Sort order 0: Date asc 1: Date desc 2: Create asc 3: Create desc 4: Attend asc 5: Attend desc
@@ -91,20 +92,31 @@ function Clubs() {
   }, [page, loading]);
 
   const handleSearch = (value) => {
-    if (value) {
-      setfName(value);
-    }
+    setSearchTerm(value);
   }
-
-  const handleResetSearch = () => {
-    setfName(null);
-    handleReload();
- }
-  const handleReload = () => {
+  useEffect(() => {
+    if (initialLoad) {
+      setInitialLoad(false);
+      return;
+    }
+    // Reset page count and clubs list
     setPage(1);
     setClubs([]);
+    // Reload clubs with the new fname
     loadClubs(1);
-  };
+  }, [fname]); // Run when fname changes
+
+  const handleResetSearch = () => {
+    setHasMore(true);
+    setSearchTerm(null);
+    setfName(null);
+  }
+
+  const handleApplySearch = (value) => {
+    setHasMore(true);
+    setfName(value);
+  }
+
   bouncy.register();
 
   if (loading) {
@@ -132,11 +144,11 @@ function Clubs() {
         <div className="club-search">
           <div className="input-icon-wrapper">
             <FaSearch className="input-icon" />
-            <input type="text" placeholder="Search by name" onChange={(e) => handleSearch(e.target.value)} />
+            <input type="text" placeholder={searchTerm?searchTerm:"Search by name"} onChange={(e) => handleSearch(e.target.value)} />
           </div>
           <div className="apply-buttons">
             <button class="btn--new btn--create" onClick={() => handleResetSearch()}>Reset</button>
-            <button class="btn--new btn--create" onClick={() => handleReload()}>Apply</button>
+            <button class="btn--new btn--create" onClick={() => handleApplySearch(searchTerm)}>Apply</button>
           </div>
         </div>
         <ClubsGrid
