@@ -38,7 +38,7 @@ class Hosts(Resource):
         #Sorting
         order = str(request.args.get('ord', 0)) # order (sorting) 0: alpha 1: events
 
-        if order == 1:
+        if order == "1":
             query = Host.query.order_by(func.cardinality(Host.events).desc(), Host.name.asc()).group_by(Host.hid, Host.name) # Count Order
         else:
             query = Host.query.order_by(Host.name.asc()) # Alphabetical Order

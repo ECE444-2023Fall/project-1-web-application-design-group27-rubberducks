@@ -122,12 +122,13 @@
 
 .redoIconSpan {
   position: absolute;
-  top: 10px; /* Adjust as per your preference */
-  left: 10px; /* Adjust as per your preference */
-  z-index: 10; /* To ensure it stays above the image */
+  top: 10px;
+  left: 10px;
+  z-index: 1;
 }
 
 .redoIcon {
-  color: #fff; /* or any other color you prefer */
-  font-size: 18px; /* Adjust size as needed */
+  color: #fff;
+  font-size: 18px;
+  filter: drop-shadow(1px 1px 1px black);
 }

@@ -19,7 +19,11 @@ function Events() {
   const [hasMore, setHasMore] = useState(true);
 
   /* Configure Tags */
+  const [tags, setTags] = useState([]);
   const [selectedTags, setSelectedTags] = useState([]);
+
+  /* Configure Reload Caller */
+  const [reload, setReload] = useState(false);
 
   /* Configure Query */
   const [fName, setfName] = useState(null); // Name <str>
@@ -77,7 +81,9 @@ function Events() {
           fetchQuery = fetchQuery.concat(`&capr=${fCapR}`);
         } // Capacity Reached
         if (fReo) {
-          fetchQuery = fetchQuery.concat(`&re=${fReo}`);
+          if (fReo != "-1") {
+            fetchQuery = fetchQuery.concat(`&re=${fReo}`);
+          }
         } // Reoccuring
         if (fHost) {
           fetchQuery = fetchQuery.concat(`&host=${fHost}`);
@@ -118,8 +124,22 @@ function Events() {
     }
   };
 
-  // Initial events by getting first page
+  const loadTags = async () => {
+    try {
+      const response = await fetch("api/events/tags/");
+      if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      const data = await response.json();
+      setTags(data);
+    } catch (error) {
+      console.error("Failed to fetch tags:", error);
+    }
+  };
+
+  // Initial tags and events by getting first page
   useEffect(() => {
+    loadTags();
     loadEvents(1);
   }, []);
 
@@ -181,54 +201,45 @@ function Events() {
   // Handlers for various query attributes
   const handleTagsSelected = (selection) => {
     setSelectedTags(selection);
-    //handleReload();
   };
   const handleSortChange = (value) => {
     setfOrd(value);
-    //handleReload();
   };
   const handleNameSearch = (name) => {
     setfName(name);
-    //handleReload();
   };
   const handleHostSearch = (host) => {
     setfHost(host);
-    //handleReload();
   };
   const handleLocationSearch = (location) => {
     setfLoc(location);
-    //handleReload();
   };
   const handleTimeSelect = (time) => {
     setfTimeS(time);
-    //handleReload();
   };
   const handleEndTimeSelect = (time) => {
     if (!fTimeS || time > fTimeS) {
       setfTimeE(time);
-      //andleReload();
     } else {
       alert("End time must be later than start time.");
     }
   };
   const handleDateSelect = (date) => {
     setfDate(date);
-    //handleReload();
   };
 
   const handleMaxAttendeesSelect = (number) => {
     setfCap(number);
-    //handleReload();
   };
   const handleCapacityReachedToggle = (reached) => {
-    setfCapR(reached ? 1 : 0);
-    //handleReload();
+    setfCapR(reached);
   };
   const handleRecurringSelect = (recurring) => {
     setfReo(recurring);
-    //handleReload();
   };
-  const clearFilters = () => {
+
+  const handleClear = () => {
+    setSelectedTags([]);
     setfName(null);
     setfLoc(null);
     setfTimeS(null);
@@ -240,12 +251,24 @@ function Events() {
     setfHost(null);
     setfUid(null)
     setfOrd(0);
-  }
-  const handleReload = () => {
+    setHasMore(true);
+    setReload(reload?false:true);
+  };
+
+  const handleApply = () => {
+    setHasMore(true);
+    setReload(reload?false:true);
+  };
+
+  useEffect(() => {
+    if (initialLoad) {
+      return
+    }
+    // Reload events with new query
     setPage(1);
     setEvents([]);
     loadEvents(1);
-  };
+  }, [reload]); // Run when reload changes
 
   // Favouriting event handler
   const handleStarClick = (clickedEvent) => {
@@ -292,20 +315,42 @@ function Events() {
       <div className="eventsPage">
         <div className="eventTagDrawer">
           <TagDrawerButton
+            tags={tags}
+            selectedTags={selectedTags}
             onTagSelection={handleTagsSelected}
+
+            fName={fName}
             onNameSearch={handleNameSearch}
+
+            fHost={fHost}
             onHostSearch={handleHostSearch}
+
+            fLoc={fLoc}
             onLocationSearch={handleLocationSearch}
+
+            fTimeS={fTimeS}
             onStartTimeSelect={handleTimeSelect}
+
+            fTimeE={fTimeE}
             onEndTimeSelect={handleEndTimeSelect}
+
+            fDate={fDate}
             onDateSelect={handleDateSelect}
+
+            fCap={fCap}
             onMaxAttendeesSelect={handleMaxAttendeesSelect}
+
+            fCapR={fCapR}
             onCapacityReachedToggle={handleCapacityReachedToggle}
+
+            fReo={fReo}
             onRecurringSelect={handleRecurringSelect}
-            onReload={handleReload}
+
+            fOrd={fOrd}
             onSort={handleSortChange}
-            curSort={fOrd}
-            onClear={clearFilters}
+
+            onClear={handleClear}
+            onApply={handleApply}
           />
         </div>
         <EventsGrid

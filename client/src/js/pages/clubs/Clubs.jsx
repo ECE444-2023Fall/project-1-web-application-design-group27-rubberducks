@@ -144,7 +144,7 @@ function Clubs() {
         <div className="club-search">
           <div className="input-icon-wrapper">
             <FaSearch className="input-icon" />
-            <input type="text" placeholder={searchTerm?searchTerm:"Search by name"} onChange={(e) => handleSearch(e.target.value)} />
+            <input type="text" value={fname?fname:""} placeholder={searchTerm?searchTerm:"Search by name"} onChange={(e) => handleSearch(e.target.value)} />
           </div>
           <div className="apply-buttons">
             <button class="btn--new btn--create" onClick={() => handleResetSearch()}>Reset</button>

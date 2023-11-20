@@ -5,46 +5,29 @@ import SortButton from './SortButton';
 import "../../../css/components/App.css";
 
 function TagDrawerButton({
-  onTagSelection, onNameSearch, onHostSearch, onLocationSearch, onStartTimeSelect, 
-  onEndTimeSelect, onDateSelect, onMaxAttendeesSelect, onCapacityReachedToggle, 
-  onRecurringSelect, onReload, onSort, curSort, onClear
+  tags, selectedTags, onTagSelection,
+  fName, onNameSearch,
+  fHost, onHostSearch,
+  fLoc, onLocationSearch,
+  fTimeS, onStartTimeSelect,
+  fTimeE, onEndTimeSelect,
+  fDate, onDateSelect,
+  fCap, onMaxAttendeesSelect,
+  fCapR, onCapacityReachedToggle,
+  fReo, onRecurringSelect,
+  fOrd, onSort,
+  onClear, onApply
   }) {
-  const [tags, setTags] = useState([]);
-  const [nameSearch, setNameSearch] = useState('');
-  const [hostSearch, setHostSearch] = useState('');
-  useEffect(() => {
-    async function fetchTags() {
-        try {
-            const response = await fetch("api/events/tags/");
-            if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
-            }
-            const data = await response.json();
-            setTags(data);
-        } catch (error) {
-            console.error("Failed to fetch tags:", error);
-        }
-    }
 
-    fetchTags();
-  }, []);
+  // Goal is to initialize locals that will later update in events and call useeffect based on an update variable
 
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const [selectedTags, setSelectedTags] = useState([]);
 
   const handleTagClick = (etid) => {
     const newSelection = selectedTags.includes(etid)
       ? selectedTags.filter(t => t !== etid)
       : [...selectedTags, etid];
-
-    setSelectedTags(newSelection);
     onTagSelection(newSelection);
-  };
-  const handleClear = () => {
-    setSelectedTags([]);
-    setNameSearch('');
-    setHostSearch('');
-    onClear(); 
   };
 
   return (
@@ -59,47 +42,47 @@ function TagDrawerButton({
               <div className="filter-row">
                 <div className="input-icon-wrapper">
                   <FaSearch className="input-icon" />
-                  <input type="text" placeholder="Search by name" onChange={(e) => onNameSearch(e.target.value)} />
+                  <input type="text" value={fName?fName:""} placeholder={fName?fName:"Search by name"} onChange={(e) => onNameSearch(e.target.value)} />
                 </div>
                 <div className="input-icon-wrapper">
                   <FaUser className="input-icon" />
-                  <input type="text" placeholder="Search by host" onChange={(e) => onHostSearch(e.target.value)} />
+                  <input type="text" value={fHost?fHost:""} placeholder={fHost?fHost:"Search by host"} onChange={(e) => onHostSearch(e.target.value)} />
                 </div>
                 <div className="input-icon-wrapper">
                   <FaMapMarkerAlt className="input-icon" />
-                  <input type="text" placeholder="Search by location" onChange={(e) => onLocationSearch(e.target.value)} />
+                  <input type="text" value={fLoc?fLoc:""} placeholder={fLoc?fLoc:"Search by location"} onChange={(e) => onLocationSearch(e.target.value)} />
                 </div>
               </div>
               <div className="filter-row">
                 <div className="input-icon-wrapper">
                   <FaClock className="input-icon" />
-                  <input type="time" onChange={(e) => onStartTimeSelect(e.target.value)} />
+                  <input type="time" value={fTimeS} onChange={(e) => onStartTimeSelect(e.target.value)} />
                 </div>
                 <div className="input-icon-wrapper">
                   <FaClock className="input-icon" />
-                  <input type="time" onChange={(e) => onEndTimeSelect(e.target.value)} />
+                  <input type="time" value={fTimeE} onChange={(e) => onEndTimeSelect(e.target.value)} />
                 </div>
                 <div className="input-icon-wrapper">
                   <FaCalendarAlt className="input-icon" />
-                  <input type="date" onChange={(e) => onDateSelect(e.target.value)} />
+                  <input type="date" value={fDate} onChange={(e) => onDateSelect(e.target.value)} />
                 </div>
               </div>
               <div className="filter-row">
                 <div className="input-icon-wrapper">
                   <FaUsers className="input-icon" />
-                  <input type="number" placeholder="Max attendees" onChange={(e) => onMaxAttendeesSelect(e.target.value)} />
+                  <input type="number" value={fCap?fCap:""} placeholder={fCap?fCap:"Max attendees"} onChange={(e) => onMaxAttendeesSelect(e.target.value)} />
                 </div>
-                <div className="input-icon-wrapper checkbox-wrapper">
+                <div className="input-icon-wrapper">
                   <FaCheckSquare className="input-icon" />
-                  <label>
-                    Exclude Full
-                    <input type="checkbox" onChange={(e) => onCapacityReachedToggle(e.target.checked)} />
-                  </label>
+                  <select value={fCapR} onChange={(e) => onCapacityReachedToggle(e.target.value)}>
+                    <option value="0"> Show Filled Events</option>
+                    <option value="1"> Hide Filled Events</option>
+                  </select>
                 </div>
                 <div className="input-icon-wrapper">
                   <FaRedo className="input-icon" />
-                  <select onChange={(e) => onRecurringSelect(e.target.value)}>
-                    <option value=""> -- </option>
+                  <select value={fReo} onChange={(e) => onRecurringSelect(e.target.value)}>
+                    <option value="-1"> -- </option>
                     <option value="0">Not Recurring</option>
                     <option value="1">Daily</option>
                     <option value="2">Weekly</option>
@@ -110,7 +93,7 @@ function TagDrawerButton({
               </div>
               <div className="filter-row">
                 <div className="input-icon-wrapper">
-                  <SortButton setOrder={onSort} currentSortOrder={curSort}></SortButton>
+                  <SortButton setOrder={onSort} currentSortOrder={fOrd}></SortButton>
                 </div>
               </div>
             </div>
@@ -127,10 +110,9 @@ function TagDrawerButton({
                 ))}
             </div>
             <div className="apply-buttons">
-              <button className="btn--new btn--create" onClick={handleClear}>Reset</button>
-              <button className="btn--new btn--create" onClick={() => onReload()}>Apply</button>
+              <button className="btn--new btn--create" onClick={onClear}>Reset</button>
+              <button className="btn--new btn--create" onClick={onApply}>Apply</button>
             </div>
-            {/* <button class="btn--new btn--create" onClick={() => onReload()}>Apply</button> */}
           </div>
         )}
     </>
