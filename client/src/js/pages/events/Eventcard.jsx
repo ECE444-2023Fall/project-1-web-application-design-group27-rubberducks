@@ -20,7 +20,7 @@ function EventCard({ event, onStarClick, favEvents }) {
   const threeDaysAgo = new Date();
   threeDaysAgo.setDate(currentDate.getDate() - 3);
   var label = null;
-  if (event.attendees && event.attendees.length > 20) {
+  if (event.attendees && event.attendees.length > 10) {
     label = "Hot";
   } else if (eventDate >= threeDaysAgo && eventDate <= currentDate) {
     label = "New";
